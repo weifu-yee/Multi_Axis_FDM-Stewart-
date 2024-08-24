@@ -1,5 +1,5 @@
 #include "timing.h"
-//#include "stewart_platform.h"
+#include "stewart_platform.h"
 
 int cnt_5 = 0;
 int t_sec = 0;

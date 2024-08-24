@@ -15,6 +15,8 @@
 #include "main.h"
 #include <stdio.h>
 
+extern int count;
+
 void main_function(void);
 
 #ifdef __cplusplus

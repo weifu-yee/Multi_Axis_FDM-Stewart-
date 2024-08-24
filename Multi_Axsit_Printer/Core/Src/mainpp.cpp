@@ -7,8 +7,9 @@
 
 #include "mainpp.h"
 
+int count = 0;
+
 void main_function(void){
-	int count = 0;
 	while(1){
 		count++;
 		printf("Hello %d \n", count);
