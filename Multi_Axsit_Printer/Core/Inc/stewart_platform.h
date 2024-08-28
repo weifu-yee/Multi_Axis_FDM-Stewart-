@@ -39,7 +39,9 @@ StewartPlatform create_default_stewart_platform();
 void update_parameters(StewartPlatform* platform, int32_t x, int32_t y, int32_t z,
                        int32_t phi, int32_t theta, int32_t psi,
                        int32_t h0, int32_t p_l, int32_t b_l);
+StewartPlatform calculate_difference(const StewartPlatform *current, const StewartPlatform *target);
 
+void move_platform_to_target_pose(StewartPlatform* current, const StewartPlatform* target);
 void move_to_target_state(StewartPlatform* current, const StewartPlatform* target, int steps);
 
 void read_parameters_from_gcode(const char* filename, int* x, int* y, int* z,

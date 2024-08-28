@@ -12,10 +12,15 @@
   extern "C"{
 #endif
 
-#include "main.h"
 #include <stdio.h>
+#include "main.h"
+#include "stewart_platform.h"
+#include "functions.h"
 
 extern int count;
+extern bool reached;
+extern StewartPlatform current;
+extern StewartPlatform target;
 
 void main_function(void);
 

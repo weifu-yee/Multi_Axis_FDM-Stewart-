@@ -1,15 +1,16 @@
 #include "timing.h"
-#include "stewart_platform.h"
 
 int cnt_5 = 0;
 int t_sec = 0;
-//double coeffab = 0.5 * (width + length);
-//double angle = 0;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
 		cnt_5++;
 		t_sec = cnt_5/20;
+
+		move_platform_to_target_pose(&current, &target);
+
+		//update_from_sensor(&current);
 
 //		if (++ccc == 2000)     Vy = 0;
 

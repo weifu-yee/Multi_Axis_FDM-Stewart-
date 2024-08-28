@@ -5,6 +5,9 @@
 #include <string.h>
 
 #define PI 3.14159265358979323846
+#define H0 495000
+#define P_L 100000
+#define B_L 100000
 
 Vector3D p[6], b[6];
 int steps = 3;
@@ -20,6 +23,68 @@ const char* CYAN_COLOR = "\033[36m";
 const char* RED_COLOR = "\033[31m";
 const char* PURPLE_COLOR = "\033[35m";
 const char* ORANGE_COLOR = "\033[33m";
+
+StewartPlatform calculate_difference(const StewartPlatform *current, const StewartPlatform *target) {
+    StewartPlatform difference;
+
+    difference.x = target->x - current->x;
+    difference.y = target->y - current->y;
+    difference.z = target->z - current->z;
+    difference.phi = target->phi - current->phi;
+    difference.theta = target->theta - current->theta;
+    difference.psi = target->psi - current->psi;
+    difference.h0 = target->h0 - current->h0;
+    difference.p_l = target->p_l - current->p_l;
+    difference.b_l = target->b_l - current->b_l;
+
+    return difference;
+}
+
+void move_platform_to_target_pose(StewartPlatform* current, const StewartPlatform* target) {
+
+	StewartPlatform difference = calculate_difference(current, target);
+
+	// 循環逐步移動平台
+//	for (int i = 0; i < steps; ++i) {
+//		current->x += dx;
+//		current->y += dy;
+//		current->z += dz;
+//		current->phi += dphi;
+//		current->theta += dtheta;
+//		current->psi += dpsi;
+
+		// 計算桿長和角度
+//		calculate_leg(current, p, b, current->current_lengths, current->current_angles);
+
+		// 打印當前狀態
+//		if (DEBUG_PRINT) {
+//			printf("%sStep %d: %s\n", RED_COLOR, i + 1, RESET_COLOR);
+//			printPlatformState(current);
+//			printLegLengths(current->current_lengths);
+//		}
+
+		// 可以在這裡呼叫函數將當前狀態發送到執行器
+		// send_lengths_to_actuators(current_lengths);
+		// display_angles(current_angles);
+//	}
+
+	// 最後更新到目標狀態
+//	*current = *target;
+
+	// 再次計算桿長和角度，確保最終狀態正確
+//	calculate_leg(current, p, b, current->current_lengths, current->current_angles);
+
+	// 移動完成後，設置 targetReached 為 true
+//	targetReached = true;
+
+//	if (DEBUG_PRINT) {
+//		printf("%sTarget reached!!!~~%s\n\n", PURPLE_COLOR, RESET_COLOR);
+//	}
+
+
+	return;
+}
+
 
 // 輔助函數：將弧度轉換為0.01度的整數
 int32_t rad_to_centidegree(double rad) {
@@ -97,7 +162,7 @@ StewartPlatform create_stewart_platform(int32_t x, int32_t y, int32_t z,
 }
 
 StewartPlatform create_default_stewart_platform() {
-    return create_stewart_platform(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return create_stewart_platform(0, 0, 0, 0, 0, 0, H0, P_L, B_L);
 }
 
 void update_parameters(StewartPlatform* platform, int32_t x, int32_t y, int32_t z,
