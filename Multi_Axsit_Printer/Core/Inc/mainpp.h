@@ -18,6 +18,7 @@
 #include "functions.h"
 #include "constants.h"
 #include "PIDcontrol.h"
+#include "velocity_planner.h"
 
 //extern variables
 extern int cnt_5;
@@ -27,6 +28,8 @@ extern bool reached;
 extern SPPose current;
 extern SPPose target;
 extern ActuatorPID pusher[6];
+extern double current_length[6];
+extern double target_length[6];
 
 
 void main_function(void);

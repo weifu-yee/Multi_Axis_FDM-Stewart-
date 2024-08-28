@@ -7,35 +7,6 @@
 
 Vector3D p[6], b[6];
 
-void update_leg_speeds(SPPose* current, const SPPose* target) {
-    double current_speeds[6], target_speeds[6];
-    calculate_leg(current, p, b, current_speeds);
-    calculate_leg(target, p, b, target_speeds);
-    for (int i = 0; i < 6; ++i) {
-        pusher[i].insVel = current_speeds[i];
-        pusher[i].goalVel = target_speeds[i];
-    }
-}
-
-void plan_velocity(const double current_length[6], const double target_length[6], double time_step) {
-    for (int i = 0; i < 6; ++i) {
-        double length_diff = target_length[i] - current_length[i];
-        double desired_speed = length_diff / time_step; // 简单的速度规划，不考虑加速和减速
-        // 平滑速度变化
-        double current_speed = pusher[i].insVel;
-        double speed_change = desired_speed - current_speed;
-        if (fabs(speed_change) > MAX_ACCELERATION * time_step) {
-            pusher[i].insVel += (speed_change > 0) ? MAX_ACCELERATION * time_step : -MAX_ACCELERATION * time_step;
-        } else {
-            pusher[i].insVel = desired_speed;
-        }
-        // 确保速度在范围内
-        if (pusher[i].insVel > MAX_SPEED) pusher[i].insVel = MAX_SPEED;
-        if (pusher[i].insVel < -MAX_SPEED) pusher[i].insVel = -MAX_SPEED;
-        // 更新推杆的目标长度
-        pusher[i].goalVel = target_length[i];
-    }
-}
 
 // 輔助函數：將弧度轉換為0.01度的整數
 double rad_to_centidegree(double rad) {

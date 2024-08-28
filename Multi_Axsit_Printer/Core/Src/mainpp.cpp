@@ -14,6 +14,7 @@ bool reached = false;
 SPPose current = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
 ActuatorPID pusher[6];
+double current_length[6], target_length[6];
 
 void main_function(void){
 	initialize_platform(p, b);
@@ -26,7 +27,10 @@ void main_function(void){
 
 		//readGCode();
 		//update_parameters(&target,)
+		calculate_leg(&current, p, b, current_length);
+		calculate_leg(&target, p, b, target_length);
 		while(!reached);  //move_platform_to_target_pose(&current, &target)
+		current = target;
 		reached = false;
 	}
 }

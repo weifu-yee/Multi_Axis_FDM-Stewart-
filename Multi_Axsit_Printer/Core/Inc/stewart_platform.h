@@ -42,10 +42,6 @@ void update_SPPose(SPPose* platform, double x, double y, double z,
 
 SPPose calculate_difference(const SPPose *current, const SPPose *target);
 
-void update_leg_speeds(SPPose* current, const SPPose* target);
-
-void plan_velocity(const double current_length[6], const double target_length[6], double time_step);
-
 void initialize_platform(Vector3D p[6],
                          Vector3D b[6]);
 
