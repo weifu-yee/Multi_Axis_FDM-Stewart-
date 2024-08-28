@@ -16,11 +16,18 @@
 #include "main.h"
 #include "stewart_platform.h"
 #include "functions.h"
+#include "constants.h"
+#include "PIDcontrol.h"
 
+//extern variables
+extern int cnt_5;
+extern int t_sec;
 extern int count;
 extern bool reached;
-extern StewartPlatform current;
-extern StewartPlatform target;
+extern SPPose current;
+extern SPPose target;
+extern ActuatorPID pusher[6];
+
 
 void main_function(void);
 

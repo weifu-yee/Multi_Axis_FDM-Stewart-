@@ -7,18 +7,22 @@
 
 #include "mainpp.h"
 
+int cnt_5 = 0;
+int t_sec = 0;
 int count = 0;
 bool reached = false;
-StewartPlatform current = create_default_stewart_platform();
-StewartPlatform target = create_default_stewart_platform();
+SPPose current = create_default_stewart_platform();
+SPPose target = create_default_stewart_platform();
+ActuatorPID pusher[6];
 
 void main_function(void){
-	initialize_platform(&current, p, b);
+	initialize_platform(p, b);
 	while(1){
 		count++;
 		printf("Hello %d \n", count);
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		HAL_Delay(500);
+
 
 		//readGCode();
 		//update_parameters(&target,)
