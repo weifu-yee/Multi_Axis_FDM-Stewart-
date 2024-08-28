@@ -27,3 +27,7 @@ void plan_velocity(const double current_length[6], const double target_length[6]
     }
 }
 
+void sub_plan_velocity() {
+
+}
+

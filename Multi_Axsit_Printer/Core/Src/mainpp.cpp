@@ -10,7 +10,9 @@
 int cnt_5 = 0;
 int t_sec = 0;
 int count = 0;
+
 bool reached = false;
+Vector3D p[6], b[6];
 SPPose current = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
 ActuatorPID pusher[6];

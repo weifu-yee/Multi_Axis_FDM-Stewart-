@@ -5,9 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-Vector3D p[6], b[6];
-
-
 // 輔助函數：將弧度轉換為0.01度的整數
 double rad_to_centidegree(double rad) {
     return (double)(rad * 180.0 / PI * 100.0);

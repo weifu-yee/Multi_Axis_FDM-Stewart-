@@ -14,9 +14,6 @@ typedef struct {
     double z;
 } Vector3D;
 
-extern Vector3D p[6];
-extern Vector3D b[6];
-
 struct Angle {
     double platform_angle; // 角度 * 100
     double base_angle; // 角度 * 100

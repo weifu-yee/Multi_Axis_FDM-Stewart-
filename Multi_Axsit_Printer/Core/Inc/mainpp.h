@@ -24,7 +24,10 @@
 extern int cnt_5;
 extern int t_sec;
 extern int count;
+
 extern bool reached;
+extern Vector3D p[6];
+extern Vector3D b[6];
 extern SPPose current;
 extern SPPose target;
 extern ActuatorPID pusher[6];
