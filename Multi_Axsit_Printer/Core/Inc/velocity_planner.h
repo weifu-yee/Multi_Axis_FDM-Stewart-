@@ -12,7 +12,9 @@
 extern "C" {
 #endif
 
-SPPose plan_velocity(SPPose *current, SPPose *target);
+#include "stewart_platform.h"
+
+SPPose plan_velocity(void);
 
 #ifdef __cplusplus
 }
