@@ -30,6 +30,8 @@ typedef struct {
     } velo; // 速度結構
 } SPPose;
 
+void update_from_sensor(SPPose* current);
+
 SPPose create_default_stewart_platform();
 
 void update_SPPose(SPPose* platform, double x, double y, double z,
@@ -37,7 +39,11 @@ void update_SPPose(SPPose* platform, double x, double y, double z,
                        double vx, double vy, double vz,
                        double vphi, double vtheta, double vpsi);
 
+void updatePoseIntegral(SPPose *current);
+
 SPPose calculate_difference(const SPPose *current, const SPPose *target);
+
+double totalDiff(const SPPose *current, const SPPose *target);
 
 void initialize_platform(Vector3D p[6],
                          Vector3D b[6]);

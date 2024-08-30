@@ -23,7 +23,6 @@ typedef struct { // In mm units
 } ActuatorPID;
 
 void calculatePID(int i);
-void update_from_sensor(void);
 
 #ifdef __cplusplus
 }

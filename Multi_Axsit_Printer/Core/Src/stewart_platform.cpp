@@ -9,10 +9,17 @@
 double rad_to_centidegree(double rad) {
     return (double)(rad * 180.0 / PI * 100.0);
 }
-
 // 輔助函數：將度轉換為弧度
 double deg_to_rad(double deg) {
     return deg * PI / 18000.0;  // deg is in 0.01 degree
+}
+
+void update_from_sensor(SPPose *current) {
+	for (int i = 0; i < 6; ++i) {
+		pusher[i].insVel = (double)pusher[i].enc * PI * Lead
+					/ (4 * resolution * reduction_ratio) * FREQUENCY;
+	}
+//	current->velo.x = ...;
 }
 
 SPPose create_default_stewart_platform() {
@@ -51,6 +58,40 @@ SPPose calculate_difference(const SPPose *current, const SPPose *target) {
     return difference;
 }
 
+double totalDiff(const SPPose *current, const SPPose *target) {
+    // Displacement differences (x, y, z)
+    double dx = target->disp.x - current->disp.x;
+    double dy = target->disp.y - current->disp.y;
+    double dz = target->disp.z - current->disp.z;
+    // Calculate the Euclidean norm (distance) for displacement
+    double displacement_norm = sqrt(dx * dx + dy * dy + dz * dz);
+
+    // Angular differences (phi, theta, psi)
+    double dphi = target->disp.phi - current->disp.phi;
+    double dtheta = target->disp.theta - current->disp.theta;
+    double dpsi = target->disp.psi - current->disp.psi;
+    // Normalize angular differences if necessary
+    double angular_norm = sqrt(dphi * dphi + dtheta * dtheta + dpsi * dpsi);
+
+    // Combine displacement and angular differences
+    // Weight the angular part if needed, or leave it as is
+    double total_diff = displacement_norm + angular_norm * ANG_NORM_WEIGHT;
+    return total_diff;
+}
+
+void updatePoseIntegral(SPPose *current) {
+    const double dt = 1.0 / FREQUENCY;
+    current->disp.x += current->velo.x * dt;
+    current->disp.y += current->velo.y * dt;
+    current->disp.z += current->velo.z * dt;
+    current->disp.phi += current->velo.phi * dt;
+    current->disp.theta += current->velo.theta * dt;
+    current->disp.psi += current->velo.psi * dt;
+    // Normalize angles to [-π, π]
+    current->disp.phi = fmod(current->disp.phi + M_PI, 2*M_PI) - M_PI;
+    current->disp.theta = fmod(current->disp.theta + M_PI, 2*M_PI) - M_PI;
+    current->disp.psi = fmod(current->disp.psi + M_PI, 2*M_PI) - M_PI;
+}
 
 void update_SPPose(SPPose* platform, double x, double y, double z,
                        double phi, double theta, double psi,

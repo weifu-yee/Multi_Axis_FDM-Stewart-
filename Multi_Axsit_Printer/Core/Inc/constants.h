@@ -8,6 +8,9 @@
 #ifndef INC_CONSTANTS_H_
 #define INC_CONSTANTS_H_
 
+//timing
+#define TOLERENCE 1
+
 //stewart_platform
 #define PI 3.14159265358979323846
 #define H0 495000
@@ -17,9 +20,10 @@
 #define B_ANGLES {310, 50, 70, 170, 190, 290}
 #define MAX_SPEED 100
 #define MAX_ACCELERATION 10
+#define ANG_NORM_WEIGHT 1
 
 //PIDcontrol
-#define frequency 1000
+#define FREQUENCY 1000
 #define resolution 512
 #define reduction_ratio 20.8
 #define max_ui 1

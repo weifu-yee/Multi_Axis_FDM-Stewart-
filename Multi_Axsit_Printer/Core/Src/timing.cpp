@@ -6,11 +6,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		cnt_5++;
 		t_sec = cnt_5/20;
 
+
 		//update pusher[].goalVel
 		plan_velocity(current_length, target_length);
 		for (int i = 0; i < 6; ++i)
 			calculatePID(i);
-		update_from_sensor();
-		if(0){reached = true;}
+		update_from_sensor(&current);
+		if(totalDiff(&current, &target) < TOLERENCE) {
+			reached = true;
+		}
 	}
 }

@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-void plan_velocity(const double current_length[6], const double target_length[6]);
+SPPose plan_velocity(SPPose *current, SPPose *target);
 
 #ifdef __cplusplus
 }
