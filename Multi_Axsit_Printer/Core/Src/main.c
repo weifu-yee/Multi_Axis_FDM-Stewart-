@@ -97,7 +97,6 @@ int main(void)
   MX_USB_OTG_HS_USB_Init();
   MX_UART4_Init();
   MX_ETH_Init();
-  MX_UART5_Init();
   /* USER CODE BEGIN 2 */
 	main_function();
   /* USER CODE END 2 */
