@@ -19,7 +19,7 @@ void update_from_sensor(SPPose *current) {
 		pusher[i].insVel = (double)pusher[i].enc * PI * Lead
 					/ (4 * resolution * reduction_ratio) * FREQUENCY;
 	}
-//	current->velo.x = ...;
+//	current->velo.x = ...
 }
 
 SPPose create_default_stewart_platform() {

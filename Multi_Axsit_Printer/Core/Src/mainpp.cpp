@@ -16,7 +16,7 @@ Vector3D p[6], b[6];
 SPPose current = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
 ActuatorPID pusher[6];
-double current_length[6], target_length[6];
+double current_lengths[6], target_lengths[6];
 double Feedrate = 0;
 double amountOExtrude = 0;
 double X, Y, Z, E, F, PHI, THETA, PSI;
