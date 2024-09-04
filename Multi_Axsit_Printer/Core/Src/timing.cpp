@@ -8,20 +8,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		cnt_5++;
 		t_sec = cnt_5/20;
 
+//step 1
 		update_pusher_encoders();
 		update_from_sensor();
+//step 2
 		bool goal = current.disp.x == target.disp.x; //only need to check 1 axis
 		if (!goal)
 			presume_next();
+//step 3
 		calculate_leg(&next, next_lengths);
+//step 4
 		double diff_lengths[6];
 		calculate_diff_lengths(diff_lengths);
+//step 5
 		update_pushers_PWM(diff_lengths);
 		actuate_pushers();
+//step 6
 		assignSPPose(&current, &next);
+//step 7
 		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
 			reached = true;
-
 	}
 }
 

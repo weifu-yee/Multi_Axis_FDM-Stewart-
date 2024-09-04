@@ -60,8 +60,8 @@ void main_function(void){
 		count++;
 		readGCode();
 		update_parameters();
-		while(!reached);
 		reached = false;
+		while(!reached);
 	}
 }
 
