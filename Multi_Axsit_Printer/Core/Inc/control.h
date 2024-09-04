@@ -1,12 +1,12 @@
 /*
- * PIDcontrol.h
+ * control.h
  *
  *  Created on: Aug 28, 2024
  *      Author: chenw
  */
 
-#ifndef INC_PIDCONTROL_H_
-#define INC_PIDCONTROL_H_
+#ifndef INC_CONTROL_H_
+#define INC_CONTROL_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -22,10 +22,12 @@ typedef struct { // In mm units
     double u, up, ui, ud, pulse;
 } ActuatorPID;
 
+void reset_pushers_to_home(void);
+void update_pushers_PWM(const double diff_lengths[6]);
 void calculatePID(int i);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* INC_PIDCONTROL_H_ */
+#endif /* INC_CONTROL_H_ */

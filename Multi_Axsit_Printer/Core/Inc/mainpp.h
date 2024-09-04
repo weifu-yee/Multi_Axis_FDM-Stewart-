@@ -17,8 +17,7 @@
 #include "stewart_platform.h"
 #include "functions.h"
 #include "constants.h"
-#include "PIDcontrol.h"
-#include "velocity_planner.h"
+#include "control.h"
 
 //extern variables
 extern int cnt_5;
@@ -29,10 +28,11 @@ extern bool reached;
 extern Vector3D p[6];
 extern Vector3D b[6];
 extern SPPose current;
+extern SPPose next;
 extern SPPose target;
+extern double current_lengths[6];
+extern double next_lengths[6];
 extern ActuatorPID pusher[6];
-extern double current_length[6];
-extern double target_length[6];
 
 
 void main_function(void);

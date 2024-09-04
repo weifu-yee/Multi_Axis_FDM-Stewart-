@@ -5,21 +5,58 @@
 #include <stdlib.h>
 #include <string.h>
 
-// 輔助函數：將弧度轉換為0.01度的整數
-double rad_to_centidegree(double rad) {
-    return (double)(rad * 180.0 / PI * 100.0);
-}
-// 輔助函數：將度轉換為弧度
+
 double deg_to_rad(double deg) {
     return deg * PI / 18000.0;  // deg is in 0.01 degree
 }
 
-void update_from_sensor(SPPose *current) {
+void update_from_sensor(void) {
 	for (int i = 0; i < 6; ++i) {
-		pusher[i].insVel = (double)pusher[i].enc * PI * Lead
-					/ (4 * resolution * reduction_ratio) * FREQUENCY;
+		double delta = (double)pusher[i].enc * PI * Lead
+				/ (4 * resolution * reduction_ratio);
+		current_lengths[i] += delta;
+		pusher[i].insVel = delta * FREQUENCY;
 	}
-//	current->velo.x = ...
+}
+
+void presume_next(void) {
+	double dt = 1 / FREQUENCY;
+	next.disp.x = current.disp.x + dt * target.velo.x;
+	next.disp.y = current.disp.y + dt * target.velo.y;
+	next.disp.z = current.disp.z + dt * target.velo.z;
+	next.disp.phi = current.disp.phi + dt * target.velo.phi;
+	next.disp.theta = current.disp.theta + dt * target.velo.theta;
+	next.disp.psi = current.disp.psi + dt * target.velo.psi;
+}
+
+void calculate_diff_lengths(double diff_lengths[6]) {
+	for (int i = 0; i < 6; ++i) {
+		diff_lengths[i] = next_lengths[i] - current_lengths[i];
+	}
+}
+
+void assignSPPose(SPPose *dest, const SPPose *src) {
+    dest->disp.x = src->disp.x;
+    dest->disp.y = src->disp.y;
+    dest->disp.z = src->disp.z;
+    dest->disp.phi = src->disp.phi;
+    dest->disp.theta = src->disp.theta;
+    dest->disp.psi = src->disp.psi;
+
+    dest->velo.x = src->velo.x;
+    dest->velo.y = src->velo.y;
+    dest->velo.z = src->velo.z;
+    dest->velo.phi = src->velo.phi;
+    dest->velo.theta = src->velo.theta;
+    dest->velo.psi = src->velo.psi;
+}
+
+double calculateNorm(const double *vec) {
+    double sum = 0.0;
+    for (int i = 0; i < 6; ++i) {
+        sum += vec[i] * vec[i];
+    }
+    return sqrt(sum);
 }
 
 SPPose create_default_stewart_platform() {
@@ -111,8 +148,7 @@ void update_SPPose(SPPose* platform, double x, double y, double z,
     platform->velo.psi = vpsi;
 }
 
-void initialize_platform(Vector3D p[6],
-                         Vector3D b[6]) {
+void initialize_platform(void) {
 	const double p_angles[] = P_ANGLES;
 	const double b_angles[] = B_ANGLES;
 
@@ -156,10 +192,7 @@ double calculate_length(const Vector3D* T, const double pRb[3][3],
     return (double)sqrt(dx*dx + dy*dy + dz*dz);
 }
 
-
 void calculate_leg(const SPPose* platform,
-                   const Vector3D p[6],
-                   const Vector3D b[6],
                    double lengths[6]) {
     double pRb[3][3];
     rotation_matrix(platform, pRb);

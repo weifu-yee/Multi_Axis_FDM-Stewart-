@@ -7,6 +7,7 @@
 
 #include "mainpp.h"
 
+//extern parameters
 int cnt_5 = 0;
 int t_sec = 0;
 int count = 0;
@@ -14,12 +15,15 @@ int count = 0;
 bool reached = false;
 Vector3D p[6], b[6];
 SPPose current = create_default_stewart_platform();
+SPPose next = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
+double current_lengths[6], next_lengths[6];
 ActuatorPID pusher[6];
-double current_lengths[6], target_lengths[6];
+
 double Feedrate = 0;
 double amountOExtrude = 0;
 double X, Y, Z, E, F, PHI, THETA, PSI;
+
 void readGCode();
 void update_parameters(void) {
 	target.disp.x = X;
@@ -50,15 +54,13 @@ void update_parameters(void) {
 }
 
 void main_function(void){
-	initialize_platform(p, b);
+	initialize_platform();
+	reset_pushers_to_home();
 	while(1){
 		count++;
 		readGCode();
 		update_parameters();
-				//		calculate_leg(&current, p, b, current_length);
-				//		calculate_leg(&target, p, b, target_length);
-		while(!reached);  //move_platform_to_target_pose(&current, &target) 現在current和target不同
-//		current = target;
+		while(!reached);
 		reached = false;
 	}
 }
