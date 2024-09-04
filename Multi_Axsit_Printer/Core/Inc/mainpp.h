@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include "main.h"
 #include "stewart_platform.h"
-#include "functions.h"
 #include "constants.h"
 #include "control.h"
 

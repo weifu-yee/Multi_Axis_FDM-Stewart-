@@ -59,7 +59,7 @@
 #define MOTOR_GPIO_PIN1_5 GPIO_PIN_10
 #define MOTOR_GPIO_PIN2_5 GPIO_PIN_11
 
-//PIDcontrol
+//control
 #define NUM_PUSHERS 6
 #define FREQUENCY 1000
 #define resolution 512

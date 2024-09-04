@@ -24,7 +24,9 @@ double Feedrate = 0;
 double amountOExtrude = 0;
 double X, Y, Z, E, F, PHI, THETA, PSI;
 
-void readGCode();
+void readGCode(void){
+
+}
 void update_parameters(void) {
 	target.disp.x = X;
 	target.disp.y = Y;

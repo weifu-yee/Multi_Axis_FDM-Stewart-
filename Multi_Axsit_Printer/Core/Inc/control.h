@@ -24,7 +24,6 @@ typedef struct { // In mm units
 
 void reset_pushers_to_home(void);
 void update_pushers_PWM(const double diff_lengths[6]);
-void calculatePID(int i);
 
 #ifdef __cplusplus
 }
