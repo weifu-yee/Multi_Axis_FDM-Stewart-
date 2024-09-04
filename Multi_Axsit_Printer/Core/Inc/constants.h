@@ -16,8 +16,8 @@
 #define H0 495000
 #define P_L 100000
 #define B_L 100000
-#define P_ANGLES {350, 10, 110, 130, 230, 250}
-#define B_ANGLES {310, 50, 70, 170, 190, 290}
+#define P_ANGLES {345, 15, 105, 135, 225, 255}
+#define B_ANGLES {315, 45, 75, 165, 195, 285}
 #define MAX_SPEED 100
 #define MAX_ACCELERATION 10
 #define ANG_NORM_WEIGHT 1
