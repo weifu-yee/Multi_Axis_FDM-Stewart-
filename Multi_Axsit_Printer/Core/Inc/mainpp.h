@@ -17,6 +17,7 @@
 #include "stewart_platform.h"
 #include "constants.h"
 #include "control.h"
+#include <stdbool.h>
 
 //extern variables
 extern int cnt_5;

@@ -19,6 +19,15 @@ void update_from_sensor(void) {
 	}
 }
 
+void fake_update_from_sensor(void) {
+	for (int i = 0; i < 6; ++i) {
+		double delta = (double)pusher[i].enc * PI * Lead
+				/ (4 * resolution * reduction_ratio);
+		current_lengths[i] += delta;
+		pusher[i].insVel = delta * FREQUENCY;
+	}
+}
+
 void presume_next(void) {
 	double dt = 1 / FREQUENCY;
 	next.disp.x = current.disp.x + dt * target.velo.x;
@@ -57,6 +66,29 @@ double calculateNorm(const double *vec) {
         sum += vec[i] * vec[i];
     }
     return sqrt(sum);
+}
+
+double calculate_disp_error(const SPPose* pose1, const SPPose* pose2) {
+    double error = 0.0;
+
+    // Accumulate the absolute differences for all 6 components
+    error += fabs(pose1->disp.x - pose2->disp.x);
+    error += fabs(pose1->disp.y - pose2->disp.y);
+    error += fabs(pose1->disp.z - pose2->disp.z);
+    error += fabs(pose1->disp.phi - pose2->disp.phi);
+    error += fabs(pose1->disp.theta - pose2->disp.theta);
+    error += fabs(pose1->disp.psi - pose2->disp.psi);
+
+    return error;
+}
+
+bool same_SPPose(const SPPose *pose1, const SPPose *pose2) {
+	double error = calculate_disp_error(pose1, pose2);
+	double dt = 1 / FREQUENCY;
+	extern double F;
+	if (fabs(error) < fabs(0.8 * F * dt))
+		return true;
+	return false;
 }
 
 SPPose create_default_stewart_platform() {

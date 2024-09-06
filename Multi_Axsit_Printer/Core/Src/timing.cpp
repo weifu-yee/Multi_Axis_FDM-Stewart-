@@ -12,10 +12,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		update_pusher_encoders();
 		update_from_sensor();
 //step 2
-		bool goal = current.disp.x == target.disp.x; //only need to check 1 axis
+		bool goal = same_SPPose(&current, &target);
+		printf("goal: %d \n", goal);
 		if (!goal)
 			presume_next();
 //step 3
+		while(1);
 		calculate_leg(&next, next_lengths);
 //step 4
 		double diff_lengths[6];
