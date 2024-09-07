@@ -6,7 +6,8 @@
  */
 
 #include "mainpp.h"
-#include "arduino.h"
+#include <stdio.h>
+//#include "arduino.h"
 #include "main.h"
 #include "stewart_platform.h"
 #include "constants.h"
@@ -17,7 +18,55 @@ bool reached = false;
 double X, Y, Z, E, F, PHI, THETA, PSI;
 
 void readGCode(void){
-
+	switch(count) {
+		case 1:
+			X = 10.0;
+			Y = 20.0;
+			Z = 5.0;
+			PHI = 0.0;
+			THETA = 0.0;
+			PSI = 0.0;
+			F = 100.0;
+			break;
+		case 2:
+			X = 15.0;
+			Y = 25.0;
+			Z = 10.0;
+			PHI = 10.0;
+			THETA = 5.0;
+			PSI = 2.0;
+			F = 150.0;
+			break;
+		case 3:
+			X = 20.0;
+			Y = 30.0;
+			Z = 15.0;
+			PHI = 20.0;
+			THETA = 10.0;
+			PSI = 5.0;
+			F = 200.0;
+			break;
+		case 4:
+			X = 25.0;
+			Y = 35.0;
+			Z = 20.0;
+			PHI = 30.0;
+			THETA = 15.0;
+			PSI = 10.0;
+			F = 250.0;
+			break;
+		case 5:
+			X = 30.0;
+			Y = 40.0;
+			Z = 25.0;
+			PHI = 40.0;
+			THETA = 20.0;
+			PSI = 15.0;
+			F = 300.0;
+			break;
+		default:
+			break;
+	}
 }
 void update_parameters(void) {
 	target.disp.x = X;
@@ -50,14 +99,17 @@ void update_parameters(void) {
 void main_function(void){
 	initialize_platform();
 	reset_pushers_to_home();
-	char send[] = "data321";
-	Arduino.init();
+	init_lengths_array(current_lengths);
+	init_lengths_array(next_lengths);
+//	char send[] = "data321";
+//	Arduino.init();
 	while(1){
 		printf("Hello %d \n", count);
-		Arduino.sendData(send);
+//		Arduino.sendData(send);
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		count++;
 		readGCode();
+
 		update_parameters();
 		reached = false;
 		while(!reached); //waiting the process in timing.cpp

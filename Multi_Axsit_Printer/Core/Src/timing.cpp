@@ -10,37 +10,8 @@ TIM_HandleTypeDef* htim_array[6] = {&htim5, &htim5, &htim5, &htim5, &htim5, &hti
 int cnt_5 = 0;
 int t_sec = 0;
 extern bool reached;
-
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	if (htim->Instance == TIM5) {
-		cnt_5++;
-		t_sec = cnt_5/20;
-
-//step 1
-		update_pusher_encoders();
-		update_from_sensor();
-//step 2
-		bool goal = same_SPPose(&current, &target);
-		printf("goal: %d \n", goal);
-		if (!goal)
-			presume_next();
-//step 3
-		while(1);
-		calculate_leg(&next, next_lengths);
-//step 4
-		double diff_lengths[6];
-		calculate_diff_lengths(diff_lengths);
-//step 5
-		update_pushers_PWM(diff_lengths);
-		actuate_pushers();
-//step 6
-		assignSPPose(&current, &next);  //IMU
-//step 7
-		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
-			reached = true;
-	}
-}
-
+bool goal;
+double diff_lengths[6];
 
 
 void update_pusher_encoders(void) {
@@ -107,4 +78,36 @@ void actuate_pushers(void) {
         HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN1_5, GPIO_PIN_SET);
     else if (pusher[5].u < 0)
         HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN2_5, GPIO_PIN_SET);
+}
+
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+	if (htim->Instance == TIM5) {
+		cnt_5++;
+		t_sec = cnt_5/20;
+
+//step 1
+		update_pusher_encoders();
+//		update_from_sensor();
+		fake_update_from_sensor();
+//step 2
+		goal = same_SPPose(&current, &target);
+		printf("goal: %d \n", goal);
+		if (!goal)
+			presume_next();
+//step 3
+		calculate_leg(&next, next_lengths);
+//		while(1);
+//step 4
+//		double diff_lengths[6];
+		calculate_diff_lengths(diff_lengths);
+//step 5
+		update_pushers_PWM(diff_lengths);
+		actuate_pushers();
+//step 6
+		assignSPPose(&current, &next);  //IMU
+//step 7
+		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
+			reached = true;
+	}
 }

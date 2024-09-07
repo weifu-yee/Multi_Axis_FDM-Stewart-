@@ -9,7 +9,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 void update_pusher_encoders(void);
 void actuate_pushers(void);
 
-
+extern bool goal;
+extern double diff_lengths[6];
 extern TIM_HandleTypeDef htim5;
 
 #endif
