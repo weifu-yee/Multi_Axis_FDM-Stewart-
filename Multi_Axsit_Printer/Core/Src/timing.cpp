@@ -1,7 +1,15 @@
 #include "timing.h"
-#include "mainpp.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include "stewart_platform.h"
+#include "constants.h"
+#include "control.h"
 
 TIM_HandleTypeDef* htim_array[6] = {&htim5, &htim5, &htim5, &htim5, &htim5, &htim5};
+
+int cnt_5 = 0;
+int t_sec = 0;
+extern bool reached;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {

@@ -5,11 +5,14 @@
  *      Author: chenw
  */
 #include "control.h"
-#include "mainpp.h"
+#include <math.h>
+#include "constants.h"
 
 const double Kp[6] = {KP_0, KP_1, KP_2, KP_3, KP_4, KP_5};
 const double Ki[6] = {KI_0, KI_1, KI_2, KI_3, KI_4, KI_5};
 const double Kd[6] = {KD_0, KD_1, KD_2, KD_3, KD_4, KD_5};
+
+ActuatorPID pusher[6];
 
 void reset_pushers_to_home(void) {
 	//some scripts

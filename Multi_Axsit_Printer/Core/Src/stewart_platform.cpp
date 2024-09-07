@@ -1,10 +1,16 @@
 #include "stewart_platform.h"
-#include "mainpp.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include "constants.h"
+#include "control.h"
 
+Vector3D p[6], b[6];
+SPPose current = create_default_stewart_platform();
+SPPose next = create_default_stewart_platform();
+SPPose target = create_default_stewart_platform();
+double current_lengths[6], next_lengths[6];
 
 double deg_to_rad(double deg) {
     return deg * PI / 18000.0;  // deg is in 0.01 degree

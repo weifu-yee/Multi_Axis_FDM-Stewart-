@@ -26,7 +26,11 @@ typedef struct {
     } velo; // 速度結構
 } SPPose;
 
-
+extern Vector3D p[6], b[6];
+extern SPPose current;
+extern SPPose next;
+extern SPPose target;
+extern double current_lengths[6], next_lengths[6];
 
 SPPose create_default_stewart_platform();
 void update_from_sensor(void);

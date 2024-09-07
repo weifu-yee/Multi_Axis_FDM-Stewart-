@@ -7,22 +7,17 @@
 
 #include "mainpp.h"
 #include "arduino.h"
+#include "main.h"
+#include "stewart_platform.h"
+#include "constants.h"
+#include "control.h"
 
-//extern parameters
-int cnt_5 = 0;
-int t_sec = 0;
+//variables
+
 int count = 0;
 
 bool reached = false;
-Vector3D p[6], b[6];
-SPPose current = create_default_stewart_platform();
-SPPose next = create_default_stewart_platform();
-SPPose target = create_default_stewart_platform();
-double current_lengths[6], next_lengths[6];
-ActuatorPID pusher[6];
 
-double Feedrate = 0;
-double amountOExtrude = 0;
 double X, Y, Z, E, F, PHI, THETA, PSI;
 
 void readGCode(void){
