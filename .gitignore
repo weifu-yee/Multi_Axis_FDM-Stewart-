@@ -1,6 +1,6 @@
 .vscode
 .metadata
+.metadata/
 
 */Debug/
 */Release/
-.metadata/
