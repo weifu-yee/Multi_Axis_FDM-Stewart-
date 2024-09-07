@@ -26,7 +26,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		update_pushers_PWM(diff_lengths);
 		actuate_pushers();
 //step 6
-		assignSPPose(&current, &next);
+		assignSPPose(&current, &next);  //IMU
 //step 7
 		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
 			reached = true;

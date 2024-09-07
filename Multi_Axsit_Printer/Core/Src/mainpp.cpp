@@ -6,6 +6,7 @@
  */
 
 #include "mainpp.h"
+#include "arduino.h"
 
 //extern parameters
 int cnt_5 = 0;
@@ -58,7 +59,12 @@ void update_parameters(void) {
 void main_function(void){
 	initialize_platform();
 	reset_pushers_to_home();
+	char send[] = "data321";
+	Arduino.init();
 	while(1){
+		printf("Hello %d \n", count);
+		Arduino.sendData(send);
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		count++;
 		readGCode();
 		update_parameters();
