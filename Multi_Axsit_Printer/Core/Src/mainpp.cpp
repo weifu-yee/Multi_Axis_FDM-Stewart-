@@ -12,12 +12,8 @@
 #include "constants.h"
 #include "control.h"
 
-//variables
-
 int count = 0;
-
 bool reached = false;
-
 double X, Y, Z, E, F, PHI, THETA, PSI;
 
 void readGCode(void){
@@ -64,7 +60,7 @@ void main_function(void){
 		readGCode();
 		update_parameters();
 		reached = false;
-		while(!reached);
+		while(!reached); //waiting the process in timing.cpp
 	}
 }
 
