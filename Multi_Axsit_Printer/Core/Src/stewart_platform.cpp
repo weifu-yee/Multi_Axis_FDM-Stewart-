@@ -12,12 +12,6 @@ SPPose next = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
 double current_lengths[6], next_lengths[6];
 
-void init_lengths_array(double *vec) {
-	for (int i = 0; i < 6; ++i) {
-		vec[i] = 0.0;
-	}
-}
-
 double deg_to_rad(double deg) {
     return deg * PI / 18000.0;  // deg is in 0.01 degree
 }
@@ -33,22 +27,21 @@ void update_from_sensor(void) {
 
 void fake_update_from_sensor(void) {
 	for (int i = 0; i < 6; ++i) {
-		double delta = pusher[i].pulse;
-		if (pusher[i].u < 0)
-			delta *= -1;
+		double delta = (double)pusher[i].enc * PI * Lead
+				/ (4 * resolution * reduction_ratio);
 		current_lengths[i] += delta;
 		pusher[i].insVel = delta * FREQUENCY;
 	}
 }
 
 void presume_next(void) {
-	double dt = (double) 1.0 / FREQUENCY;
-	next.disp.x = (double) current.disp.x + dt * target.velo.x;
-	next.disp.y = (double) current.disp.y + dt * target.velo.y;
-	next.disp.z = (double) current.disp.z + dt * target.velo.z;
-	next.disp.phi = (double) current.disp.phi + dt * target.velo.phi;
-	next.disp.theta = (double) current.disp.theta + dt * target.velo.theta;
-	next.disp.psi = (double) current.disp.psi + dt * target.velo.psi;
+	double dt = 1 / FREQUENCY;
+	next.disp.x = current.disp.x + dt * target.velo.x;
+	next.disp.y = current.disp.y + dt * target.velo.y;
+	next.disp.z = current.disp.z + dt * target.velo.z;
+	next.disp.phi = current.disp.phi + dt * target.velo.phi;
+	next.disp.theta = current.disp.theta + dt * target.velo.theta;
+	next.disp.psi = current.disp.psi + dt * target.velo.psi;
 }
 
 void calculate_diff_lengths(double diff_lengths[6]) {

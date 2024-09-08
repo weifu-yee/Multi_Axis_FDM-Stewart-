@@ -65,15 +65,15 @@
 #define resolution 512
 #define reduction_ratio 20.8
 #define max_ui 1
-#define PWM_ARR 42000
+#define PWM_ARR 4200
 #define Lead 20
 
-#define KP_0 10000
-#define KP_1 12000
-#define KP_2 11000
-#define KP_3 10500
-#define KP_4 13000
-#define KP_5 11500
+#define KP_0 1000
+#define KP_1 1200
+#define KP_2 1100
+#define KP_3 1050
+#define KP_4 1300
+#define KP_5 1150
 
 #define KI_0 500
 #define KI_1 600

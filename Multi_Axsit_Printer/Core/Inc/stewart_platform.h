@@ -1,9 +1,9 @@
 #ifndef STEWART_PLATFORM_H
 #define STEWART_PLATFORM_H
 
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -32,7 +32,6 @@ extern SPPose next;
 extern SPPose target;
 extern double current_lengths[6], next_lengths[6];
 
-void init_lengths_array(double *vec);
 SPPose create_default_stewart_platform();
 void update_from_sensor(void);
 void fake_update_from_sensor(void);
@@ -45,8 +44,8 @@ void initialize_platform(void);
 void calculate_leg(const SPPose* platform,
                    double lengths[6]);
 
-//#ifdef __cplusplus
-//}
-//#endif
+#ifdef __cplusplus
+}
+#endif
 
 #endif // STEWART_PLATFORM_H
