@@ -13,6 +13,7 @@ extern bool reached;
 bool goal;
 double diff_lengths[6];
 
+int _c;
 
 void update_pusher_encoders(void) {
 	for (int i = 0; i < 6; i++) {
@@ -81,6 +82,8 @@ void actuate_pushers(void) {
 }
 
 
+extern int count;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
 		cnt_5++;
@@ -88,26 +91,29 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 //step 1
 		update_pusher_encoders();
-//		update_from_sensor();
+		//update_from_sensor();
 		fake_update_from_sensor();
 //step 2
 		goal = same_SPPose(&current, &target);
-		printf("goal: %d \n", goal);
-		if (!goal)
+		if (!goal) {
 			presume_next();
-//step 3
-		calculate_leg(&next, next_lengths);
-//		while(1);
-//step 4
-//		double diff_lengths[6];
-		calculate_diff_lengths(diff_lengths);
-//step 5
-		update_pushers_PWM(diff_lengths);
-		actuate_pushers();
-//step 6
-		assignSPPose(&current, &next);  //IMU
+			//step 3
+			calculate_leg(&next, next_lengths);
+			//step 4
+			calculate_diff_lengths(diff_lengths);
+			//step 5
+			update_pushers_PWM(diff_lengths);
+			actuate_pushers();
+			//step 6
+			assignSPPose(&current, &next);  //IMU
+		}
 //step 7
 		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
 			reached = true;
+
+
+		while(count == _c);
+		_c = count;
+		count = 1;
 	}
 }

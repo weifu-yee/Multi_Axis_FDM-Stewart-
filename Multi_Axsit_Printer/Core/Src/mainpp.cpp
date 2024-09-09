@@ -17,25 +17,34 @@ int count = 0;
 bool reached = false;
 double X, Y, Z, E, F, PHI, THETA, PSI;
 
+void angularNormalizer(double *ang) {
+	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
+}
 void readGCode(void){
 	switch(count) {
 		case 1:
-			X = 10.0;
-			Y = 20.0;
+			X = 1.0;
+			Y = 2.0;
 			Z = 5.0;
-			PHI = 0.0;
-			THETA = 0.0;
+			PHI = 10.0;
+			THETA = 5.0;
 			PSI = 0.0;
 			F = 100.0;
+			angularNormalizer(&PHI);
+			angularNormalizer(&THETA);
+			angularNormalizer(&PSI);
 			break;
 		case 2:
-			X = 15.0;
-			Y = 25.0;
-			Z = 10.0;
+			X = 1.5;
+			Y = 2.5;
+			Z = 1.0;
 			PHI = 10.0;
 			THETA = 5.0;
 			PSI = 2.0;
 			F = 150.0;
+			angularNormalizer(&PHI);
+			angularNormalizer(&THETA);
+			angularNormalizer(&PSI);
 			break;
 		case 3:
 			X = 20.0;
@@ -45,6 +54,9 @@ void readGCode(void){
 			THETA = 10.0;
 			PSI = 5.0;
 			F = 200.0;
+			angularNormalizer(&PHI);
+			angularNormalizer(&THETA);
+			angularNormalizer(&PSI);
 			break;
 		case 4:
 			X = 25.0;
@@ -54,6 +66,9 @@ void readGCode(void){
 			THETA = 15.0;
 			PSI = 10.0;
 			F = 250.0;
+			angularNormalizer(&PHI);
+			angularNormalizer(&THETA);
+			angularNormalizer(&PSI);
 			break;
 		case 5:
 			X = 30.0;
@@ -63,6 +78,9 @@ void readGCode(void){
 			THETA = 20.0;
 			PSI = 15.0;
 			F = 300.0;
+			angularNormalizer(&PHI);
+			angularNormalizer(&THETA);
+			angularNormalizer(&PSI);
 			break;
 		default:
 			break;
@@ -96,6 +114,8 @@ void update_parameters(void) {
 	target.velo.psi = dpsi / time;
 }
 
+extern int _c;
+
 void main_function(void){
 	initialize_platform();
 	reset_pushers_to_home();
@@ -109,6 +129,8 @@ void main_function(void){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		count++;
 		readGCode();
+
+		_c = count;
 
 		update_parameters();
 		reached = false;
