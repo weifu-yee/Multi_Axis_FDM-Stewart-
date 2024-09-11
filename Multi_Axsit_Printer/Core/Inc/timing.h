@@ -11,7 +11,27 @@ void actuate_pushers(void);
 
 extern bool goal;
 extern double diff_lengths[6];
+
 extern TIM_HandleTypeDef htim5;
+//pusher0
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim13;
+//pusher
+extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim14;
+//pusher
+extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim15;
+//pusher
+extern TIM_HandleTypeDef htim8;
+//extern TIM_HandleTypeDef htim15;
+//pusher
+extern TIM_HandleTypeDef htim23;
+extern TIM_HandleTypeDef htim16;
+//pusher
+extern TIM_HandleTypeDef htim24;
+extern TIM_HandleTypeDef htim17;
+
 
 #endif
 
