@@ -78,44 +78,45 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		t_sec = cnt_5/20;
 
 
-////step 1
-//		update_pusher_encoders();
-//		//update_from_sensor();
-//		fake_update_from_sensor();
-////step 2
-//		goal = same_SPPose(&current, &target);
-//		if (!goal) {
-//			presume_next();
-//			//step 3
-//			calculate_leg(&next, next_lengths);
-//			//step 4
-//			calculate_diff_lengths(diff_lengths);
-//			//step 5
-//			update_pushers_PWM(diff_lengths);
-//			actuate_pushers();
-//			//step 6
-//			assignSPPose(&current, &next);  //IMU
-//		}
-////step 7
-//		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
-//			reached = true;
+//step 1
+		update_pusher_encoders();
+		//update_from_sensor();
+		fake_update_from_sensor();
+//step 2
+		goal = same_SPPose(&current, &target);
+		if (!goal) {
+			presume_next();
+			//step 3
+			calculate_leg(&next, next_lengths);
+			//step 4
+			calculate_diff_lengths(diff_lengths);
+			//step 5
+			update_pushers_PWM(diff_lengths);
+			actuate_pushers();
+			//step 6
+			assignSPPose(&current, &next);  //IMU
+		}
+//step 7
+		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
+			reached = true;
+
 
 
 		//		while(count == _c);
 		//		_c = count;
 		//		count = 1;
 
-		pusher[0].enc = __HAL_TIM_GetCounter(htim_array[0]);
-
-		__HAL_TIM_SET_COMPARE(MOTOR_HTIM_0, MOTOR_CHANNEL_0, 999);
-		HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
-
-		int a = t_sec / 3;
-		if(a % 2 == 0)
-			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
-		else
-			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_RESET);
-		if (t_sec > 30)
-			__HAL_TIM_SET_COMPARE(MOTOR_HTIM_0, MOTOR_CHANNEL_0, 0);
+//		pusher[0].enc = __HAL_TIM_GetCounter(htim_array[0]);
+//
+//		__HAL_TIM_SET_COMPARE(MOTOR_HTIM_0, MOTOR_CHANNEL_0, 999);
+//		HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
+//
+//		int a = t_sec / 3;
+//		if(a % 2 == 0)
+//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
+//		else
+//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_RESET);
+//		if (t_sec > 30)
+//			__HAL_TIM_SET_COMPARE(MOTOR_HTIM_0, MOTOR_CHANNEL_0, 0);
 	}
 }

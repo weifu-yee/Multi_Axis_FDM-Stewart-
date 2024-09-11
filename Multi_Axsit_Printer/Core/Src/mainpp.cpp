@@ -12,10 +12,26 @@
 #include "stewart_platform.h"
 #include "constants.h"
 #include "control.h"
+#include "timing.h"
 
 int count = 0;
 bool reached = false;
 double X, Y, Z, E, F, PHI, THETA, PSI;
+
+void Timer_INIT(void) {
+	HAL_TIM_Base_Start_IT(&htim5);
+	HAL_TIM_PWM_Start(&htim13, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim14, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim17, TIM_CHANNEL_1);
+	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
+	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
+	HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);
+	HAL_TIM_Encoder_Start(&htim23, TIM_CHANNEL_ALL);
+	HAL_TIM_Encoder_Start(&htim24, TIM_CHANNEL_ALL);
+}
 
 void angularNormalizer(double *ang) {
 	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
