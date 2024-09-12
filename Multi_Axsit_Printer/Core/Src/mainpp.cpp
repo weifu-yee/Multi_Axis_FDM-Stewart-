@@ -23,6 +23,7 @@ void Timer_INIT(void) {
 	HAL_TIM_PWM_Start(&htim13, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim14, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim17, TIM_CHANNEL_1);
 	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);

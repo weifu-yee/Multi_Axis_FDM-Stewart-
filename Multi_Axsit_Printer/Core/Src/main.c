@@ -107,6 +107,7 @@ int main(void)
   MX_TIM17_Init();
   MX_TIM23_Init();
   MX_TIM24_Init();
+  MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
 
   Timer_INIT();

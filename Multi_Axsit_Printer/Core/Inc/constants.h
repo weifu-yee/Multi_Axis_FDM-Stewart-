@@ -21,6 +21,7 @@
 #define MAX_SPEED 100
 #define MAX_ACCELERATION 10
 #define ANG_NORM_WEIGHT 1
+#define pulse_per_mm 2.27
 
 // 定義每個定時器通道和 GPIO 配置
 #define ENCODER_HTIM_0 &htim1
@@ -42,7 +43,7 @@
 #define MOTOR_GPIO_PIN_2 GPIO_PIN_12
 
 #define ENCODER_HTIM_3 &htim8
-#define MOTOR_HTIM_3      &htim15
+#define MOTOR_HTIM_3      &htim12
 #define MOTOR_CHANNEL_3   TIM_CHANNEL_2
 #define MOTOR_GPIO_PORT_3 GPIOE
 #define MOTOR_GPIO_PIN_3 GPIO_PIN_15
