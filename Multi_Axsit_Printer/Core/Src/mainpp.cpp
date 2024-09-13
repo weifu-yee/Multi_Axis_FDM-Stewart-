@@ -15,7 +15,7 @@
 #include "timing.h"
 
 int count = 0;
-bool reached = false;
+bool reached = true;
 double X, Y, Z, E, F, PHI, THETA, PSI;
 
 void Timer_INIT(void) {
@@ -37,6 +37,7 @@ void Timer_INIT(void) {
 void angularNormalizer(double *ang) {
 	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
 }
+
 void readGCode(void){
 	switch(count) {
 		case 1:
@@ -146,8 +147,6 @@ void main_function(void){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		count++;
 		readGCode();
-
-		_c = count;
 
 		update_parameters();
 		reached = false;
