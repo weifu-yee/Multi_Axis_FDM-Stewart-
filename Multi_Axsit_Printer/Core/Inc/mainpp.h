@@ -15,6 +15,7 @@
   extern "C"{
 #endif
 
+void Timer_INIT(void);
 void main_function(void);
 
 #ifdef __cplusplus
