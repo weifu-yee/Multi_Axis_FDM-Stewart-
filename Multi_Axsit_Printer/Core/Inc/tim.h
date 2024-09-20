@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    usart.h
+  * @file    tim.h
   * @brief   This file contains all the function prototypes for
-  *          the usart.c file
+  *          the tim.c file
   ******************************************************************************
   * @attention
   *
@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USART_H__
-#define __USART_H__
+#ifndef __TIM_H__
+#define __TIM_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,19 +33,51 @@ extern "C" {
 
 /* USER CODE END Includes */
 
-extern UART_HandleTypeDef huart4;
+extern TIM_HandleTypeDef htim1;
 
-extern UART_HandleTypeDef huart5;
+extern TIM_HandleTypeDef htim3;
 
-extern UART_HandleTypeDef huart3;
+extern TIM_HandleTypeDef htim4;
+
+extern TIM_HandleTypeDef htim5;
+
+extern TIM_HandleTypeDef htim8;
+
+extern TIM_HandleTypeDef htim12;
+
+extern TIM_HandleTypeDef htim13;
+
+extern TIM_HandleTypeDef htim14;
+
+extern TIM_HandleTypeDef htim15;
+
+extern TIM_HandleTypeDef htim16;
+
+extern TIM_HandleTypeDef htim17;
+
+extern TIM_HandleTypeDef htim23;
+
+extern TIM_HandleTypeDef htim24;
 
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
-void MX_UART4_Init(void);
-void MX_UART5_Init(void);
-void MX_USART3_UART_Init(void);
+void MX_TIM1_Init(void);
+void MX_TIM3_Init(void);
+void MX_TIM4_Init(void);
+void MX_TIM5_Init(void);
+void MX_TIM8_Init(void);
+void MX_TIM12_Init(void);
+void MX_TIM13_Init(void);
+void MX_TIM14_Init(void);
+void MX_TIM15_Init(void);
+void MX_TIM16_Init(void);
+void MX_TIM17_Init(void);
+void MX_TIM23_Init(void);
+void MX_TIM24_Init(void);
+
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN Prototypes */
 
@@ -55,5 +87,5 @@ void MX_USART3_UART_Init(void);
 }
 #endif
 
-#endif /* __USART_H__ */
+#endif /* __TIM_H__ */
 
