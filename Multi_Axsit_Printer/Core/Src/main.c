@@ -20,6 +20,7 @@
 #include "main.h"
 #include "dma.h"
 #include "eth.h"
+#include "tim.h"
 #include "usart.h"
 #include "usb_otg.h"
 #include "gpio.h"
@@ -93,11 +94,24 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_USART3_UART_Init();
   MX_USB_OTG_HS_USB_Init();
   MX_UART4_Init();
   MX_ETH_Init();
+  MX_TIM1_Init();
+  MX_TIM3_Init();
+  MX_TIM4_Init();
+  MX_TIM8_Init();
+  MX_TIM13_Init();
+  MX_TIM14_Init();
+  MX_TIM15_Init();
+  MX_TIM16_Init();
+  MX_TIM17_Init();
+  MX_TIM23_Init();
+  MX_TIM24_Init();
+  MX_TIM12_Init();
+  MX_USART3_UART_Init();
   MX_UART5_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
 	main_function();
   /* USER CODE END 2 */
