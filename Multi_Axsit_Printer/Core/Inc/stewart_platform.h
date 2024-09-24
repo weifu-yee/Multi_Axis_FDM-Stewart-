@@ -32,6 +32,9 @@ extern SPPose next;
 extern SPPose target;
 extern double current_lengths[6], next_lengths[6];
 
+extern double SPerror;
+
+void init_lengths_array(double *vec);
 SPPose create_default_stewart_platform();
 void update_from_sensor(void);
 void fake_update_from_sensor(void);

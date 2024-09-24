@@ -18,8 +18,10 @@ double deg_to_rad(double deg) {
 
 void update_from_sensor(void) {
 	for (int i = 0; i < 6; ++i) {
-		double delta = (double)pusher[i].enc * PI * Lead
-				/ (4 * resolution * reduction_ratio);
+//		double delta = (double)pusher[i].enc * PI * Lead
+//				/ (4 * resolution * reduction_ratio);
+		double delta = (double)pusher[i].enc
+				/ (4 * pulse_per_mm);
 		current_lengths[i] += delta;
 		pusher[i].insVel = delta * FREQUENCY;
 	}
@@ -27,9 +29,11 @@ void update_from_sensor(void) {
 
 void fake_update_from_sensor(void) {
 	for (int i = 0; i < 6; ++i) {
-		double delta = (double)pusher[i].enc * PI * Lead
-				/ (4 * resolution * reduction_ratio);
-		current_lengths[i] += delta;
+		double delta = pusher[i].pulse / 100;
+		if (pusher[i].u >= 0)
+			current_lengths[i] += delta;
+		else
+			current_lengths[i] -= delta;
 		pusher[i].insVel = delta * FREQUENCY;
 	}
 }
@@ -88,13 +92,16 @@ double calculate_disp_error(const SPPose* pose1, const SPPose* pose2) {
     return error;
 }
 
+double SPerror;
+
 bool same_SPPose(const SPPose *pose1, const SPPose *pose2) {
-	double error = calculate_disp_error(pose1, pose2);
+	SPerror = calculate_disp_error(pose1, pose2);
 	double dt = 1 / FREQUENCY;
 	extern double F;
-	if (fabs(error) < fabs(0.8 * F * dt))
+	if (fabs(SPerror) < fabs(0.8 * F * dt))
 		return true;
-	return false;
+	else
+		return false;
 }
 
 SPPose create_default_stewart_platform() {

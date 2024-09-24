@@ -1,6 +1,7 @@
 .vscode
 .metadata
 .metadata/
+.settings/
 
 */Debug/
 */Release/
