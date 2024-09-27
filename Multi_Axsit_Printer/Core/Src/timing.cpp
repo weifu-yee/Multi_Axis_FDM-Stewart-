@@ -13,7 +13,6 @@ int t_sec = 0;
 extern bool reached;
 
 
-
 void update_pusher_encoders(void) {
 	for (int i = 0; i < 6; i++) {
 		// 獲取計數器值並存儲
@@ -48,10 +47,14 @@ void actuate_pushers(void) {
 extern int count;
 bool dir = 1;
 int pwm = 1000;
+bool goal = false;
+double diff_lengths[6];
 
 int _c = 1;
+int bbb = 0;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+	_c = 300;
 	if (htim->Instance == TIM5) {
 		cnt_5++;
 		t_sec = cnt_5/20;
@@ -82,15 +85,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 
 
-
-
-
 		if(!reached) {
+			bbb = 2;
 			while(_c == 1);
 			_c = 1;
 		}
-
-
 
 
 
