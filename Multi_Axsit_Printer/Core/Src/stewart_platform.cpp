@@ -31,12 +31,12 @@ void update_from_sensor(void) {
 
 void fake_update_from_sensor(void) {
 	for (int i = 0; i < 6; ++i) {
-		double delta = pusher[i].pulse / 100;
+		double delta = pusher[i].pulse / 100.0;
 		if (pusher[i].u >= 0)
 			current_lengths[i] += delta;
 		else
 			current_lengths[i] -= delta;
-		pusher[i].insVel = delta * FREQUENCY;
+		pusher[i].insVel = delta * (double)FREQUENCY;
 	}
 }
 
@@ -108,10 +108,10 @@ bool same_SPPose(const SPPose *pose1, const SPPose *pose2) {
 	double dt = (double)1 / FREQUENCY;
 	extern double F;
 
-	if (fabs(SPerror) > fabs(prev_SPerror)) {
+	if (fabs(SPerror) >= fabs(prev_SPerror)) {
 		SPerror_increasing_count++;
-	} else {
-		SPerror_increasing_count = 0;
+	} else if (SPerror_increasing_count > 0) {
+		SPerror_increasing_count --;
 	}
 
 	prev_SPerror = SPerror;
@@ -128,7 +128,7 @@ SPPose create_default_stewart_platform() {
     SPPose platform;
     platform.x = 0;
     platform.y = 0;
-    platform.z = 0;
+    platform.z = 250;
     platform.phi = 0;
     platform.theta = 0;
     platform.psi = 0;

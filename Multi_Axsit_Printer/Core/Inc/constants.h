@@ -71,12 +71,13 @@
 #define PWM_ARR 1000
 #define Lead 20
 
-#define KP_0 30
-#define KP_1 30
-#define KP_2 30
-#define KP_3 30
-#define KP_4 30
-#define KP_5 30
+#define Kp_univ 0.03
+#define KP_0 0.5
+#define KP_1 0.5
+#define KP_2 0.5
+#define KP_3 0.5
+#define KP_4 0.5
+#define KP_5 0.5
 
 #define KI_0 500
 #define KI_1 600

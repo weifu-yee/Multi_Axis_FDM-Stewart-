@@ -38,71 +38,71 @@ void angularNormalizer(double *ang) {
 	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
 }
 
+int nomalizeAng = 0;
+
 void readGCode(void){
 	switch(count) {
 		case 1:
-			X = 1.0;
-			Y = 2.0;
-			Z = 5.0;
-			PHI = 10.0;
-			THETA = 5.0;
+			X = 0.0;
+			Y = 0.0;
+			Z = 250;
+			PHI = 0.0;
+			THETA = 0.0;
 			PSI = 0.0;
 			F = 100.0;
-			angularNormalizer(&PHI);
-			angularNormalizer(&THETA);
-			angularNormalizer(&PSI);
 			break;
 		case 2:
 			X = 1.5;
 			Y = 2.5;
-			Z = 1.0;
+			Z = 250;
 			PHI = 10.0;
 			THETA = 5.0;
 			PSI = 2.0;
 			F = 150.0;
-			angularNormalizer(&PHI);
-			angularNormalizer(&THETA);
-			angularNormalizer(&PSI);
 			break;
 		case 3:
 			X = 20.0;
 			Y = 30.0;
-			Z = 15.0;
+			Z = 250;
 			PHI = 20.0;
 			THETA = 10.0;
 			PSI = 5.0;
 			F = 200.0;
-			angularNormalizer(&PHI);
-			angularNormalizer(&THETA);
-			angularNormalizer(&PSI);
 			break;
 		case 4:
 			X = 25.0;
 			Y = 35.0;
-			Z = 20.0;
+			Z = 250;
 			PHI = 30.0;
 			THETA = 15.0;
 			PSI = 10.0;
 			F = 250.0;
-			angularNormalizer(&PHI);
-			angularNormalizer(&THETA);
-			angularNormalizer(&PSI);
 			break;
 		case 5:
 			X = 30.0;
 			Y = 40.0;
-			Z = 25.0;
+			Z = 250;
 			PHI = 40.0;
 			THETA = 20.0;
 			PSI = 15.0;
 			F = 300.0;
-			angularNormalizer(&PHI);
-			angularNormalizer(&THETA);
-			angularNormalizer(&PSI);
+			break;
+		case 6:
+			X = 1.0;
+			Y = 2.0;
+			Z = 250;
+			PHI = 10.0;
+			THETA = 5.0;
+			PSI = 0.0;
+			F = 100.0;
 			break;
 		default:
 			break;
 	}
+	angularNormalizer(&PHI);
+	angularNormalizer(&THETA);
+	angularNormalizer(&PSI);
+	nomalizeAng++;
 }
 void update_parameters(void) {
 	target.x = X;

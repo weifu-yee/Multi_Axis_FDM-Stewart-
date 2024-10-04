@@ -18,13 +18,36 @@ void reset_pushers_to_home(void) {
 	//some scripts
 }
 
+//void update_pushers_PWM(const double diff_lengths[6]) {
+//	for (int i = 0; i < 6; ++i) {
+////		pusher[i].up = Kp[i] * diff_lengths[i];
+//		pusher[i].up = (double)Kp_univ * diff_lengths[i];
+//
+//		pusher[i].u = pusher[i].up;
+//		pusher[i].pulse = fabs(pusher[i].u) * (double)PWM_ARR;
+//		if (pusher[i].pulse > PWM_ARR) pusher[i].pulse = PWM_ARR;
+//	}
+//}
+
 void update_pushers_PWM(const double diff_lengths[6]) {
-	for (int i = 0; i < 6; ++i) {
-		pusher[i].up = Kp[i] * diff_lengths[i];
-		pusher[i].u = pusher[i].up;
-		pusher[i].pulse = fabs(pusher[i].u) * PWM_ARR;
-		if (pusher[i].pulse > PWM_ARR) pusher[i].pulse = PWM_ARR;
-	}
+   double max_ratio = 1.0;
+
+   // First pass to calculate pulses and find max ratio
+   for (int i = 0; i < 6; ++i) {
+       pusher[i].up = (double)Kp_univ * diff_lengths[i];
+       pusher[i].u = pusher[i].up;
+       pusher[i].pulse = fabs(pusher[i].u) * (double)PWM_ARR;
+
+       if (pusher[i].pulse > PWM_ARR) {
+           double ratio = (double)PWM_ARR / pusher[i].pulse;
+           if (ratio < max_ratio) max_ratio = ratio;
+       }
+   }
+
+   // Second pass to scale all pulses
+   for (int i = 0; i < 6; ++i) {
+       pusher[i].pulse *= max_ratio;
+   }
 }
 
 
