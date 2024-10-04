@@ -139,6 +139,10 @@ extern double prev_SPerror;
 extern int SPerror_increasing_count;
 
 void main_function(void){
+	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_1, MM_Enable_GPIO_PIN_1, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_2, MM_Enable_GPIO_PIN_2, GPIO_PIN_RESET);
+	_c = -2;
+	while(_c == -2){}
 	Timer_INIT();
 	initialize_platform();
 	reset_pushers_to_home();

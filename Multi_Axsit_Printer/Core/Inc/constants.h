@@ -25,6 +25,11 @@
 #define pulse_per_mm 2.27
 #define SPerror_TREND_THRESHOLD 3
 
+#define MM_Enable_GPIO_PORT_1 GPIOB
+#define MM_Enable_GPIO_PIN_1 GPIO_PIN_7
+#define MM_Enable_GPIO_PORT_2 GPIOE
+#define MM_Enable_GPIO_PIN_2 GPIO_PIN_8
+
 // 定義每個定時器通道和 GPIO 配置
 #define ENCODER_HTIM_0 &htim1
 #define MOTOR_HTIM_0 &htim13
