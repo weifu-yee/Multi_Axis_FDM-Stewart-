@@ -21,7 +21,8 @@ extern int t_sec;
 void reset_pushers_to_home(void) {
 	//some scripts
 	for (int i = 0; i < 6; ++i) {
-	   pusher[i].pulse = -PWM_ARR;
+	   pusher[i].pulse = PWM_ARR;
+	   pusher[i].u = -PWM_ARR;
 	}
 	cnt_5 = 0;
 	t_sec = 0;

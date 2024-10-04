@@ -61,46 +61,47 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
 		cnt_5++;
 		t_sec = cnt_5/20;
-		if (reached)	{
-			_c ++;
-			return;
-		}
 
 
-//step 1
-		update_pusher_encoders();
-		//update_from_sensor();
-		fake_update_from_sensor();
-//step 2
-		goal = same_SPPose(&current, &target);
-		if (!goal) {
-			presume_next();
-		}
-//step 3
-		calculate_leg(&next, next_lengths);
-//step 4
-		calculate_diff_lengths(diff_lengths);
-//step 5
-		update_pushers_PWM(diff_lengths);
-		actuate_pushers();
-//step 6
-		assignSPPose(&current, &next);  //IMU
-//step 7
-		diffNorm = calculateNorm(diff_lengths);
+//		if (reached)	{
+//			_c ++;
+//			return;
+//		}
 
-		// Detect if we're getting further away from the target
-		if (diffNorm > prev_diffNorm) {
-		    increasing_count++;
-		} else {
-		    increasing_count = 0;
-		}
-
-		if ((goal && diffNorm < TOLERANCE) ||
-		    (goal && increasing_count >= TREND_THRESHOLD)) {
-		    reached = true;
-		}
-
-		prev_diffNorm = diffNorm;
+////step 1
+//		update_pusher_encoders();
+//		//update_from_sensor();
+//		fake_update_from_sensor();
+////step 2
+//		goal = same_SPPose(&current, &target);
+//		if (!goal) {
+//			presume_next();
+//		}
+////step 3
+//		calculate_leg(&next, next_lengths);
+////step 4
+//		calculate_diff_lengths(diff_lengths);
+////step 5
+//		update_pushers_PWM(diff_lengths);
+//		actuate_pushers();
+////step 6
+//		assignSPPose(&current, &next);  //IMU
+////step 7
+//		diffNorm = calculateNorm(diff_lengths);
+//
+//		// Detect if we're getting further away from the target
+//		if (diffNorm > prev_diffNorm) {
+//		    increasing_count++;
+//		} else {
+//		    increasing_count = 0;
+//		}
+//
+//		if ((goal && diffNorm < TOLERANCE) ||
+//		    (goal && increasing_count >= TREND_THRESHOLD)) {
+//		    reached = true;
+//		}
+//
+//		prev_diffNorm = diffNorm;
 
 
 
@@ -114,22 +115,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 
 		//測試腳位輸出用
-//		update_pusher_encoders();
-//		update_from_sensor();
-//
-//		__HAL_TIM_SET_COMPARE(MOTOR_HTIM_3, MOTOR_CHANNEL_3, pwm);
-//		HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_SET);
-//		if(!dir)
-//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_RESET);
-//
-////		int a = t_sec / 3;
-////		if(a % 2 == 0)
-////			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
-////		else
-////			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_RESET);
-//
-//		if (t_sec > 2)
-//			__HAL_TIM_SET_COMPARE(MOTOR_HTIM_3, MOTOR_CHANNEL_3, 0);
+		update_pusher_encoders();
+		update_from_sensor();
+
+		__HAL_TIM_SET_COMPARE(MOTOR_HTIM_2, MOTOR_CHANNEL_2, pwm);
+		HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_SET);
+		if(!dir)
+			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_RESET);
+
+//		int a = t_sec / 3;
+//		if(a % 2 == 0)
+//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
+//		else
+//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_RESET);
+
+		if (t_sec > 2)
+			__HAL_TIM_SET_COMPARE(MOTOR_HTIM_2, MOTOR_CHANNEL_2, 0);
 
 
 	}

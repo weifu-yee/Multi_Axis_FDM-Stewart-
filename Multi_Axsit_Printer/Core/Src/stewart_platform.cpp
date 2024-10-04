@@ -24,6 +24,7 @@ void update_from_sensor(void) {
 //				/ (4 * resolution * reduction_ratio);
 		double delta = (double)pusher[i].enc
 				/ (4 * pulse_per_mm);
+		delta *= -1.0;
 		current_lengths[i] += delta;
 		pusher[i].insVel = delta * FREQUENCY;
 	}

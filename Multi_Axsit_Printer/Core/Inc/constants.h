@@ -32,26 +32,26 @@
 
 // 定義每個定時器通道和 GPIO 配置
 #define ENCODER_HTIM_0 &htim1
-#define MOTOR_HTIM_0 &htim13
-#define MOTOR_CHANNEL_0   TIM_CHANNEL_1
+#define MOTOR_HTIM_0 &htim12
+#define MOTOR_CHANNEL_0   TIM_CHANNEL_2
 #define MOTOR_GPIO_PORT_0 GPIOE
 #define MOTOR_GPIO_PIN_0 GPIO_PIN_7
 
 #define ENCODER_HTIM_1 &htim3
-#define MOTOR_HTIM_1      &htim14
+#define MOTOR_HTIM_1      &htim13
 #define MOTOR_CHANNEL_1   TIM_CHANNEL_1
 #define MOTOR_GPIO_PORT_1 GPIOE
 #define MOTOR_GPIO_PIN_1 GPIO_PIN_10
 
 #define ENCODER_HTIM_2 &htim4
-#define MOTOR_HTIM_2      &htim15
+#define MOTOR_HTIM_2      &htim14
 #define MOTOR_CHANNEL_2   TIM_CHANNEL_1
 #define MOTOR_GPIO_PORT_2 GPIOE
 #define MOTOR_GPIO_PIN_2 GPIO_PIN_12
 
 #define ENCODER_HTIM_3 &htim8
-#define MOTOR_HTIM_3      &htim12
-#define MOTOR_CHANNEL_3   TIM_CHANNEL_2
+#define MOTOR_HTIM_3      &htim15
+#define MOTOR_CHANNEL_3   TIM_CHANNEL_1
 #define MOTOR_GPIO_PORT_3 GPIOE
 #define MOTOR_GPIO_PIN_3 GPIO_PIN_15
 
