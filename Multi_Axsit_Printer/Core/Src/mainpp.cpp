@@ -105,31 +105,31 @@ void readGCode(void){
 	}
 }
 void update_parameters(void) {
-	target.disp.x = X;
-	target.disp.y = Y;
-	target.disp.z = Z;
-	target.disp.phi = PHI;
-	target.disp.theta = THETA;
-	target.disp.psi = PSI;
-	double dx = X - current.disp.x;
-	double dy = Y - current.disp.y;
-	double dz = Z - current.disp.z;
+	target.x = X;
+	target.y = Y;
+	target.z = Z;
+	target.phi = PHI;
+	target.theta = THETA;
+	target.psi = PSI;
+	double dx = X - current.x;
+	double dy = Y - current.y;
+	double dz = Z - current.z;
 	double total_distance = sqrt(dx*dx + dy*dy + dz*dz);
 	double time = total_distance / F;
-	target.velo.x = dx / time;
-	target.velo.y = dy / time;
-	target.velo.z = dz / time;
+	Velo.x = dx / time;
+	Velo.y = dy / time;
+	Velo.z = dz / time;
 
-	double dphi = PHI - current.disp.phi;
-	double dtheta = THETA - current.disp.theta;
-	double dpsi = PSI - current.disp.psi;
+	double dphi = PHI - current.phi;
+	double dtheta = THETA - current.theta;
+	double dpsi = PSI - current.psi;
 	// Normalize angular differences to [-π, π]
 	dphi = fmod(dphi + M_PI, 2*M_PI) - M_PI;
 	dtheta = fmod(dtheta + M_PI, 2*M_PI) - M_PI;
 	dpsi = fmod(dpsi + M_PI, 2*M_PI) - M_PI;
-	target.velo.phi = dphi / time;
-	target.velo.theta = dtheta / time;
-	target.velo.psi = dpsi / time;
+	Velo.phi = dphi / time;
+	Velo.theta = dtheta / time;
+	Velo.psi = dpsi / time;
 }
 
 extern int _c;

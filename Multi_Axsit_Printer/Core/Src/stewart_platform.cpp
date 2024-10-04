@@ -10,6 +10,7 @@ Vector3D p[6], b[6];
 SPPose current = create_default_stewart_platform();
 SPPose next = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
+SPVelocity Velo = create_default_stewart_velocity();
 double current_lengths[6], next_lengths[6];
 
 double deg_to_rad(double deg) {
@@ -39,13 +40,13 @@ void fake_update_from_sensor(void) {
 }
 
 void presume_next(void) {
-	double dt = 1 / FREQUENCY;
-	next.disp.x = current.disp.x + dt * target.velo.x;
-	next.disp.y = current.disp.y + dt * target.velo.y;
-	next.disp.z = current.disp.z + dt * target.velo.z;
-	next.disp.phi = current.disp.phi + dt * target.velo.phi;
-	next.disp.theta = current.disp.theta + dt * target.velo.theta;
-	next.disp.psi = current.disp.psi + dt * target.velo.psi;
+	double dt = (double)1 / FREQUENCY;
+	next.x = (double)(current.x + (double)(dt * Velo.x));
+	next.y = (double)current.y + dt * Velo.y;
+	next.z = (double)current.z + dt * Velo.z;
+	next.phi = (double)current.phi + dt * Velo.phi;
+	next.theta = (double)current.theta + dt * Velo.theta;
+	next.psi = (double)current.psi + dt * Velo.psi;
 }
 
 void calculate_diff_lengths(double diff_lengths[6]) {
@@ -55,19 +56,12 @@ void calculate_diff_lengths(double diff_lengths[6]) {
 }
 
 void assignSPPose(SPPose *dest, const SPPose *src) {
-    dest->disp.x = src->disp.x;
-    dest->disp.y = src->disp.y;
-    dest->disp.z = src->disp.z;
-    dest->disp.phi = src->disp.phi;
-    dest->disp.theta = src->disp.theta;
-    dest->disp.psi = src->disp.psi;
-
-    dest->velo.x = src->velo.x;
-    dest->velo.y = src->velo.y;
-    dest->velo.z = src->velo.z;
-    dest->velo.phi = src->velo.phi;
-    dest->velo.theta = src->velo.theta;
-    dest->velo.psi = src->velo.psi;
+    dest->x = src->x;
+    dest->y = src->y;
+    dest->z = src->z;
+    dest->phi = src->phi;
+    dest->theta = src->theta;
+    dest->psi = src->psi;
 }
 
 double calculateNorm(const double *vec) {
@@ -82,12 +76,12 @@ double calculate_disp_error(const SPPose* pose1, const SPPose* pose2) {
     double error = 0.0;
 
     // Accumulate the absolute differences for all 6 components
-    error += fabs(pose1->disp.x - pose2->disp.x);
-    error += fabs(pose1->disp.y - pose2->disp.y);
-    error += fabs(pose1->disp.z - pose2->disp.z);
-    error += fabs(pose1->disp.phi - pose2->disp.phi);
-    error += fabs(pose1->disp.theta - pose2->disp.theta);
-    error += fabs(pose1->disp.psi - pose2->disp.psi);
+    error += fabs(pose1->x - pose2->x);
+    error += fabs(pose1->y - pose2->y);
+    error += fabs(pose1->z - pose2->z);
+    error += fabs(pose1->phi - pose2->phi);
+    error += fabs(pose1->theta - pose2->theta);
+    error += fabs(pose1->psi - pose2->psi);
 
     return error;
 }
@@ -106,21 +100,24 @@ bool same_SPPose(const SPPose *pose1, const SPPose *pose2) {
 
 SPPose create_default_stewart_platform() {
     SPPose platform;
-    // 初始化位移部分
-    platform.disp.x = 0;
-    platform.disp.y = 0;
-    platform.disp.z = 0;
-    platform.disp.phi = 0;
-    platform.disp.theta = 0;
-    platform.disp.psi = 0;
-    // 初始化速度部分
-    platform.velo.x = 0;
-    platform.velo.y = 0;
-    platform.velo.z = 0;
-    platform.velo.phi = 0;
-    platform.velo.theta = 0;
-    platform.velo.psi = 0;
+    platform.x = 0;
+    platform.y = 0;
+    platform.z = 0;
+    platform.phi = 0;
+    platform.theta = 0;
+    platform.psi = 0;
     return platform;
+}
+
+SPVelocity create_default_stewart_velocity() {
+    SPVelocity Velo;
+    Velo.x = 0;
+    Velo.y = 0;
+    Velo.z = 0;
+    Velo.phi = 0;
+    Velo.theta = 0;
+    Velo.psi = 0;
+    return Velo;
 }
 
 void initialize_platform(void) {
@@ -142,9 +139,9 @@ void initialize_platform(void) {
 }
 
 void rotation_matrix(const SPPose* platform, double pRb[3][3]) {
-    double phi = deg_to_rad(platform->disp.phi);
-    double theta = deg_to_rad(platform->disp.theta);
-    double psi = deg_to_rad(platform->disp.psi);
+    double phi = deg_to_rad(platform->phi);
+    double theta = deg_to_rad(platform->theta);
+    double psi = deg_to_rad(platform->psi);
     double cphi = cos(phi), sphi = sin(phi);
     double ctheta = cos(theta), stheta = sin(theta);
     double cpsi = cos(psi), spsi = sin(psi);
@@ -171,7 +168,7 @@ void calculate_leg(const SPPose* platform,
                    double lengths[6]) {
     double pRb[3][3];
     rotation_matrix(platform, pRb);
-    Vector3D T = {platform->disp.x, platform->disp.y, platform->disp.z};
+    Vector3D T = {platform->x, platform->y, platform->z};
     for (int i = 0; i < 6; ++i) {
         lengths[i] = calculate_length(&T, pRb, &p[i], &b[i]);
     }

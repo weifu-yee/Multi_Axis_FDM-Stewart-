@@ -16,26 +16,27 @@ typedef struct {
 
 
 typedef struct {
-    struct {
-        double x, y, z;           // 位移 (Displacement)
-        double phi, theta, psi;   // 旋轉 (Rotation)
-    } disp; // 位移結構
-    struct {
-        double x, y, z;           // 速度 (Velocity)
-        double phi, theta, psi;   // 角速度 (Angular Velocity)
-    } velo; // 速度結構
+	double x, y, z;           // 位移 (Displacement)
+	double phi, theta, psi;   // 旋轉 (Rotation)
 } SPPose;
+
+typedef struct {
+	double x, y, z;           // 速度 (Velocity)
+	double phi, theta, psi;   // 角速度 (Angular Velocity)
+} SPVelocity;
 
 extern Vector3D p[6], b[6];
 extern SPPose current;
 extern SPPose next;
 extern SPPose target;
+extern SPVelocity Velo;
 extern double current_lengths[6], next_lengths[6];
 
 extern double SPerror;
 
 void init_lengths_array(double *vec);
 SPPose create_default_stewart_platform();
+SPVelocity create_default_stewart_velocity();
 void update_from_sensor(void);
 void fake_update_from_sensor(void);
 void presume_next(void);

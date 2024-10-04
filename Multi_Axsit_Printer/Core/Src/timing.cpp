@@ -57,6 +57,10 @@ double diffNorm = 0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	_c = 300;
 	if (htim->Instance == TIM5) {
+		if (reached)	{
+			_c ++;
+			return;
+		}
 		cnt_5++;
 		t_sec = cnt_5/20;
 
