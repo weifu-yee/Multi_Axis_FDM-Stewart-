@@ -52,6 +52,7 @@ double diff_lengths[6];
 
 int _c = 1;
 int bbb = 0;
+double diffNorm = 0;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	_c = 300;
@@ -79,7 +80,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 			assignSPPose(&current, &next);  //IMU
 		}
 //step 7
-		if(goal && calculateNorm(diff_lengths) < TOLERENCE)
+		diffNorm = calculateNorm(diff_lengths);
+		if(goal && diffNorm < TOLERENCE)
 			reached = true;
 
 

@@ -135,6 +135,7 @@ void update_parameters(void) {
 extern int _c;
 
 void main_function(void){
+	Timer_INIT();
 	initialize_platform();
 	reset_pushers_to_home();
 	char send[] = "data321";
