@@ -12,6 +12,7 @@ SPPose next = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
 SPVelocity Velo = create_default_stewart_velocity();
 double current_lengths[6], next_lengths[6];
+Vector3D T;
 
 double deg_to_rad(double deg) {
     return deg * PI / 18000.0;  // deg is in 0.01 degree
@@ -79,23 +80,48 @@ double calculate_disp_error(const SPPose* pose1, const SPPose* pose2) {
     error += fabs(pose1->x - pose2->x);
     error += fabs(pose1->y - pose2->y);
     error += fabs(pose1->z - pose2->z);
-    error += fabs(pose1->phi - pose2->phi);
-    error += fabs(pose1->theta - pose2->theta);
-    error += fabs(pose1->psi - pose2->psi);
+//    error += fabs(pose1->phi - pose2->phi);
+//    error += fabs(pose1->theta - pose2->theta);
+//    error += fabs(pose1->psi - pose2->psi);
+
+    double phi_diff = pose1->phi - pose2->phi;
+	phi_diff = fmod(phi_diff + 3*M_PI, 2*M_PI) - M_PI;
+	error += fabs(phi_diff);
+
+	double theta_diff = pose1->theta - pose2->theta;
+	theta_diff = fmod(theta_diff + 3*M_PI, 2*M_PI) - M_PI;
+	error += fabs(theta_diff);
+
+	double psi_diff = pose1->psi - pose2->psi;
+	psi_diff = fmod(psi_diff + 3*M_PI, 2*M_PI) - M_PI;
+	error += fabs(psi_diff);
 
     return error;
 }
 
 double SPerror;
+double prev_SPerror = 0;
+int SPerror_increasing_count = 0;
 
 bool same_SPPose(const SPPose *pose1, const SPPose *pose2) {
 	SPerror = calculate_disp_error(pose1, pose2);
-	double dt = 1 / FREQUENCY;
+	double dt = (double)1 / FREQUENCY;
 	extern double F;
-	if (fabs(SPerror) < fabs(0.8 * F * dt))
+
+	if (fabs(SPerror) > fabs(prev_SPerror)) {
+		SPerror_increasing_count++;
+	} else {
+		SPerror_increasing_count = 0;
+	}
+
+	prev_SPerror = SPerror;
+
+//	if (fabs(SPerror) < fabs(0.8 * F * dt))
+//		return true;
+	if (fabs(SPerror) < fabs(0.8 * F * dt) || SPerror_increasing_count >= SPerror_TREND_THRESHOLD) {
 		return true;
-	else
-		return false;
+	}
+	return false;
 }
 
 SPPose create_default_stewart_platform() {
@@ -168,7 +194,7 @@ void calculate_leg(const SPPose* platform,
                    double lengths[6]) {
     double pRb[3][3];
     rotation_matrix(platform, pRb);
-    Vector3D T = {platform->x, platform->y, platform->z};
+    T = {platform->x, platform->y, platform->z};
     for (int i = 0; i < 6; ++i) {
         lengths[i] = calculate_length(&T, pRb, &p[i], &b[i]);
     }

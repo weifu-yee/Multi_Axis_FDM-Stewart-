@@ -133,6 +133,10 @@ void update_parameters(void) {
 }
 
 extern int _c;
+extern double prev_diffNorm;
+extern int increasing_count;
+extern double prev_SPerror;
+extern int SPerror_increasing_count;
 
 void main_function(void){
 	Timer_INIT();
@@ -147,8 +151,17 @@ void main_function(void){
 		count++;
 		readGCode();
 		update_parameters();
+
+		prev_diffNorm = 0;
+		increasing_count = 0;
+		prev_SPerror = 0;
+		SPerror_increasing_count = 0;
+
 		reached = false;
 		while(!reached); //waiting the process in timing.cpp
+
+		while(_c != 0){}
+		_c ++;
 	}
 }
 

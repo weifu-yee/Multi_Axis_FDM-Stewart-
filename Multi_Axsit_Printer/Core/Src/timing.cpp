@@ -54,8 +54,10 @@ int _c = 1;
 int bbb = 0;
 double diffNorm = 0;
 
+double prev_diffNorm = 0;
+int increasing_count = 0;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	_c = 300;
 	if (htim->Instance == TIM5) {
 		if (reached)	{
 			_c ++;
@@ -73,29 +75,41 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		goal = same_SPPose(&current, &target);
 		if (!goal) {
 			presume_next();
-			//step 3
-			calculate_leg(&next, next_lengths);
-			//step 4
-			calculate_diff_lengths(diff_lengths);
-			//step 5
-			update_pushers_PWM(diff_lengths);
-			actuate_pushers();
-			//step 6
-			assignSPPose(&current, &next);  //IMU
 		}
+//step 3
+		calculate_leg(&next, next_lengths);
+//step 4
+		calculate_diff_lengths(diff_lengths);
+//step 5
+		update_pushers_PWM(diff_lengths);
+		actuate_pushers();
+//step 6
+		assignSPPose(&current, &next);  //IMU
 //step 7
 		diffNorm = calculateNorm(diff_lengths);
-		if(goal && diffNorm < TOLERENCE)
-			reached = true;
 
-
-
-
-		if(!reached) {
-			bbb = 2;
-			while(_c == 1);
-			_c = 1;
+		// Detect if we're getting further away from the target
+		if (diffNorm > prev_diffNorm) {
+		    increasing_count++;
+		} else {
+		    increasing_count = 0;
 		}
+
+		if ((goal && diffNorm < TOLERANCE) ||
+		    (goal && increasing_count >= TREND_THRESHOLD)) {
+		    reached = true;
+		}
+
+		prev_diffNorm = diffNorm;
+
+
+
+
+//		if(!reached) {
+//			bbb = 2;
+//			while(_c == 1);
+//			_c = 1;
+//		}
 
 
 
