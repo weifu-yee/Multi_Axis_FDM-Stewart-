@@ -59,12 +59,12 @@ int increasing_count = 0;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
+		cnt_5++;
+		t_sec = cnt_5/20;
 		if (reached)	{
 			_c ++;
 			return;
 		}
-		cnt_5++;
-		t_sec = cnt_5/20;
 
 
 //step 1

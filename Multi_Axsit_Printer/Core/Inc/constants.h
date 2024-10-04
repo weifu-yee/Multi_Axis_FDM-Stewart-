@@ -64,12 +64,12 @@
 
 //control
 #define NUM_PUSHERS 6
-#define FREQUENCY 1000
-#define resolution 512
+#define FREQUENCY 1000.0
+#define resolution 512.0
 #define reduction_ratio 20.8
-#define max_ui 1
-#define PWM_ARR 1000
-#define Lead 20
+#define max_ui 1.0
+#define PWM_ARR 1000.0
+#define Lead 20.0
 
 #define Kp_univ 0.03
 #define KP_0 0.5
