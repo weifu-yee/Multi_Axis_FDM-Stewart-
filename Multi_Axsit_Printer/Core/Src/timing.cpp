@@ -46,7 +46,7 @@ void actuate_pushers(void) {
 
 extern int count;
 bool dir = 1;
-int pwm = 1000;
+int pwm = 100;
 bool goal = false;
 double diff_lengths[6];
 
@@ -118,19 +118,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		update_pusher_encoders();
 		update_from_sensor();
 
-		__HAL_TIM_SET_COMPARE(MOTOR_HTIM_2, MOTOR_CHANNEL_2, pwm);
-		HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_SET);
+		__HAL_TIM_SET_COMPARE(MOTOR_HTIM_0, MOTOR_CHANNEL_0, pwm);
+		HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
 		if(!dir)
-			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_RESET);
 
-//		int a = t_sec / 3;
+//		int a = t_sec / 0.5;
 //		if(a % 2 == 0)
 //			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_SET);
 //		else
 //			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_0, MOTOR_GPIO_PIN_0, GPIO_PIN_RESET);
 
-		if (t_sec > 2)
-			__HAL_TIM_SET_COMPARE(MOTOR_HTIM_2, MOTOR_CHANNEL_2, 0);
+//		if (t_sec > 2)
+//			__HAL_TIM_SET_COMPARE(MOTOR_HTIM_0, MOTOR_CHANNEL_0, 0);
 
 
 	}
