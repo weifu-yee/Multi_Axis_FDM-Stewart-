@@ -40,13 +40,13 @@ SPVelocity create_default_stewart_velocity();
 void update_from_sensor(void);
 void fake_update_from_sensor(void);
 void presume_next(void);
-void calculate_diff_lengths(double diff_lengths[6]);
+void calculate_diff_lengths(double diff_lengths[7]);
 void assignSPPose(SPPose *dest, const SPPose *src);
 double calculateNorm(const double *vec);
 bool same_SPPose(const SPPose *pose1, const SPPose *pose2);
 void initialize_platform(void);
 void calculate_leg(const SPPose* platform,
-                   double lengths[6]);
+                   double lengths[7]);
 
 #ifdef __cplusplus
 }

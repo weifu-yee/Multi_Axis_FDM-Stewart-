@@ -51,7 +51,7 @@ void presume_next(void) {
 	next.psi = (double)current.psi + dt * Velo.psi;
 }
 
-void calculate_diff_lengths(double diff_lengths[6]) {
+void calculate_diff_lengths(double diff_lengths[7]) {
 	for (int i = 1; i <= 6; ++i) {
 		diff_lengths[i] = next_lengths[i] - current_lengths[i];
 	}
@@ -192,7 +192,7 @@ double calculate_length(const Vector3D* T, const double pRb[3][3],
 }
 
 void calculate_leg(const SPPose* platform,
-                   double lengths[6]) {
+                   double lengths[7]) {
     double pRb[3][3];
     rotation_matrix(platform, pRb);
     T = {platform->x, platform->y, platform->z};
