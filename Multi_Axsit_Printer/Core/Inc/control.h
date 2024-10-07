@@ -22,7 +22,7 @@ typedef struct { // In mm units
     double u, up, ui, ud, pulse;
 } ActuatorPID;
 
-extern ActuatorPID pusher[6];
+extern ActuatorPID pusher[7];
 
 void reset_pushers_to_home(void);
 void update_pushers_PWM(const double diff_lengths[6]);

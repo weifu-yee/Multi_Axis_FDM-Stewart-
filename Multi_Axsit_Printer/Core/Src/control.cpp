@@ -9,18 +9,18 @@
 #include "constants.h"
 #include "timing.h"
 
-const double Kp[6] = {KP_0, KP_1, KP_2, KP_3, KP_4, KP_5};
-const double Ki[6] = {KI_0, KI_1, KI_2, KI_3, KI_4, KI_5};
-const double Kd[6] = {KD_0, KD_1, KD_2, KD_3, KD_4, KD_5};
+const double Kp[6] = {KP_1, KP_2, KP_3, KP_4, KP_5, KP_6};
+const double Ki[6] = {KI_1, KI_2, KI_3, KI_4, KI_5, KI_6};
+const double Kd[6] = {KD_1, KD_2, KD_3, KD_4, KD_5, KD_6};
 
-ActuatorPID pusher[6];
+ActuatorPID pusher[7];
 
 extern int cnt_5;
 extern int t_sec;
 
 void reset_pushers_to_home(void) {
 	//some scripts
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 1; i <= 6; ++i) {
 	   pusher[i].pulse = PWM_ARR;
 	   pusher[i].u = -PWM_ARR;
 	}
@@ -35,7 +35,7 @@ void update_pushers_PWM(const double diff_lengths[6]) {
    double max_ratio = 1.0;
 
    // First pass to calculate pulses and find max ratio
-   for (int i = 0; i < 6; ++i) {
+   for (int i = 1; i <= 6; ++i) {
        pusher[i].up = (double)Kp_univ * diff_lengths[i];
        pusher[i].u = pusher[i].up;
        pusher[i].pulse = fabs(pusher[i].u) * (double)PWM_ARR;
@@ -47,7 +47,7 @@ void update_pushers_PWM(const double diff_lengths[6]) {
    }
 
    // Second pass to scale all pulses
-   for (int i = 0; i < 6; ++i) {
+   for (int i = 1; i <= 6; ++i) {
        pusher[i].pulse *= max_ratio;
    }
 }

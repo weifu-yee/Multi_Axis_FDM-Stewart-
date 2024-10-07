@@ -19,7 +19,7 @@ double deg_to_rad(double deg) {
 }
 
 void update_from_sensor(void) {
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 1; i <= 6; ++i) {
 //		double delta = (double)pusher[i].enc * PI * Lead
 //				/ (4 * resolution * reduction_ratio);
 		double delta = (double)pusher[i].enc
@@ -31,7 +31,7 @@ void update_from_sensor(void) {
 }
 
 void fake_update_from_sensor(void) {
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 1; i <= 6; ++i) {
 		double delta = pusher[i].pulse / 100.0;
 		if (pusher[i].u >= 0)
 			current_lengths[i] += delta;
@@ -52,7 +52,7 @@ void presume_next(void) {
 }
 
 void calculate_diff_lengths(double diff_lengths[6]) {
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 1; i <= 6; ++i) {
 		diff_lengths[i] = next_lengths[i] - current_lengths[i];
 	}
 }
@@ -68,7 +68,7 @@ void assignSPPose(SPPose *dest, const SPPose *src) {
 
 double calculateNorm(const double *vec) {
     double sum = 0.0;
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 1; i <= 6; ++i) {
         sum += vec[i] * vec[i];
     }
     return sqrt(sum);
@@ -151,7 +151,7 @@ void initialize_platform(void) {
 	const double p_angles[] = P_ANGLES;
 	const double b_angles[] = B_ANGLES;
 
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 1; i <= 6; ++i) {
         double p_rad = deg_to_rad(p_angles[i] * 100);
         double b_rad = deg_to_rad(b_angles[i] * 100);
 
@@ -196,7 +196,7 @@ void calculate_leg(const SPPose* platform,
     double pRb[3][3];
     rotation_matrix(platform, pRb);
     T = {platform->x, platform->y, platform->z};
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 1; i <= 6; ++i) {
         lengths[i] = calculate_length(&T, pRb, &p[i], &b[i]);
     }
 }
