@@ -48,7 +48,7 @@ extern int count;
 bool dir = 1;
 int pwm = 100;
 bool goal = false;
-double diff_lengths[6];
+double diff_lengths[7];
 
 int _c = 1;
 int bbb = 0;

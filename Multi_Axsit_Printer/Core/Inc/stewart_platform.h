@@ -25,12 +25,12 @@ typedef struct {
 	double phi, theta, psi;   // 角速度 (Angular Velocity)
 } SPVelocity;
 
-extern Vector3D p[6], b[6];
+extern Vector3D p[7], b[7];
 extern SPPose current;
 extern SPPose next;
 extern SPPose target;
 extern SPVelocity Velo;
-extern double current_lengths[6], next_lengths[6];
+extern double current_lengths[7], next_lengths[7];
 
 extern double SPerror;
 

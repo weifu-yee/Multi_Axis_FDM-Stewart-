@@ -10,25 +10,25 @@ void update_pusher_encoders(void);
 void actuate_pushers(void);
 
 extern bool goal;
-extern double diff_lengths[6];
+extern double diff_lengths[7];
 
 extern TIM_HandleTypeDef htim5;
-//pusher0
+//pusher1
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim13;
-//pusher1
+//pusher2
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim14;
-//pusher2
+//pusher3
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim15;
-//pusher3
+//pusher4
 extern TIM_HandleTypeDef htim8;
 extern TIM_HandleTypeDef htim12;
-//pusher4
+//pusher5
 extern TIM_HandleTypeDef htim23;
 extern TIM_HandleTypeDef htim16;
-//pusher5
+//pusher6
 extern TIM_HandleTypeDef htim24;
 extern TIM_HandleTypeDef htim17;
 

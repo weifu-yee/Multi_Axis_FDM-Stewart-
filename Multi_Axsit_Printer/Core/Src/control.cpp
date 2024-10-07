@@ -9,9 +9,9 @@
 #include "constants.h"
 #include "timing.h"
 
-const double Kp[6] = {KP_1, KP_2, KP_3, KP_4, KP_5, KP_6};
-const double Ki[6] = {KI_1, KI_2, KI_3, KI_4, KI_5, KI_6};
-const double Kd[6] = {KD_1, KD_2, KD_3, KD_4, KD_5, KD_6};
+const double Kp[7] = {0, KP_1, KP_2, KP_3, KP_4, KP_5, KP_6};
+const double Ki[7] = {0, KI_1, KI_2, KI_3, KI_4, KI_5, KI_6};
+const double Kd[7] = {0, KD_1, KD_2, KD_3, KD_4, KD_5, KD_6};
 
 ActuatorPID pusher[7];
 

@@ -6,12 +6,12 @@
 #include "constants.h"
 #include "control.h"
 
-Vector3D p[6], b[6];
+Vector3D p[7], b[7];
 SPPose current = create_default_stewart_platform();
 SPPose next = create_default_stewart_platform();
 SPPose target = create_default_stewart_platform();
 SPVelocity Velo = create_default_stewart_velocity();
-double current_lengths[6], next_lengths[6];
+double current_lengths[7], next_lengths[7];
 Vector3D T;
 
 double deg_to_rad(double deg) {
