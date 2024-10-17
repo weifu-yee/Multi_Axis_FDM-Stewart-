@@ -5,8 +5,8 @@
 #include "constants.h"
 #include "control.h"
 
-TIM_HandleTypeDef* htim_array[6] = {
-		ENCODER_HTIM_1, ENCODER_HTIM_2, ENCODER_HTIM_3, ENCODER_HTIM_4, ENCODER_HTIM_5, ENCODER_HTIM_6};
+TIM_HandleTypeDef* htim_array[7] = {
+		NULL, ENCODER_HTIM_1, ENCODER_HTIM_2, ENCODER_HTIM_3, ENCODER_HTIM_4, ENCODER_HTIM_5, ENCODER_HTIM_6};
 
 int cnt_5 = 0;
 int t_sec = 0;
@@ -14,7 +14,7 @@ extern bool reached;
 
 
 void update_pusher_encoders(void) {
-	for (int i = 0; i < 6; i++) {
+	for (int i = 1; i <= 6; i++) {
 		// 獲取計數器值並存儲
 		pusher[i].enc = __HAL_TIM_GetCounter(htim_array[i]);
 

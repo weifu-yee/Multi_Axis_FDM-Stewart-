@@ -20,8 +20,6 @@ double deg_to_rad(double deg) {
 
 void update_from_sensor(void) {
 	for (int i = 1; i <= 6; ++i) {
-//		double delta = (double)pusher[i].enc * PI * Lead
-//				/ (4 * resolution * reduction_ratio);
 		double delta = (double)pusher[i].enc
 				/ (4 * pulse_per_mm);
 		delta *= -1.0;
