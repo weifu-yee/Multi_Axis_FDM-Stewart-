@@ -34,6 +34,8 @@ extern double current_lengths[6], next_lengths[6];
 
 extern double SPerror;
 
+extern double X, Y, Z, E, F, PHI, THETA, PSI;
+
 void init_lengths_array(double *vec);
 SPPose create_default_stewart_platform();
 void update_from_sensor(void);
@@ -46,6 +48,8 @@ bool same_SPPose(const SPPose *pose1, const SPPose *pose2);
 void initialize_platform(void);
 void calculate_leg(const SPPose* platform,
                    double lengths[6]);
+void angularNormalizer(double *ang);
+void update_parameters(void);
 
 //#ifdef __cplusplus
 //}
