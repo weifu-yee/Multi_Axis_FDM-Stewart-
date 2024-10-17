@@ -71,90 +71,56 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 			return;
 		}
 //step 1
-//		update_pusher_encoders();
-////		update_from_sensor();
+		update_pusher_encoders();
+		update_from_sensor();
 //		fake_update_from_sensor();
-////step 2
-//		goal = same_SPPose(&current, &target);
-//		if (!goal) {
-//			presume_next();
-//		}
-////step 3
-//		calculate_leg(&next, next_lengths);
-////step 4
-//		calculate_diff_lengths(diff_lengths);
-////step 5
-//		update_pushers_PWM(diff_lengths);
-//		actuate_pushers();
-////step 6
-//		assignSPPose(&current, &next);  //IMU
-////step 7
-//		diffNorm = calculateNorm(diff_lengths);
-//
-//		// Detect if we're getting further away from the target
-//		if (diffNorm > prev_diffNorm) {
-//		    increasing_count++;
-//		} else {
-//		    increasing_count = 0;
-//		}
-//
-//		if ((goal && diffNorm < TOLERANCE) ||
-//		    (goal && increasing_count >= TREND_THRESHOLD)) {
-//		    reached = true;
-//		}
-//
-//		prev_diffNorm = diffNorm;
+//step 2
+		goal = same_SPPose(&current, &target);
+		if (!goal) {
+			presume_next();
+		}
+//step 3
+		calculate_leg(&next, next_lengths);
+//step 4
+		calculate_diff_lengths(diff_lengths);
+//step 5
+		update_pushers_PWM(diff_lengths);
+		actuate_pushers();
+//step 6
+		assignSPPose(&current, &next);  //IMU
+//step 7
+		diffNorm = calculateNorm(diff_lengths);
+
+		// Detect if we're getting further away from the target
+		if (diffNorm > prev_diffNorm) {
+		    increasing_count++;
+		} else {
+		    increasing_count = 0;
+		}
+
+		if ((goal && diffNorm < TOLERANCE) ||
+		    (goal && increasing_count >= TREND_THRESHOLD)) {
+		    reached = true;
+		}
+
+		prev_diffNorm = diffNorm;
 
 
 		//for test
-		update_pusher_encoders();
-		update_from_sensor();
-		for (int i = 1; i <= 6; ++i) {
-			pusher[i].pulse = fabs(PWM[i]);
-			if(PWM[i] >= 0.0) pusher[i].u = 1.0;
-			else pusher[i].u = -1.0;
-		}
-		if (t_sec > 2) {
-			for (int i = 1; i <= 6; ++i) {
-				pusher[i].u = 0.0;
-				pusher[i].pulse = 0.0;
-			}
-		}
-		actuate_pushers();
-
-
-
-
-
-
-//		if(!reached) {
-//			bbb = 2;
-//			while(_c == 1);
-//			_c = 1;
-//		}
-
-
-
-		//測試腳位輸出用
 //		update_pusher_encoders();
 //		update_from_sensor();
-
-//		__HAL_TIM_SET_COMPARE(MOTOR_HTIM_1, MOTOR_CHANNEL_1, pwm);
-//		HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
-//		if(!dir)
-//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_RESET);
-
-//		int a = t_sec / 0.5;
-//		if(a % 2 == 0)
-//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
-//		else
-//			HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_RESET);
-
-//		if (t_sec > 2)
-//			__HAL_TIM_SET_COMPARE(MOTOR_HTIM_1, MOTOR_CHANNEL_1, 0);
-
-
-
+//		for (int i = 1; i <= 6; ++i) {
+//			pusher[i].pulse = fabs(PWM[i]);
+//			if(PWM[i] >= 0.0) pusher[i].u = 1.0;
+//			else pusher[i].u = -1.0;
+//		}
+//		if (t_sec > 2) {
+//			for (int i = 1; i <= 6; ++i) {
+//				pusher[i].u = 0.0;
+//				pusher[i].pulse = 0.0;
+//			}
+//		}
+//		actuate_pushers();
 
 
 	}
