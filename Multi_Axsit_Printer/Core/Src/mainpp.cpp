@@ -145,7 +145,7 @@ void main_function(void){
 //	while(_c == -2){}
 	Timer_INIT();
 	initialize_platform();
-//	reset_pushers_to_home();
+	reset_pushers_to_home();
 	char send[] = "data321";
 	Arduino.init();
 	while(1){

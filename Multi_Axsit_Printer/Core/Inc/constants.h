@@ -74,6 +74,7 @@
 #define reduction_ratio 20.8
 #define max_ui 1.0
 #define PWM_ARR 1000
+#define PWM_MIN 50
 #define Lead 20.0
 
 #define Kp_univ 0.03

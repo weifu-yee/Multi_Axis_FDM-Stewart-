@@ -18,17 +18,33 @@ ActuatorPID pusher[7];
 extern int cnt_5;
 extern int t_sec;
 
+extern double current_lengths[7];
 void reset_pushers_to_home(void) {
-	//some scripts
+	double time_points[] = {140, 50};
+	//1
 	for (int i = 1; i <= 6; ++i) {
-	   pusher[i].pulse = PWM_ARR;
-	   pusher[i].u = -PWM_ARR;
+		pusher[i].pulse = 1000.0;
+		pusher[i].u = -1.0;
 	}
-	cnt_5 = 0;
-	t_sec = 0;
-	while(t_sec < 10) {
-		actuate_pushers();
+	cnt_5 = 0; t_sec = 0;
+	actuate_pushers();
+	while(cnt_5 < time_points[0]);
+	//2
+	for (int i = 1; i <= 6; ++i) {
+		pusher[i].pulse = 500.0;
+		pusher[i].u = 1.0;
 	}
+	cnt_5 = 0; t_sec = 0;
+	actuate_pushers();
+	while(cnt_5 < time_points[1]);
+	//3
+	for (int i = 1; i <= 6; ++i) {
+		pusher[i].pulse = 0.0;
+		pusher[i].u = 1.0;
+		current_lengths[i] = 259.189335;
+	}
+	cnt_5 = 0; t_sec = 0;
+	actuate_pushers();
 }
 
 void update_pushers_PWM(const double diff_lengths[6]) {
@@ -39,6 +55,11 @@ void update_pushers_PWM(const double diff_lengths[6]) {
        pusher[i].up = (double)Kp_univ * diff_lengths[i];
        pusher[i].u = pusher[i].up;
        pusher[i].pulse = fabs(pusher[i].u) * (double)PWM_ARR;
+
+       // Ensure the pulse doesn't fall below the minimum speed threshold
+       if (pusher[i].pulse < PWM_MIN) {
+    	   pusher[i].pulse = PWM_MIN;
+       }
 
        if (pusher[i].pulse > PWM_ARR) {
            double ratio = (double)PWM_ARR / pusher[i].pulse;

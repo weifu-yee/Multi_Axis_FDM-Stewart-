@@ -66,13 +66,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		t_sec = cnt_5/20;
 
 
-//		if (reached)	{
-//			_c ++;
-//			return;
-//		}
-////step 1
+		if (reached)	{
+			_c ++;
+			return;
+		}
+//step 1
 //		update_pusher_encoders();
-//		//update_from_sensor();
+////		update_from_sensor();
 //		fake_update_from_sensor();
 ////step 2
 //		goal = same_SPPose(&current, &target);
