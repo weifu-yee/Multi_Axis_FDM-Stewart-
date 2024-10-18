@@ -70,6 +70,7 @@
 //control
 #define So 181.786671
 #define Lo 603.886671
+#define Ho 600
 #define NUM_PUSHERS 6
 #define FREQUENCY 1000.0
 #define resolution 512.0
@@ -79,7 +80,7 @@
 #define PWM_MIN 50
 #define Lead 20.0
 
-#define Kp_univ 0.03
+#define Kp_univ 0.3
 #define KP_1 0.5
 #define KP_2 0.5
 #define KP_3 0.5

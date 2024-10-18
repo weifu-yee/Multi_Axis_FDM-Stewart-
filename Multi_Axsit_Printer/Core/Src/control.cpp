@@ -23,6 +23,7 @@ extern double current_lengths[7];
 
 
 int leg_un_origin = 6;
+extern SPPose current;
 void reset_pushers_to_home(void) {
 	double time_points[] = {140, 100};
 	//1
@@ -72,6 +73,8 @@ void reset_pushers_to_home(void) {
 	}
 	cnt_5 = 0; t_sec = 0;
 	actuate_pushers();
+
+	current.z = Ho;
 }
 
 void update_pushers_PWM(const double diff_lengths[6]) {
