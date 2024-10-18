@@ -60,16 +60,7 @@ int increasing_count = 0;
 
 double PWM[7] = {0, 0, 0, 0, 0, 0};
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	if (htim->Instance == TIM5) {
-		cnt_5++;
-		t_sec = cnt_5/20;
-
-
-		if (reached)	{
-			_c ++;
-			return;
-		}
+void true_process(void) {
 //step 1
 		update_pusher_encoders();
 		update_from_sensor();
@@ -93,35 +84,64 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 		// Detect if we're getting further away from the target
 		if (diffNorm > prev_diffNorm) {
-		    increasing_count++;
+			increasing_count++;
 		} else {
-		    increasing_count = 0;
+			increasing_count = 0;
 		}
 
 		if ((goal && diffNorm < TOLERANCE) ||
-		    (goal && increasing_count >= TREND_THRESHOLD)) {
-		    reached = true;
+			(goal && increasing_count >= TREND_THRESHOLD)) {
+			reached = true;
 		}
 
 		prev_diffNorm = diffNorm;
+}
+void test_process(void) {
+//for test
+		update_pusher_encoders();
+		update_from_sensor();
+		for (int i = 1; i <= 6; ++i) {
+			pusher[i].pulse = fabs(PWM[i]);
+			if(PWM[i] >= 0.0) pusher[i].u = 1.0;
+			else pusher[i].u = -1.0;
+		}
+		if (t_sec > 2) {
+			for (int i = 1; i <= 6; ++i) {
+				pusher[i].u = 0.0;
+				pusher[i].pulse = 0.0;
+			}
+		}
+		actuate_pushers();
+}
+void one_leg_process(void) {
 
+}
 
-		//for test
-//		update_pusher_encoders();
-//		update_from_sensor();
-//		for (int i = 1; i <= 6; ++i) {
-//			pusher[i].pulse = fabs(PWM[i]);
-//			if(PWM[i] >= 0.0) pusher[i].u = 1.0;
-//			else pusher[i].u = -1.0;
-//		}
-//		if (t_sec > 2) {
-//			for (int i = 1; i <= 6; ++i) {
-//				pusher[i].u = 0.0;
-//				pusher[i].pulse = 0.0;
-//			}
-//		}
-//		actuate_pushers();
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+	if (htim->Instance == TIM5) {
+		cnt_5++;
+		t_sec = cnt_5/20;
 
+		if (reached)	{
+			_c ++;
+			return;
+		}
 
+		//choose one process
+		int proc = 2;
+
+		switch(proc) {
+			case 1:
+				true_process();
+				break;
+			case 2:
+				test_process();
+				break;
+			case 3:
+				one_leg_process();
+				break;
+			default:
+				break;
+		}
 	}
 }
