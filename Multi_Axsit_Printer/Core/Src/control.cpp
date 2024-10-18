@@ -63,6 +63,7 @@ void reset_pushers_to_home(void) {
 			}
 		}
 		actuate_pushers();
+		HAL_Delay(50);
 	}
 
 	//3
@@ -76,7 +77,6 @@ void reset_pushers_to_home(void) {
 
 	current.z = Ho;
 }
-
 void update_pushers_PWM(const double diff_lengths[6]) {
    double max_ratio = 1.0;
 
@@ -86,7 +86,7 @@ void update_pushers_PWM(const double diff_lengths[6]) {
        pusher[i].u = pusher[i].up;
        pusher[i].pulse = fabs(pusher[i].u) * (double)PWM_ARR;
        if (pusher[i].u >= 0.0)	pusher[i].u = 1;
-       else pusher[i].u = 0;
+       else pusher[i].u = -1.0;
 
        if (pusher[i].pulse > PWM_ARR) {
            double ratio = (double)PWM_ARR / pusher[i].pulse;
@@ -99,7 +99,7 @@ void update_pushers_PWM(const double diff_lengths[6]) {
        pusher[i].pulse *= max_ratio;
        // Ensure the pulse doesn't fall below the minimum speed threshold
 	   if (pusher[i].pulse < PWM_MIN) {
-		   pusher[i].pulse = PWM_MIN;
+		   pusher[i].pulse = 0.0;
 	   }
    }
 }

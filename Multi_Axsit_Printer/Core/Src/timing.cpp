@@ -12,6 +12,7 @@ int cnt_5 = 0;
 int t_sec = 0;
 extern bool reached;
 
+int a = 0;
 
 void update_pusher_encoders(void) {
 	for (int i = 1; i <= 6; i++) {
@@ -24,6 +25,7 @@ void update_pusher_encoders(void) {
 }
 
 void actuate_pushers(void) {
+	a ++;
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_1, MOTOR_CHANNEL_1, pusher[1].pulse);
     if (pusher[1].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_RESET);
@@ -156,45 +158,45 @@ void one_leg_process(int leg) {
 }
 void three_leg_process(int leg1, int leg2, int leg3) {
 //step 1
-		update_pusher_encoders();
-		update_from_sensor();
+	update_pusher_encoders();
+	update_from_sensor();
 //step 2
-		goal = same_SPPose(&current, &target);
-		if (!goal) {
-			presume_next();
-		}
+	goal = same_SPPose(&current, &target);
+	if (!goal) {
+		presume_next();
+	}
 //step 3
-		calculate_leg(&next, next_lengths);
+	calculate_leg(&next, next_lengths);
 //step 4
-		calculate_diff_lengths(diff_lengths);
+	calculate_diff_lengths(diff_lengths);
 
-		for(int i = 1; i <= 6; ++i) {
-			if(i == leg1) continue;
-			if(i == leg2) continue;
-			if(i == leg3) continue;
-			diff_lengths[i] = 0.0;
-		}
+	for(int i = 1; i <= 6; ++i) {
+		if(i == leg1) continue;
+		else if(i == leg2) continue;
+		else if(i == leg3) continue;
+		diff_lengths[i] = 0.0;
+	}
 //step 5
-		update_pushers_PWM(diff_lengths);
-		actuate_pushers();
+	update_pushers_PWM(diff_lengths);
+	actuate_pushers();
 //step 6
-		assignSPPose(&current, &next);  //IMU
+	assignSPPose(&current, &next);  //IMU
 //step 7
-		diffNorm = calculateNorm(diff_lengths);
+	diffNorm = calculateNorm(diff_lengths);
 
-		// Detect if we're getting further away from the target
-		if (diffNorm > prev_diffNorm) {
-			increasing_count++;
-		} else {
-			increasing_count = 0;
-		}
+	// Detect if we're getting further away from the target
+	if (diffNorm > prev_diffNorm) {
+		increasing_count++;
+	} else {
+		increasing_count = 0;
+	}
 
-		if ((goal && diffNorm < TOLERANCE) ||
-			(goal && increasing_count >= TREND_THRESHOLD)) {
-			reached = true;
-		}
+	if ((goal && diffNorm < TOLERANCE) ||
+		(goal && increasing_count >= TREND_THRESHOLD)) {
+		reached = true;
+	}
 
-		prev_diffNorm = diffNorm;
+	prev_diffNorm = diffNorm;
 }
 void fake_encoder_process(void) {
 //step 1
