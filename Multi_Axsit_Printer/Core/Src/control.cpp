@@ -99,7 +99,7 @@ void update_pushers_PWM(const double diff_lengths[6]) {
        pusher[i].pulse *= max_ratio;
        // Ensure the pulse doesn't fall below the minimum speed threshold
 	   if (pusher[i].pulse < PWM_MIN) {
-		   pusher[i].pulse = 0.0;
+		   pusher[i].pulse = PWM_MIN;
 	   }
    }
 }

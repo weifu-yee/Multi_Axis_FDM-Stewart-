@@ -80,7 +80,7 @@
 #define PWM_MIN 50.0
 #define Lead 20.0
 
-#define Kp_univ 0.3
+#define Kp_univ 0.5
 #define KP_1 0.5
 #define KP_2 0.5
 #define KP_3 0.5

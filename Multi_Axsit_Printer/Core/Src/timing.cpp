@@ -233,6 +233,9 @@ void fake_encoder_process(void) {
 
 		prev_diffNorm = diffNorm;
 }
+void determine_KP_process(void) {
+
+}
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {

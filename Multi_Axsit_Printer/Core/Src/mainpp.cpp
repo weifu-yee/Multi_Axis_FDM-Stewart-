@@ -88,11 +88,11 @@ void readGCode(void){
 			F = 2000.0;
 			break;
 		case 6:
-			X = 1.0;
-			Y = 2.0;
-			Z = 600;
-			PHI = 10.0;
-			THETA = 5.0;
+			X = 30.0;
+			Y = 0.0;
+			Z = 550;
+			PHI = 0.523;
+			THETA = 0.0;
 			PSI = 0.0;
 			F = 2000.0;
 			break;
