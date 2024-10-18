@@ -25,26 +25,26 @@ void update_pusher_encoders(void) {
 
 void actuate_pushers(void) {
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_1, MOTOR_CHANNEL_1, pusher[1].pulse);
-    if (pusher[1].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
+    if (pusher[1].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_2, MOTOR_CHANNEL_2, pusher[2].pulse);
-    if (pusher[2].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_SET);
+    if (pusher[2].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_3, MOTOR_CHANNEL_3, pusher[3].pulse);
-    if (pusher[3].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_SET);
+    if (pusher[3].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_4, MOTOR_CHANNEL_4, pusher[4].pulse);
-    if (pusher[4].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_4, MOTOR_GPIO_PIN_4, GPIO_PIN_SET);
+    if (pusher[4].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_4, MOTOR_GPIO_PIN_4, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_4, MOTOR_GPIO_PIN_4, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_5, MOTOR_CHANNEL_5, pusher[5].pulse);
-    if (pusher[5].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN_5, GPIO_PIN_SET);
+    if (pusher[5].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN_5, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN_5, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_6, MOTOR_CHANNEL_6, pusher[6].pulse);
-    if (pusher[6].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_6, MOTOR_GPIO_PIN_6, GPIO_PIN_SET);
+    if (pusher[6].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_6, MOTOR_GPIO_PIN_6, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_6, MOTOR_GPIO_PIN_6, GPIO_PIN_RESET);
 }
 
-extern int count;
+extern int line_of_Gcode;
 bool dir = 1;
 int pwm = 100;
 bool goal = false;
@@ -236,7 +236,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
 		cnt_5++; t_sec = cnt_5/20;
 		if (reached) {
-			if(count) {
+			if(line_of_Gcode) {
 				for (int i = 1; i <= 6; ++i) {
 					pusher[i].u = 0.0;
 					pusher[i].pulse = 0.0;

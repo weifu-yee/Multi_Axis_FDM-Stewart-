@@ -85,11 +85,8 @@ void update_pushers_PWM(const double diff_lengths[6]) {
        pusher[i].up = (double)Kp_univ * diff_lengths[i];
        pusher[i].u = pusher[i].up;
        pusher[i].pulse = fabs(pusher[i].u) * (double)PWM_ARR;
-
-       // Ensure the pulse doesn't fall below the minimum speed threshold
-       if (pusher[i].pulse < PWM_MIN) {
-    	   pusher[i].pulse = PWM_MIN;
-       }
+       if (pusher[i].u >= 0.0)	pusher[i].u = 1;
+       else pusher[i].u = 0;
 
        if (pusher[i].pulse > PWM_ARR) {
            double ratio = (double)PWM_ARR / pusher[i].pulse;
@@ -100,6 +97,10 @@ void update_pushers_PWM(const double diff_lengths[6]) {
    // Second pass to scale all pulses
    for (int i = 1; i <= 6; ++i) {
        pusher[i].pulse *= max_ratio;
+       // Ensure the pulse doesn't fall below the minimum speed threshold
+	   if (pusher[i].pulse < PWM_MIN) {
+		   pusher[i].pulse = PWM_MIN;
+	   }
    }
 }
 

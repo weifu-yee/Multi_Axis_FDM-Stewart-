@@ -14,7 +14,7 @@
 #include "control.h"
 #include "timing.h"
 
-int count = 0;
+int line_of_Gcode = 0;
 bool reached = true;
 double X, Y, Z, E, F, PHI, THETA, PSI;
 
@@ -41,7 +41,7 @@ void angularNormalizer(double *ang) {
 int nomalizeAng = 0;
 
 void readGCode(void){
-	switch(count) {
+	switch(line_of_Gcode) {
 		case 1:
 			X = 0.0;
 			Y = 0.0;
@@ -55,9 +55,9 @@ void readGCode(void){
 			X = 1.5;
 			Y = 2.5;
 			Z = 600;
-			PHI = 0.0;
-			THETA = 0.0;
-			PSI = 0.0;
+			PHI = 1.0;
+			THETA = 1.0;
+			PSI = 5.0;
 			F = 1500.0;
 			break;
 		case 3:
@@ -139,20 +139,19 @@ extern double prev_SPerror;
 extern int SPerror_increasing_count;
 
 void main_function(void){
+	//enable two MultiMotor boards
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_1, MM_Enable_GPIO_PIN_1, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_2, MM_Enable_GPIO_PIN_2, GPIO_PIN_RESET);
-//	_c = -2;
-//	while(_c == -2){}
 	Timer_INIT();
 	initialize_platform();
 	reset_pushers_to_home();
 	char send[] = "data321";
 	Arduino.init();
 	while(1){
-		printf("Hello %d \n", count);
+		printf("Hello %d \n", line_of_Gcode);
 		Arduino.sendData(send);
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-		count++;
+		line_of_Gcode++;
 		readGCode();
 		update_parameters();
 

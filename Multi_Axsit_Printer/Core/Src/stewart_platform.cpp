@@ -15,7 +15,7 @@ double current_lengths[7], next_lengths[7];
 Vector3D T;
 
 double deg_to_rad(double deg) {
-    return deg * PI / 18000.0;  // deg is in 0.01 degree
+    return deg * PI / 180.0;
 }
 
 void update_from_sensor(void) {
@@ -164,9 +164,12 @@ void initialize_platform(void) {
 }
 
 void rotation_matrix(const SPPose* platform, double pRb[3][3]) {
-    double phi = deg_to_rad(platform->phi);
-    double theta = deg_to_rad(platform->theta);
-    double psi = deg_to_rad(platform->psi);
+//    double phi = deg_to_rad(platform->phi);
+//    double theta = deg_to_rad(platform->theta);
+//    double psi = deg_to_rad(platform->psi);
+    double phi = platform->phi;
+    double theta = platform->theta;
+    double psi = platform->psi;
     double cphi = cos(phi), sphi = sin(phi);
     double ctheta = cos(theta), stheta = sin(theta);
     double cpsi = cos(psi), spsi = sin(psi);
