@@ -55,15 +55,15 @@ void readGCode(void){
 			X = 1.5;
 			Y = 2.5;
 			Z = 600;
-			PHI = 10.0;
-			THETA = 5.0;
-			PSI = 2.0;
+			PHI = 0.0;
+			THETA = 0.0;
+			PSI = 0.0;
 			F = 1500.0;
 			break;
 		case 3:
 			X = 20.0;
 			Y = 30.0;
-			Z = 600;
+			Z = 500;
 			PHI = 20.0;
 			THETA = 10.0;
 			PSI = 5.0;
@@ -76,16 +76,16 @@ void readGCode(void){
 			PHI = 30.0;
 			THETA = 15.0;
 			PSI = 10.0;
-			F = 250.0;
+			F = 2000.0;
 			break;
 		case 5:
 			X = 30.0;
 			Y = 40.0;
-			Z = 600;
+			Z = 500;
 			PHI = 40.0;
 			THETA = 20.0;
 			PSI = 15.0;
-			F = 300.0;
+			F = 2000.0;
 			break;
 		case 6:
 			X = 1.0;
@@ -94,7 +94,7 @@ void readGCode(void){
 			PHI = 10.0;
 			THETA = 5.0;
 			PSI = 0.0;
-			F = 100.0;
+			F = 2000.0;
 			break;
 		default:
 			break;

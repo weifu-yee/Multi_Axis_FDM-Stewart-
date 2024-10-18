@@ -154,6 +154,48 @@ void one_leg_process(int leg) {
 
 		prev_diffNorm = diffNorm;
 }
+void three_leg_process(int leg1, int leg2, int leg3) {
+//step 1
+		update_pusher_encoders();
+		update_from_sensor();
+//step 2
+		goal = same_SPPose(&current, &target);
+		if (!goal) {
+			presume_next();
+		}
+//step 3
+		calculate_leg(&next, next_lengths);
+//step 4
+		calculate_diff_lengths(diff_lengths);
+
+		for(int i = 1; i <= 6; ++i) {
+			if(i == leg1) continue;
+			if(i == leg2) continue;
+			if(i == leg3) continue;
+			diff_lengths[i] = 0.0;
+		}
+//step 5
+		update_pushers_PWM(diff_lengths);
+		actuate_pushers();
+//step 6
+		assignSPPose(&current, &next);  //IMU
+//step 7
+		diffNorm = calculateNorm(diff_lengths);
+
+		// Detect if we're getting further away from the target
+		if (diffNorm > prev_diffNorm) {
+			increasing_count++;
+		} else {
+			increasing_count = 0;
+		}
+
+		if ((goal && diffNorm < TOLERANCE) ||
+			(goal && increasing_count >= TREND_THRESHOLD)) {
+			reached = true;
+		}
+
+		prev_diffNorm = diffNorm;
+}
 void fake_encoder_process(void) {
 //step 1
 		update_pusher_encoders();
@@ -208,7 +250,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 
 		//choose one process
-		int proc = 3;
+		int proc = 4;
 		//
 
 
@@ -223,6 +265,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 				one_leg_process(4); //4th leg
 				break;
 			case 4:
+				three_leg_process(4, 5, 6);
+				break;
+			case 5:
 				fake_encoder_process();
 				break;
 			default:
