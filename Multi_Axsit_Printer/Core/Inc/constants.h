@@ -68,6 +68,7 @@
 #define MOTOR_GPIO_PIN_6 GPIO_PIN_11
 
 //control
+#define Lo = 603.886671
 #define NUM_PUSHERS 6
 #define FREQUENCY 1000.0
 #define resolution 512.0

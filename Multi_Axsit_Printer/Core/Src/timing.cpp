@@ -60,6 +60,7 @@ int increasing_count = 0;
 
 double PWM[7] = {0, 0, 0, 0, 0, 0};
 
+
 void true_process(void) {
 //step 1
 		update_pusher_encoders();
@@ -113,22 +114,103 @@ void test_process(void) {
 		}
 		actuate_pushers();
 }
-void one_leg_process(void) {
+void one_leg_process(int leg) {
+//step 1
+		update_pusher_encoders();
+		update_from_sensor();
+//step 2
+		goal = same_SPPose(&current, &target);
+		if (!goal) {
+			presume_next();
+		}
+//step 3
+		calculate_leg(&next, next_lengths);
+//step 4
+		calculate_diff_lengths(diff_lengths);
 
+		for(int i = 1; i <= 6; ++i) {
+			if(i == leg) continue;
+			diff_lengths[i] = 0.0;
+		}
+//step 5
+		update_pushers_PWM(diff_lengths);
+		actuate_pushers();
+//step 6
+		assignSPPose(&current, &next);  //IMU
+//step 7
+		diffNorm = calculateNorm(diff_lengths);
+
+		// Detect if we're getting further away from the target
+		if (diffNorm > prev_diffNorm) {
+			increasing_count++;
+		} else {
+			increasing_count = 0;
+		}
+
+		if ((goal && diffNorm < TOLERANCE) ||
+			(goal && increasing_count >= TREND_THRESHOLD)) {
+			reached = true;
+		}
+
+		prev_diffNorm = diffNorm;
+}
+void fake_encoder_process(void) {
+//step 1
+		update_pusher_encoders();
+		fake_update_from_sensor();
+//step 2
+		goal = same_SPPose(&current, &target);
+		if (!goal) {
+			presume_next();
+		}
+//step 3
+		calculate_leg(&next, next_lengths);
+//step 4
+		calculate_diff_lengths(diff_lengths);
+//step 5
+		update_pushers_PWM(diff_lengths);
+		actuate_pushers();
+//step 6
+		assignSPPose(&current, &next);  //IMU
+//step 7
+		diffNorm = calculateNorm(diff_lengths);
+
+		// Detect if we're getting further away from the target
+		if (diffNorm > prev_diffNorm) {
+			increasing_count++;
+		} else {
+			increasing_count = 0;
+		}
+
+		if ((goal && diffNorm < TOLERANCE) ||
+			(goal && increasing_count >= TREND_THRESHOLD)) {
+			reached = true;
+		}
+
+		prev_diffNorm = diffNorm;
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
-		cnt_5++;
-		t_sec = cnt_5/20;
-
-		if (reached)	{
+		cnt_5++; t_sec = cnt_5/20;
+		if (reached) {
+			if(count) {
+				for (int i = 1; i <= 6; ++i) {
+					pusher[i].u = 0.0;
+					pusher[i].pulse = 0.0;
+				}
+				actuate_pushers();
+			}
+			//_c is for debug.
 			_c ++;
 			return;
 		}
 
+
 		//choose one process
-		int proc = 2;
+		int proc = 3;
+		//
+
 
 		switch(proc) {
 			case 1:
@@ -138,7 +220,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 				test_process();
 				break;
 			case 3:
-				one_leg_process();
+				one_leg_process(4); //4th leg
+				break;
+			case 4:
+				fake_encoder_process();
 				break;
 			default:
 				break;

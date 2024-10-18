@@ -20,7 +20,7 @@ extern int t_sec;
 
 extern double current_lengths[7];
 void reset_pushers_to_home(void) {
-	double time_points[] = {140, 50};
+	double time_points[] = {140, 100};
 	//1
 	for (int i = 1; i <= 6; ++i) {
 		pusher[i].pulse = 1000.0;
