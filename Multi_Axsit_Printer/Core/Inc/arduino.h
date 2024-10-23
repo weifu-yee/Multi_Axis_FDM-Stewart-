@@ -9,9 +9,6 @@
 #define ARDUINO_H_
 
 /*INCLUDE*/
-#include "usart.h"
-#include <stdio.h>
-#include "stewart_platform.h"
 
 /*DEFINE*/
 #define ARDUINO_UART_HANDLE huart4

@@ -6,6 +6,9 @@
  */
 
 #include "arduino.h"
+#include "usart.h"
+#include <stdio.h>
+#include "stewart_platform.h"
 
 /*GLOBAL VARIABLES*/
 char transmit_data_ptr[] = "dataa12345678";
@@ -35,7 +38,6 @@ void ARDUINO::readGcode(void){
 }
 
 void ARDUINO::sendData(char* data_){
-	printf("arduino send data\n");
 	readFinished = false;
 	HAL_UART_Transmit_DMA(&ARDUINO_UART_HANDLE, (uint8_t*) data_, strlen(data_));
 	while(!readFinished){}
@@ -44,7 +46,6 @@ void ARDUINO::sendData(char* data_){
 /*OTHER FUNCTIONS*/
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
-	printf("callback\n");
 	if (huart == &ARDUINO_UART_HANDLE) {
 		printf("arduino receive callback: ");
 		printf("%s \n", (char*) receive_data_ptr);
@@ -68,15 +69,15 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 					}
 					num_float = atof(num_char);
 					count = 0;
-					printf("command: %c\n", command);
-					printf("num_char: %s\n", num_char);
-					printf("num_float: %f\n", num_float);
+//					printf("command: %c\n", command);
+//					printf("num_char: %s\n", num_char);
+//					printf("num_float: %f\n", num_float);
+					if(command == 'X') X = (double)num_float;
+					if(command == 'Y') Y = (double)num_float;
+					if(command == 'Z') Z = (double)num_float;
 				}
 			}
 		}
-		X = 1.0;
-		Y = 2.0;
-		Z = 5.0;
 		PHI = 10.0;
 		THETA = 5.0;
 		PSI = 0.0;
