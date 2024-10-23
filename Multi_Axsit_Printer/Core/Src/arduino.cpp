@@ -6,6 +6,9 @@
  */
 
 #include "arduino.h"
+#include "usart.h"
+#include <stdio.h>
+#include "stewart_platform.h"
 
 /*GLOBAL VARIABLES*/
 char transmit_data_ptr[] = "dataa12345678";

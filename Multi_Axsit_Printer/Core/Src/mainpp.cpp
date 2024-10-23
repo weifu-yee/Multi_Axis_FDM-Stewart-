@@ -14,6 +14,7 @@
 #include "constants.h"
 #include "control.h"
 #include "timing.h"
+#include "start.h"
 
 int count = 0;
 bool reached = true;
@@ -39,6 +40,7 @@ void Timer_INIT(void) {
 extern int _c; //what is this?
 
 void main_function(void){
+	Start.init();
 	initialize_platform();
 	reset_pushers_to_home();
 	init_lengths_array(current_lengths);
@@ -52,6 +54,7 @@ void main_function(void){
 
 //		reached = false;
 //		while(!reached){}; //waiting the process in timing.cpp
+//		HAL_Delay(500);
 	}
 }
 
