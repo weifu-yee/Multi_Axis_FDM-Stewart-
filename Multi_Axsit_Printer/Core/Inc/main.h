@@ -87,8 +87,6 @@ void Error_Handler(void);
 #define MM_DIR4_GPIO_Port GPIOE
 #define MM_DIR5_Pin GPIO_PIN_10
 #define MM_DIR5_GPIO_Port GPIOB
-#define MM_DIR6_Pin GPIO_PIN_11
-#define MM_DIR6_GPIO_Port GPIOB
 #define RMII_TXD1_Pin GPIO_PIN_13
 #define RMII_TXD1_GPIO_Port GPIOB
 #define LED_RED_Pin GPIO_PIN_14
