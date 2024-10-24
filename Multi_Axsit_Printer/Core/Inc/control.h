@@ -8,10 +8,10 @@
 #ifndef INC_CONTROL_H_
 #define INC_CONTROL_H_
 
-//#ifdef __cplusplus
-//extern "C"
-//{
-//#endif
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 #include <stdint.h>
 
@@ -22,13 +22,13 @@ typedef struct { // In mm units
     double u, up, ui, ud, pulse;
 } ActuatorPID;
 
-extern ActuatorPID pusher[6];
+extern ActuatorPID pusher[7];
 
 void reset_pushers_to_home(void);
 void update_pushers_PWM(const double diff_lengths[6]);
 
-//#ifdef __cplusplus
-//}
-//#endif
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_CONTROL_H_ */
