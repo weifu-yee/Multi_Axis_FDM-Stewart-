@@ -43,18 +43,17 @@ void main_function(void){
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_2, MM_Enable_GPIO_PIN_2, GPIO_PIN_RESET);
 	Timer_INIT();
 	initialize_platform();
-	reset_pushers_to_home();
+
+//	reset_pushers_to_home();
 	init_lengths_array(current_lengths);
 	init_lengths_array(next_lengths);
 	Arduino.init();
+
 	while(1){
 		printf("Hello %d \n", line_of_Gcode);
-		Arduino.sendData(send);
-//		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		line_of_Gcode++;
 		Arduino.readGcode();
-		update_parameters();
-//
+
 		prev_diffNorm = 0;
 		increasing_count = 0;
 		prev_SPerror = 0;
@@ -62,7 +61,6 @@ void main_function(void){
 
 		reached = false;
 //		while(!reached){}; //waiting the process in timing.cpp
-//		HAL_Delay(500);
 
 		//this while is for debug, lock the process between each line of Gcode.
 		while(_c != 0){}

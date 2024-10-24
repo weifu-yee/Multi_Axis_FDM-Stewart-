@@ -216,6 +216,7 @@ void angularNormalizer(double *ang) {
 void update_parameters(void) {
 	target.x = X;
 	target.y = Y;
+	Z = Ho - Z; //easy coordinate transformation
 	target.z = Z;
 	target.phi = PHI;
 	target.theta = THETA;

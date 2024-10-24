@@ -78,8 +78,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 				}
 			}
 		}
-		PHI = 10.0;
-		THETA = 5.0;
+		PHI = 0.0;
+		THETA = 0.0;
 		PSI = 0.0;
 		F = 100.0;
 		angularNormalizer(&PHI);
