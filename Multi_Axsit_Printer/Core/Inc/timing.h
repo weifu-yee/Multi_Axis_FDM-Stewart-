@@ -12,6 +12,11 @@ void actuate_pushers(void);
 extern bool goal;
 extern double diff_lengths[7];
 
+extern double prev_diffNorm;
+extern int increasing_count;
+extern double prev_SPerror;
+extern int SPerror_increasing_count;
+
 extern TIM_HandleTypeDef htim5;
 //pusher1
 extern TIM_HandleTypeDef htim1;
