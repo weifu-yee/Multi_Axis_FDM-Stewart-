@@ -134,7 +134,7 @@ SPPose create_default_stewart_platform() {
     SPPose platform;
     platform.x = 0;
     platform.y = 0;
-    platform.z = 250;
+    platform.z = Ho;
     platform.phi = 0;
     platform.theta = 0;
     platform.psi = 0;
@@ -216,7 +216,7 @@ void angularNormalizer(double *ang) {
 void update_parameters(void) {
 	target.x = X;
 	target.y = Y;
-	Z = Ho - Z; //easy coordinate transformation
+	Z = Ho - Z; //easily coordinate transformation;
 	target.z = Z;
 	target.phi = PHI;
 	target.theta = THETA;
@@ -226,9 +226,9 @@ void update_parameters(void) {
 	double dz = Z - current.z;
 	double total_distance = sqrt(dx*dx + dy*dy + dz*dz);
 	double time = total_distance / F;
-	target.x = dx / time;
-	target.y = dy / time;
-	target.z = dz / time;
+	Velo.x = dx / time;
+	Velo.y = dy / time;
+	Velo.z = dz / time;
 
 	double dphi = PHI - current.phi;
 	double dtheta = THETA - current.theta;
@@ -237,7 +237,7 @@ void update_parameters(void) {
 	dphi = fmod(dphi + M_PI, 2*M_PI) - M_PI;
 	dtheta = fmod(dtheta + M_PI, 2*M_PI) - M_PI;
 	dpsi = fmod(dpsi + M_PI, 2*M_PI) - M_PI;
-	target.phi = dphi / time;
-	target.theta = dtheta / time;
-	target.psi = dpsi / time;
+	Velo.phi = dphi / time;
+	Velo.theta = dtheta / time;
+	Velo.psi = dpsi / time;
 }

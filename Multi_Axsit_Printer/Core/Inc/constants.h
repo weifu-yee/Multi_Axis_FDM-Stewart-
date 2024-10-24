@@ -70,7 +70,8 @@
 //control
 #define So 181.786671
 #define Lo 603.886671
-#define Ho 600
+//#define Ho 600
+#define Ho 550
 #define NUM_PUSHERS 6
 #define FREQUENCY 1000.0
 #define resolution 512.0
