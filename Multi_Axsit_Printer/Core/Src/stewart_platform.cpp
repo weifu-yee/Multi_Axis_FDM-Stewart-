@@ -13,6 +13,13 @@ SPPose target = create_default_stewart_platform();
 SPVelocity Velo = create_default_stewart_velocity();
 double current_lengths[7], next_lengths[7];
 Vector3D T;
+double X, Y, Z, E, F, PHI, THETA, PSI;
+
+void init_lengths_array(double *vec) {
+	for (int i = 0; i < 6; ++i) {
+		vec[i] = 0.0;
+	}
+}
 
 double deg_to_rad(double deg) {
     return deg * PI / 180.0;
@@ -200,4 +207,36 @@ void calculate_leg(const SPPose* platform,
     for (int i = 1; i <= 6; ++i) {
         lengths[i] = calculate_length(&T, pRb, &p[i], &b[i]);
     }
+}
+
+void angularNormalizer(double *ang) {
+	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
+}
+
+void update_parameters(void) {
+	target.x = X;
+	target.y = Y;
+	target.z = Z;
+	target.phi = PHI;
+	target.theta = THETA;
+	target.psi = PSI;
+	double dx = X - current.x;
+	double dy = Y - current.y;
+	double dz = Z - current.z;
+	double total_distance = sqrt(dx*dx + dy*dy + dz*dz);
+	double time = total_distance / F;
+	target.x = dx / time;
+	target.y = dy / time;
+	target.z = dz / time;
+
+	double dphi = PHI - current.phi;
+	double dtheta = THETA - current.theta;
+	double dpsi = PSI - current.psi;
+	// Normalize angular differences to [-π, π]
+	dphi = fmod(dphi + M_PI, 2*M_PI) - M_PI;
+	dtheta = fmod(dtheta + M_PI, 2*M_PI) - M_PI;
+	dpsi = fmod(dpsi + M_PI, 2*M_PI) - M_PI;
+	target.phi = dphi / time;
+	target.theta = dtheta / time;
+	target.psi = dpsi / time;
 }

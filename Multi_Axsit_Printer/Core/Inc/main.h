@@ -97,6 +97,7 @@ void Error_Handler(void);
 #define STLK_VCP_TX_GPIO_Port GPIOD
 #define USB_FS_OVCR_Pin GPIO_PIN_7
 #define USB_FS_OVCR_GPIO_Port GPIOG
+#define USB_FS_OVCR_EXTI_IRQn EXTI9_5_IRQn
 #define USB_FS_VBUS_Pin GPIO_PIN_9
 #define USB_FS_VBUS_GPIO_Port GPIOA
 #define USB_FS_ID_Pin GPIO_PIN_10
@@ -115,6 +116,9 @@ void Error_Handler(void);
 #define RMII_TXD0_GPIO_Port GPIOG
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define Start_Button_Pin GPIO_PIN_6
+#define Start_Button_GPIO_Port GPIOB
+#define Start_Button_EXTI_IRQn EXTI9_5_IRQn
 #define MM_EN1_Pin GPIO_PIN_7
 #define MM_EN1_GPIO_Port GPIOB
 #define LED_YELLOW_Pin GPIO_PIN_1

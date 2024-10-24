@@ -7,16 +7,17 @@
 
 /*INCLUDES*/
 #include "mainpp.h"
+#include <stdio.h>
 #include "arduino.h"
 #include "main.h"
 #include "stewart_platform.h"
 #include "constants.h"
 #include "control.h"
 #include "timing.h"
+#include "start.h"
 
 int line_of_Gcode = 0;
 bool reached = true;
-double X, Y, Z, E, F, PHI, THETA, PSI;
 
 void Timer_INIT(void) {
 	HAL_TIM_Base_Start_IT(&htim5);
@@ -34,134 +35,34 @@ void Timer_INIT(void) {
 	HAL_TIM_Encoder_Start(&htim24, TIM_CHANNEL_ALL);
 }
 
-void angularNormalizer(double *ang) {
-	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
-}
-
-int nomalizeAng = 0;
-
-void readGCode(void){
-	switch(line_of_Gcode) {
-		case 1:
-			X = 0.0;
-			Y = 0.0;
-			Z = 580;
-			PHI = 0.0;
-			THETA = 0.0;
-			PSI = 0.523;
-			F = 1000.0;
-			break;
-		case 2:
-			X = 1.5;
-			Y = 2.5;
-			Z = 500;
-			PHI = 0.0;
-			THETA = 0.0;
-			PSI = 0.0;
-			F = 1500.0;
-			break;
-		case 3:
-			X = 2.0;
-			Y = 3.0;
-			Z = 500;
-			PHI = 0.0;
-			THETA = 0.0;
-			PSI = .0;
-			F = 2000.0;
-			break;
-		case 4:
-			X = 0.0;
-			Y = 0.0;
-			Z = 600;
-			PHI = 0.523;
-			THETA = 0.0;
-			PSI = 10.0;
-			F = 2000.0;
-			break;
-		case 5:
-			X = 30.0;
-			Y = 0.0;
-			Z = 550;
-			PHI = 0.0;
-			THETA = 0.0;
-			PSI = 0.523;
-			F = 2000.0;
-			break;
-		case 6:
-			X = 30.0;
-			Y = 0.0;
-			Z = 550;
-			PHI = 0.523;
-			THETA = 0.0;
-			PSI = 0.0;
-			F = 2000.0;
-			break;
-		default:
-			break;
-	}
-	angularNormalizer(&PHI);
-	angularNormalizer(&THETA);
-	angularNormalizer(&PSI);
-	nomalizeAng++;
-}
-void update_parameters(void) {
-	target.x = X;
-	target.y = Y;
-	target.z = Z;
-	target.phi = PHI;
-	target.theta = THETA;
-	target.psi = PSI;
-	double dx = X - current.x;
-	double dy = Y - current.y;
-	double dz = Z - current.z;
-	double total_distance = sqrt(dx*dx + dy*dy + dz*dz);
-	double time = total_distance / F;
-	Velo.x = dx / time;
-	Velo.y = dy / time;
-	Velo.z = dz / time;
-
-	double dphi = PHI - current.phi;
-	double dtheta = THETA - current.theta;
-	double dpsi = PSI - current.psi;
-	// Normalize angular differences to [-π, π]
-	dphi = fmod(dphi + M_PI, 2*M_PI) - M_PI;
-	dtheta = fmod(dtheta + M_PI, 2*M_PI) - M_PI;
-	dpsi = fmod(dpsi + M_PI, 2*M_PI) - M_PI;
-	Velo.phi = dphi / time;
-	Velo.theta = dtheta / time;
-	Velo.psi = dpsi / time;
-}
-
 extern int _c;
-extern double prev_diffNorm;
-extern int increasing_count;
-extern double prev_SPerror;
-extern int SPerror_increasing_count;
 
 void main_function(void){
-	//enable two MultiMotor boards
+	Start.init();
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_1, MM_Enable_GPIO_PIN_1, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_2, MM_Enable_GPIO_PIN_2, GPIO_PIN_RESET);
 	Timer_INIT();
 	initialize_platform();
 	reset_pushers_to_home();
-	char send[] = "data321";
+	init_lengths_array(current_lengths);
+	init_lengths_array(next_lengths);
 	Arduino.init();
 	while(1){
 		printf("Hello %d \n", line_of_Gcode);
 		Arduino.sendData(send);
-		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+//		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		line_of_Gcode++;
-		readGCode();
+		Arduino.readGcode();
 		update_parameters();
-
+//
 		prev_diffNorm = 0;
 		increasing_count = 0;
 		prev_SPerror = 0;
 		SPerror_increasing_count = 0;
 
 		reached = false;
-		while(!reached); //waiting the process in timing.cpp
+//		while(!reached){}; //waiting the process in timing.cpp
+//		HAL_Delay(500);
 
 		//this while is for debug, lock the process between each line of Gcode.
 		while(_c != 0){}
