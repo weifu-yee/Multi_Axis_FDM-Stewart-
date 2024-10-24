@@ -13,13 +13,7 @@ SPPose target = create_default_stewart_platform();
 SPVelocity Velo = create_default_stewart_velocity();
 double current_lengths[7], next_lengths[7];
 Vector3D T;
-double X, Y, Z, E, F, PHI, THETA, PSI;
-
-void init_lengths_array(double *vec) {
-	for (int i = 0; i < 6; ++i) {
-		vec[i] = 0.0;
-	}
-}
+double X, Y, Z_, Z, E, F, PHI, THETA, PSI;
 
 double deg_to_rad(double deg) {
     return deg * PI / 180.0;
@@ -216,7 +210,7 @@ void angularNormalizer(double *ang) {
 void update_parameters(void) {
 	target.x = X;
 	target.y = Y;
-	Z = Ho - Z; //easily coordinate transformation;
+	Z = Ho - Z_; //easily coordinate transformation;
 	target.z = Z;
 	target.phi = PHI;
 	target.theta = THETA;

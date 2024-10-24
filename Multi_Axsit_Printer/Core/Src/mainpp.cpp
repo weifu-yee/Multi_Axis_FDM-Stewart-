@@ -45,8 +45,6 @@ void main_function(void){
 	initialize_platform();
 
 	reset_pushers_to_home();
-	init_lengths_array(current_lengths);
-	init_lengths_array(next_lengths);
 	Arduino.init();
 
 	while(1){

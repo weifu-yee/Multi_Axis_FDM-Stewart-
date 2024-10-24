@@ -74,7 +74,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 //					printf("num_float: %f\n", num_float);
 					if(command == 'X') X = (double)num_float;
 					if(command == 'Y') Y = (double)num_float;
-					if(command == 'Z') Z = (double)num_float;
+					if(command == 'Z') Z_ = (double)num_float;
 				}
 			}
 		}
