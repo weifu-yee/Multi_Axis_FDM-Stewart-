@@ -44,7 +44,7 @@ void main_function(void){
 	Timer_INIT();
 	initialize_platform();
 
-//	reset_pushers_to_home();
+	reset_pushers_to_home();
 	init_lengths_array(current_lengths);
 	init_lengths_array(next_lengths);
 	Arduino.init();
@@ -60,7 +60,7 @@ void main_function(void){
 		SPerror_increasing_count = 0;
 
 		reached = false;
-//		while(!reached){}; //waiting the process in timing.cpp
+		while(!reached){}; //waiting the process in timing.cpp
 
 		//this while is for debug, lock the process between each line of Gcode.
 		while(_c != 0){}
