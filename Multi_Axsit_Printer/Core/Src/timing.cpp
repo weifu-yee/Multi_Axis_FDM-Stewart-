@@ -27,11 +27,23 @@ void update_pusher_encoders(void) {
 void actuate_pushers(void) {
 	a ++;
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_1, MOTOR_CHANNEL_1, pusher[1].pulse);
-    if (pusher[1].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
-    else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_RESET);
+    if (pusher[1].u >= 0.0) {
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1_1, MOTOR_GPIO_PIN_1_1, GPIO_PIN_SET);
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1_2, MOTOR_GPIO_PIN_1_2, GPIO_PIN_RESET);
+    }
+    else {
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1_1, MOTOR_GPIO_PIN_1_1, GPIO_PIN_RESET);
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1_2, MOTOR_GPIO_PIN_1_2, GPIO_PIN_SET);
+    }
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_2, MOTOR_CHANNEL_2, pusher[2].pulse);
-    if (pusher[2].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_SET);
-    else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_RESET);
+    if (pusher[2].u >= 0.0) {
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2_1, MOTOR_GPIO_PIN_2_1, GPIO_PIN_SET);
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2_2, MOTOR_GPIO_PIN_2_2, GPIO_PIN_RESET);
+    }
+    else {
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2_1, MOTOR_GPIO_PIN_2_1, GPIO_PIN_RESET);
+    	HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2_2, MOTOR_GPIO_PIN_2_2, GPIO_PIN_SET);
+    }
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_3, MOTOR_CHANNEL_3, pusher[3].pulse);
     if (pusher[3].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_RESET);
@@ -267,10 +279,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 				test_process();
 				break;
 			case 3:
-				one_leg_process(4); //4th leg
+				one_leg_process(1); //1th leg
 				break;
 			case 4:
-				three_leg_process(4, 5, 6);
+				three_leg_process(1, 2, 3);
 				break;
 			case 5:
 				fake_encoder_process();
