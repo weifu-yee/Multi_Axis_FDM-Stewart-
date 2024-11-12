@@ -18,6 +18,10 @@ public:
     Eigen::Affine3d getTransform(const std::string& from, const std::string& to) const;
     Eigen::Affine3d getJointPlanePoseInWorldFrame() const;
 
+    // 新增公共函數來更新非 const 變換矩陣
+	void setPartToNozzleTransform(double tx, double ty, double tz, double rx_degree, double ry_degree, double rz_degree);
+	void setWorkpieceOriginToPartTransform(double tx, double ty, double tz, double rx_degree, double ry_degree, double rz_degree);
+
 private:
     // 變換矩陣的成員變數
     const Eigen::Affine3d word2nozzleTransform;
