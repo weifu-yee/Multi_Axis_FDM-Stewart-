@@ -19,7 +19,9 @@ public:
     SPPose getJointPlanePoseInWorldFrame() const; // 更新返回類型為 SPPose
 
     // 新增公共函數來更新非 const 變換矩陣
+    //G01
     void setPartToNozzleTransform(double tx, double ty, double tz, double rx_degree, double ry_degree, double rz_degree);
+    //G87
     void setWorkpieceOriginToPartTransform(double tx, double ty, double tz, double rx_degree, double ry_degree, double rz_degree);
 
 private:

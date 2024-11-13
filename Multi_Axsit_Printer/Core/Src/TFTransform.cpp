@@ -62,16 +62,24 @@ SPPose TFTransformer::getJointPlanePoseInWorldFrame() const {
     Eigen::Vector3d translation = total_transform.translation();
 
     // 提取旋轉分量並轉換為歐拉角 (ZYX 順序)
-    Eigen::Vector3d euler_angles = total_transform.rotation().eulerAngles(2, 1, 0); // ZYX 順序
+//    Eigen::Vector3d euler_angles = total_transform.rotation().eulerAngles(2, 1, 0); // ZYX 順序
+
+    Eigen::Matrix3d R = total_transform.rotation();  // 獲取旋轉矩陣
+    double roll = atan2(R(2, 1), R(2, 2));  // 繞 X 軸的旋轉角
+    double pitch = asin(-R(2, 0));          // 繞 Y 軸的旋轉角
+    double yaw = atan2(R(1, 0), R(0, 0));   // 繞 Z 軸的旋轉角
 
     // 將位移和旋轉角度存入 SPPose 結構
     SPPose pose;
     pose.x = translation.x();
     pose.y = translation.y();
     pose.z = translation.z();
-    pose.phi = euler_angles[2];   // Roll (phi)
-    pose.theta = euler_angles[1]; // Pitch (theta)
-    pose.psi = euler_angles[0];   // Yaw (psi)
+//    pose.phi = euler_angles[2];   // Roll (phi)
+//    pose.theta = euler_angles[1]; // Pitch (theta)
+//    pose.psi = euler_angles[0];   // Yaw (psi)
+    pose.phi = roll;
+    pose.theta = pitch;
+    pose.psi = yaw;
 
     return pose;
 }
