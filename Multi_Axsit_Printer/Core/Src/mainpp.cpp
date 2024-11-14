@@ -16,7 +16,7 @@
 #include "timing.h"
 #include "start.h"
 
-int count = 0;
+int line_of_Gcode = 0;
 bool reached = true;
 
 void Timer_INIT(void) {
@@ -41,28 +41,24 @@ void main_function(void){
 	Start.init();
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_1, MM_Enable_GPIO_PIN_1, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_2, MM_Enable_GPIO_PIN_2, GPIO_PIN_RESET);
-//	_c = -2;
-//	while(_c == -2){}
 	Timer_INIT();
 	initialize_platform();
+
 	reset_pushers_to_home();
-	init_lengths_array(current_lengths);
-	init_lengths_array(next_lengths);
 	Arduino.init();
+
 	while(1){
-		printf("Hello %d \n", count);
-//		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-		count++;
+		printf("Hello %d \n", line_of_Gcode);
+		line_of_Gcode++;
 		Arduino.readGcode();
-//
+
 		prev_diffNorm = 0;
 		increasing_count = 0;
 		prev_SPerror = 0;
 		SPerror_increasing_count = 0;
 
 		reached = false;
-//		while(!reached){}; //waiting the process in timing.cpp
-//		HAL_Delay(500);
+		while(!reached){}; //waiting the process in timing.cpp
 
 		//this while is for debug, lock the process between each line of Gcode.
 		while(_c != 0){}

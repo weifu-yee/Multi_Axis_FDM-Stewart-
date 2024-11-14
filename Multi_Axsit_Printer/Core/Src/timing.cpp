@@ -12,6 +12,7 @@ int cnt_5 = 0;
 int t_sec = 0;
 extern bool reached;
 
+int a = 0;
 
 void update_pusher_encoders(void) {
 	for (int i = 1; i <= 6; i++) {
@@ -24,27 +25,28 @@ void update_pusher_encoders(void) {
 }
 
 void actuate_pushers(void) {
+	a ++;
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_1, MOTOR_CHANNEL_1, pusher[1].pulse);
-    if (pusher[1].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
+    if (pusher[1].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_1, MOTOR_GPIO_PIN_1, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_2, MOTOR_CHANNEL_2, pusher[2].pulse);
-    if (pusher[2].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_SET);
+    if (pusher[2].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_2, MOTOR_GPIO_PIN_2, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_3, MOTOR_CHANNEL_3, pusher[3].pulse);
-    if (pusher[3].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_SET);
+    if (pusher[3].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_3, MOTOR_GPIO_PIN_3, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_4, MOTOR_CHANNEL_4, pusher[4].pulse);
-    if (pusher[4].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_4, MOTOR_GPIO_PIN_4, GPIO_PIN_SET);
+    if (pusher[4].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_4, MOTOR_GPIO_PIN_4, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_4, MOTOR_GPIO_PIN_4, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_5, MOTOR_CHANNEL_5, pusher[5].pulse);
-    if (pusher[5].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN_5, GPIO_PIN_SET);
+    if (pusher[5].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN_5, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_5, MOTOR_GPIO_PIN_5, GPIO_PIN_RESET);
     __HAL_TIM_SET_COMPARE(MOTOR_HTIM_6, MOTOR_CHANNEL_6, pusher[6].pulse);
-    if (pusher[6].u >= 0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_6, MOTOR_GPIO_PIN_6, GPIO_PIN_SET);
+    if (pusher[6].u >= 0.0)        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_6, MOTOR_GPIO_PIN_6, GPIO_PIN_SET);
     else        HAL_GPIO_WritePin(MOTOR_GPIO_PORT_6, MOTOR_GPIO_PIN_6, GPIO_PIN_RESET);
 }
 
-extern int count;
+extern int line_of_Gcode;
 bool dir = 1;
 int pwm = 100;
 bool goal = false;
@@ -154,6 +156,48 @@ void one_leg_process(int leg) {
 
 		prev_diffNorm = diffNorm;
 }
+void three_leg_process(int leg1, int leg2, int leg3) {
+//step 1
+	update_pusher_encoders();
+	update_from_sensor();
+//step 2
+	goal = same_SPPose(&current, &target);
+	if (!goal) {
+		presume_next();
+	}
+//step 3
+	calculate_leg(&next, next_lengths);
+//step 4
+	calculate_diff_lengths(diff_lengths);
+
+	for(int i = 1; i <= 6; ++i) {
+		if(i == leg1) continue;
+		else if(i == leg2) continue;
+		else if(i == leg3) continue;
+		diff_lengths[i] = 0.0;
+	}
+//step 5
+	update_pushers_PWM(diff_lengths);
+	actuate_pushers();
+//step 6
+	assignSPPose(&current, &next);  //IMU
+//step 7
+	diffNorm = calculateNorm(diff_lengths);
+
+	// Detect if we're getting further away from the target
+	if (diffNorm > prev_diffNorm) {
+		increasing_count++;
+	} else {
+		increasing_count = 0;
+	}
+
+	if ((goal && diffNorm < TOLERANCE) ||
+		(goal && increasing_count >= TREND_THRESHOLD)) {
+		reached = true;
+	}
+
+	prev_diffNorm = diffNorm;
+}
 void fake_encoder_process(void) {
 //step 1
 		update_pusher_encoders();
@@ -189,12 +233,15 @@ void fake_encoder_process(void) {
 
 		prev_diffNorm = diffNorm;
 }
+void determine_KP_process(void) {
+
+}
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
 		cnt_5++; t_sec = cnt_5/20;
 		if (reached) {
-			if(count) {
+			if(line_of_Gcode) {
 				for (int i = 1; i <= 6; ++i) {
 					pusher[i].u = 0.0;
 					pusher[i].pulse = 0.0;
@@ -208,7 +255,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 
 		//choose one process
-		int proc = 3;
+		int proc = 4;
 		//
 
 
@@ -223,6 +270,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 				one_leg_process(4); //4th leg
 				break;
 			case 4:
+				three_leg_process(4, 5, 6);
+				break;
+			case 5:
 				fake_encoder_process();
 				break;
 			default:
