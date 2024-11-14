@@ -9,6 +9,7 @@
 #include "usart.h"
 #include <stdio.h>
 #include "stewart_platform.h"
+#include "TFTransform.h"
 
 /*GLOBAL VARIABLES*/
 char transmit_data_ptr[] = "dataa12345678";
@@ -89,6 +90,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 		__HAL_DMA_DISABLE_IT(&ARDUINO_UART_DME_HANDLE, DMA_IT_HT);
 		for(int i = 0; i < 100; i++) receive_data_ptr[i] = 0;
 	}
-	update_parameters();
+	SPPose pose = transformer.getJointPlanePoseInWorldFrame();  //by weifu-yee
+	update_parameters(&pose);  //by weifu-yee
 	readFinished = true;
 }

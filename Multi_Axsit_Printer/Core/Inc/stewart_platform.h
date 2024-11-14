@@ -49,7 +49,7 @@ void initialize_platform(void);
 void calculate_leg(const SPPose* platform,
                    double lengths[7]);
 void angularNormalizer(double *ang);
-void update_parameters(void);
+void update_parameters(const SPPose* target_pose);
 
 #ifdef __cplusplus
 }

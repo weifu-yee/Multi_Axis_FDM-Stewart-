@@ -35,4 +35,6 @@ private:
     Eigen::Affine3d workpiece_origin2partTransform;
 };
 
+extern TFTransformer transformer;
+
 #endif /* INC_TFTRANSFORM_H_ */

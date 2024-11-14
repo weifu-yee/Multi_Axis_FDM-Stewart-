@@ -207,31 +207,39 @@ void angularNormalizer(double *ang) {
 	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
 }
 
-void update_parameters(void) {
-	target.x = X;
-	target.y = Y;
-	Z = Ho - Z_; //easily coordinate transformation;
-	target.z = Z;
-	target.phi = PHI;
-	target.theta = THETA;
-	target.psi = PSI;
-	double dx = X - current.x;
-	double dy = Y - current.y;
-	double dz = Z - current.z;
-	double total_distance = sqrt(dx*dx + dy*dy + dz*dz);
-	double time = total_distance / F;
-	Velo.x = dx / time;
-	Velo.y = dy / time;
-	Velo.z = dz / time;
+void update_parameters(const SPPose* target_pose) {
+    // 更新目標位置
+    target.x = target_pose->x;
+    target.y = target_pose->y;
+    target.z = target_pose->z;
+    target.phi = target_pose->phi;
+    target.theta = target_pose->theta;
+    target.psi = target_pose->psi;
 
-	double dphi = PHI - current.phi;
-	double dtheta = THETA - current.theta;
-	double dpsi = PSI - current.psi;
-	// Normalize angular differences to [-π, π]
-	dphi = fmod(dphi + M_PI, 2*M_PI) - M_PI;
-	dtheta = fmod(dtheta + M_PI, 2*M_PI) - M_PI;
-	dpsi = fmod(dpsi + M_PI, 2*M_PI) - M_PI;
-	Velo.phi = dphi / time;
-	Velo.theta = dtheta / time;
-	Velo.psi = dpsi / time;
+    // 計算位置差異
+    double dx = target_pose->x - current.x;
+    double dy = target_pose->y - current.y;
+    double dz = target_pose->z - current.z;
+    double total_distance = sqrt(dx * dx + dy * dy + dz * dz);
+    double time = total_distance / F;
+
+    // 計算線速度
+    Velo.x = dx / time;
+    Velo.y = dy / time;
+    Velo.z = dz / time;
+
+    // 計算角度差異
+    double dphi = target_pose->phi - current.phi;
+    double dtheta = target_pose->theta - current.theta;
+    double dpsi = target_pose->psi - current.psi;
+
+    // 正規化角度差異至 [-π, π]
+    dphi = fmod(dphi + M_PI, 2 * M_PI) - M_PI;
+    dtheta = fmod(dtheta + M_PI, 2 * M_PI) - M_PI;
+    dpsi = fmod(dpsi + M_PI, 2 * M_PI) - M_PI;
+
+    // 計算角速度
+    Velo.phi = dphi / time;
+    Velo.theta = dtheta / time;
+    Velo.psi = dpsi / time;
 }
