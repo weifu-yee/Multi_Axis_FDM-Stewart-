@@ -12,9 +12,11 @@
 #include "TFTransform.h"
 
 /*GLOBAL VARIABLES*/
-char transmit_data_ptr[] = "dataa12345678";
 uint8_t receive_data_ptr[100] = {};
-bool readFinished;
+bool readFinished, readAnotherLine;
+double F;
+double X, Y, Z, A, B, C; //G1
+double w2p_X, w2p_Y, w2p_Z, w2p_A, w2p_B, w2p_C; //G87
 
 /*EXTERN VARIABLES*/
 extern DMA_HandleTypeDef ARDUINO_UART_DME_HANDLE;
@@ -28,20 +30,26 @@ ARDUINO::~ARDUINO() {}
 void ARDUINO::init(){
 	printf("arduino init\n");
 	readFinished = true;
+	readAnotherLine = false;
+	F = 1000.0;
+	X = 0; Y = 0; Z = 0; A = 0; B = 0; C = 0;
+	w2p_X = 0; w2p_Y = 0; w2p_Z = 0; w2p_A = 0; w2p_B = 0; w2p_C = 0;
 	HAL_UARTEx_ReceiveToIdle_DMA(&ARDUINO_UART_HANDLE, receive_data_ptr, 100);
 	__HAL_DMA_DISABLE_IT(&ARDUINO_UART_DME_HANDLE, DMA_IT_HT);
 }
 
 void ARDUINO::readGcode(void){
 	char readNext[] = "next";
-	Arduino.sendData(readNext);
-
+	do{
+		sendData(readNext);
+		while(!readFinished){}
+	} while (readAnotherLine);
 }
 
 void ARDUINO::sendData(char* data_){
 	readFinished = false;
+	readAnotherLine = true;
 	HAL_UART_Transmit_DMA(&ARDUINO_UART_HANDLE, (uint8_t*) data_, strlen(data_));
-	while(!readFinished){}
 }
 
 /*OTHER FUNCTIONS*/
@@ -56,11 +64,11 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 			for (int i = 3; i < (int) strlen((char*)receive_data_ptr); i++) {
 				if (receive_data_ptr[i] == ';')
 					break;
-				count++; //num_charbers of chars including space
+				count++; //numbers of chars including space
 				if (receive_data_ptr[i] == ' ') { //i: the index of space in read[]
 					char command = '\0';
 					char num_char[10] = { };
-					float num_float = 0.0;
+					double num_double = 0.0;
 					command = receive_data_ptr[i - (count - 1)];
 					for (int j = 0; j < count - 2; j++) {
 						num_char[j] = receive_data_ptr[i - (count - 2) + j];
@@ -68,29 +76,63 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 					for (int j = count - 2; j < 10; j++) {
 						num_char[j] = '\0';
 					}
-					num_float = atof(num_char);
+					num_double = atof(num_char);
 					count = 0;
-//					printf("command: %c\n", command);
-//					printf("num_char: %s\n", num_char);
-//					printf("num_float: %f\n", num_float);
-					if(command == 'X') X = (double)num_float;
-					if(command == 'Y') Y = (double)num_float;
-					if(command == 'Z') Z_ = (double)num_float;
+					// printf("command: %c\n", command);
+					// printf("num_char: %s\n", num_char);
+					// printf("num_double: %f\n", num_double);
+					if(command == 'X') X = num_double;
+					if(command == 'Y') Y = num_double;
+					if(command == 'Z') Z = num_double;
+					if(command == 'A') A = num_double;
+					if(command == 'B') B = num_double;
+					if(command == 'C') C = num_double;
+					if(command == 'F') F = num_double;
 				}
 			}
+			angularNormalizer(&A);
+			angularNormalizer(&B);
+			angularNormalizer(&C);
+			transformer.setPartToNozzleTransform(X, Y, Z, A, B, C);
+			readAnotherLine = false;
 		}
-		PHI = 0.0;
-		THETA = 0.0;
-		PSI = 0.0;
-		F = 1000.0;
-		angularNormalizer(&PHI);
-		angularNormalizer(&THETA);
-		angularNormalizer(&PSI);
-		HAL_UARTEx_ReceiveToIdle_DMA(&ARDUINO_UART_HANDLE, receive_data_ptr, 100);
-		__HAL_DMA_DISABLE_IT(&ARDUINO_UART_DME_HANDLE, DMA_IT_HT);
+		else if (receive_data_ptr[0] == 'G' && receive_data_ptr[1] == '8'
+				&& receive_data_ptr[2] == '7' && receive_data_ptr[3] == ' ') {
+			int count = 0;
+			for (int i = 4; i < (int) strlen((char*) receive_data_ptr); i++) {
+				if (receive_data_ptr[i] == ';') break;
+				count++; //numbers of chars including space
+				if (receive_data_ptr[i] == ' ') { //i: the index of space in read[]
+					char command = '\0';
+					char num_char[10] = { };
+					double num_double = 0.0;
+					command = receive_data_ptr[i - (count - 1)];
+					for (int j = 0; j < count - 2; j++) {
+						num_char[j] = receive_data_ptr[i - (count - 2) + j];
+					}
+					for (int j = count - 2; j < 10; j++) {
+						num_char[j] = '\0';
+					}
+					num_double = atof(num_char);
+					count = 0;
+					//printf("command: %c\n", command);
+					//printf("num_char: %s\n", num_char);
+					//printf("num_double: %f\n", num_double);
+					if (command == 'X') w2p_X = num_double;
+					if (command == 'Y') w2p_Y = num_double;
+					if (command == 'Z') w2p_Z = num_double;
+					if (command == 'A') w2p_X = num_double;
+					if (command == 'B') w2p_Y = num_double;
+					if (command == 'C') w2p_Z = num_double;
+				}
+			}
+			transformer.setWorkpieceOriginToPartTransform(w2p_X, w2p_Y, w2p_Z, w2p_A, w2p_B, w2p_C);
+		}
+		SPPose pose = transformer.getJointPlanePoseInWorldFrame();
+		update_parameters(&pose, F);
 		for(int i = 0; i < 100; i++) receive_data_ptr[i] = 0;
+		readFinished = true;
 	}
-	SPPose pose = transformer.getJointPlanePoseInWorldFrame();  //by weifu-yee
-	update_parameters(&pose);  //by weifu-yee
-	readFinished = true;
+	HAL_UARTEx_ReceiveToIdle_DMA(&ARDUINO_UART_HANDLE, receive_data_ptr, 100);
+	__HAL_DMA_DISABLE_IT(&ARDUINO_UART_DME_HANDLE, DMA_IT_HT);
 }

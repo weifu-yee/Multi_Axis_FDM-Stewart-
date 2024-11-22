@@ -75,12 +75,12 @@ void Error_Handler(void);
 #define RMII_RXD1_GPIO_Port GPIOC
 #define LED_GREEN_Pin GPIO_PIN_0
 #define LED_GREEN_GPIO_Port GPIOB
-#define DIR1_1_Pin GPIO_PIN_7
-#define DIR1_1_GPIO_Port GPIOE
+#define DIR1_Pin GPIO_PIN_7
+#define DIR1_GPIO_Port GPIOE
 #define MM_EN2_Pin GPIO_PIN_8
 #define MM_EN2_GPIO_Port GPIOE
-#define DIR2_1_Pin GPIO_PIN_10
-#define DIR2_1_GPIO_Port GPIOE
+#define DIR2_Pin GPIO_PIN_10
+#define DIR2_GPIO_Port GPIOE
 #define DIR3_Pin GPIO_PIN_12
 #define DIR3_GPIO_Port GPIOE
 #define DIR4_Pin GPIO_PIN_15
@@ -116,15 +116,11 @@ void Error_Handler(void);
 #define RMII_TX_EN_GPIO_Port GPIOG
 #define RMII_TXD0_Pin GPIO_PIN_13
 #define RMII_TXD0_GPIO_Port GPIOG
-#define DIR2_2_Pin GPIO_PIN_14
-#define DIR2_2_GPIO_Port GPIOG
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
 #define Start_Button_Pin GPIO_PIN_6
 #define Start_Button_GPIO_Port GPIOB
 #define Start_Button_EXTI_IRQn EXTI9_5_IRQn
-#define DIR1_2_Pin GPIO_PIN_7
-#define DIR1_2_GPIO_Port GPIOB
 #define LED_YELLOW_Pin GPIO_PIN_1
 #define LED_YELLOW_GPIO_Port GPIOE
 
