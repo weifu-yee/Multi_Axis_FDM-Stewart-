@@ -102,3 +102,11 @@ void TFTransformer::setWorkpieceOriginToPartTransform(double tx, double ty, doub
     workpiece_origin2partTransform = Eigen::Translation3d(tx, ty, tz) * rotation;
 }
 
+
+// 用於設置 WORD2NOZZLE 的新函數, for adjust the _Z value manually.
+void TFTransformer::setWordToNozzleTransform(double tx, double ty, double tz, double rx_degree, double ry_degree, double rz_degree) {
+    Eigen::Quaterniond rotation = Eigen::Quaterniond(Eigen::AngleAxisd(degreeToRad(rx_degree), Eigen::Vector3d::UnitX())) *
+                                  Eigen::Quaterniond(Eigen::AngleAxisd(degreeToRad(ry_degree), Eigen::Vector3d::UnitY())) *
+                                  Eigen::Quaterniond(Eigen::AngleAxisd(degreeToRad(rz_degree), Eigen::Vector3d::UnitZ()));
+    word2nozzleTransform = Eigen::Translation3d(tx, ty, tz) * rotation;
+}

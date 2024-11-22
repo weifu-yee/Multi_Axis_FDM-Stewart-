@@ -22,6 +22,7 @@ extern double F;
 
 double mod_Kp[7] = {0, KP_1, KP_2, KP_3, KP_4, KP_5, KP_6};
 double mod_Kp_times_1000[7];
+double mod_W2N_Z = 600.0;
 
 void pose_init(void) {
 	X = 0.0;
@@ -71,15 +72,24 @@ void elevator_Gcode(void) {
 }
 void update_KP_s(void) {
 	//update 'mod_Kp_times_1000' array directly in the "live representation" window
-	for(int i = 1; i <= 6; ++i) {
-		mod_Kp[i] = mod_Kp_times_1000[i] / 1000.0;
-	}
 	if(mod_Kp_times_1000[0]) {
 		for(int i = 1; i <= 6; ++i) {
-			mod_Kp[i] = mod_Kp_times_1000[0] / 1000.0;
+			mod_Kp_times_1000[i] = mod_Kp_times_1000[0];
 		}
 		mod_Kp_times_1000[0] = 0.0;
 	}
+	for(int i = 1; i <= 6; ++i) {
+		mod_Kp[i] = mod_Kp_times_1000[i] / 1000.0;
+	}
+}
+void update_WORD2NOZZLE_TRANSLATION(void) {
+	transformer.setWordToNozzleTransform(
+		WORD2NOZZLE_TRANSLATION_X,
+		WORD2NOZZLE_TRANSLATION_Y,
+		mod_W2N_Z,
+		WORD2NOZZLE_ROTATION_X_DEGREE,
+		WORD2NOZZLE_ROTATION_Y_DEGREE,
+		WORD2NOZZLE_ROTATION_Z_DEGREE);
 }
 
 void determine_KP_loop(int kind) {
@@ -103,6 +113,7 @@ void determine_KP_loop(int kind) {
 		reached = false;
 		while(!reached){
 			update_KP_s();
+			update_WORD2NOZZLE_TRANSLATION();
 		}; //waiting the process in timing.cpp
 
 //		if() { //when M2 end of file been delivered.

@@ -24,9 +24,14 @@ public:
     //G87
     void setWorkpieceOriginToPartTransform(double tx, double ty, double tz, double rx_degree, double ry_degree, double rz_degree);
 
+    //for test the real number of W2N_Z
+    void setWordToNozzleTransform(double tx, double ty, double tz, double rx_degree, double ry_degree, double rz_degree);
+
 private:
     // 變換矩陣的成員變數
-    const Eigen::Affine3d word2nozzleTransform;
+//    const Eigen::Affine3d word2nozzleTransform;
+    Eigen::Affine3d word2nozzleTransform;
+
     const Eigen::Affine3d bed_surface2workpiece_originTransform;
     const Eigen::Affine3d bed_joint_plane2bed_surfaceTransform;
 

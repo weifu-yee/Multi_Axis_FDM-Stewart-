@@ -107,13 +107,13 @@
 #define PWM_MIN 50.0
 #define Lead 20.0
 
-#define Kp_univ 0.5
-#define KP_1 0.5
-#define KP_2 0.5
-#define KP_3 0.5
-#define KP_4 0.5
-#define KP_5 0.5
-#define KP_6 0.5
+#define Kp_univ 0.05
+#define KP_1 0.05
+#define KP_2 0.05
+#define KP_3 0.05
+#define KP_4 0.05
+#define KP_5 0.05
+#define KP_6 0.05
 
 #define KI_1 500
 #define KI_2 600
