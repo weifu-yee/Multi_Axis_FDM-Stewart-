@@ -60,9 +60,13 @@ void main_function(void){
 		reached = false;
 		while(!reached){}; //waiting the process in timing.cpp
 
+//		if() {
+//
+//		}
+
 		//this while is for debug, lock the process between each line of Gcode.
-		while(_c != 0){}
-		_c ++;
+//		while(_c != 0){}
+//		_c ++;
 	}
 }
 
