@@ -24,6 +24,8 @@ extern double current_lengths[7];
 
 int leg_un_origin = 6;
 extern SPPose current;
+extern bool started;
+
 void reset_pushers_to_home(void) {
 	double time_points[] = {140, 100};
 	//1
@@ -62,6 +64,11 @@ void reset_pushers_to_home(void) {
 				pusher[i].u = 1.0;
 			}
 		}
+
+		if (started) {
+			leg_un_origin = 0;
+		}
+
 		actuate_pushers();
 		HAL_Delay(50);
 	}

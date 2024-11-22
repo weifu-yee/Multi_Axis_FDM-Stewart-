@@ -47,6 +47,8 @@ void main_function(void){
 	reset_pushers_to_home();
 	Arduino.init();
 
+	while(!started);
+
 	while(1){
 		printf("Hello %d \n", line_of_Gcode);
 		line_of_Gcode++;

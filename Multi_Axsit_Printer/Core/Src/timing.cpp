@@ -237,7 +237,6 @@ void determine_KP_process(void) {
 
 }
 
-int proccc = 0;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
@@ -257,7 +256,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 
 		//choose one process
-		int proc = 3;
+		int proc = 1;
 		//
 
 		switch(proc) {
@@ -268,7 +267,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 				test_process();
 				break;
 			case 3:
-				one_leg_process(1); //4th leg
+				one_leg_process(2); //4th leg
 				break;
 			case 4:
 				three_leg_process(4, 5, 6);
@@ -279,6 +278,5 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 			default:
 				break;
 		}
-		proccc++;
 	}
 }
