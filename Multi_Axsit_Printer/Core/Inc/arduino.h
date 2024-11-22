@@ -24,9 +24,8 @@ public:
     virtual ~ARDUINO();
     void init();
     void readGcode();
-    void sendData(char*);
 private:
-
+    void sendData(char*);
 };
 
 extern ARDUINO Arduino;
