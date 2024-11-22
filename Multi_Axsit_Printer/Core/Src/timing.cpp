@@ -62,6 +62,7 @@ int increasing_count = 0;
 
 double PWM[7] = {0, 0, 0, 0, 0, 0};
 
+/*goal: same Pose ; reached: nearly reached lengths */
 
 void true_process(void) {
 //step 1
@@ -240,7 +241,7 @@ void determine_KP_process(void) {
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
-		cnt_5++; t_sec = cnt_5/20;
+		cnt_5++; t_sec = (int)cnt_5/FREQUENCY;
 		if (reached) {
 			if(line_of_Gcode) {
 				for (int i = 1; i <= 6; ++i) {

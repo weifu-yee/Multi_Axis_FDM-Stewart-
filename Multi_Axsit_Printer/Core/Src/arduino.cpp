@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "stewart_platform.h"
 #include "TFTransform.h"
+#include "constants.h"
 
 /*GLOBAL VARIABLES*/
 uint8_t receive_data_ptr[100] = {};
@@ -31,7 +32,7 @@ void ARDUINO::init(){
 	printf("arduino init\n");
 	readFinished = true;
 	readAnotherLine = false;
-	F = 1000.0;
+	F = F_init;
 	X = 0; Y = 0; Z = 0; A = 0; B = 0; C = 0;
 	w2p_X = 0; w2p_Y = 0; w2p_Z = 0; w2p_A = 0; w2p_B = 0; w2p_C = 0;
 	HAL_UARTEx_ReceiveToIdle_DMA(&ARDUINO_UART_HANDLE, receive_data_ptr, 100);

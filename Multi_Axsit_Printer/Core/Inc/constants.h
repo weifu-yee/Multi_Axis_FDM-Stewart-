@@ -90,13 +90,16 @@
 #define BED_JOINT_PLANE2BED_SURFACE_ROTATION_Y_DEGREE 0.0
 #define BED_JOINT_PLANE2BED_SURFACE_ROTATION_Z_DEGREE 0.0
 
+//Arduino
+#define F_init 50.0
+
 //control
 #define So 181.786671
 #define Lo 603.886671
 //#define Ho 600
 #define Ho 550
 #define NUM_PUSHERS 6
-#define FREQUENCY 1000.0
+#define FREQUENCY 20.0
 #define resolution 512.0
 #define reduction_ratio 20.8
 #define max_ui 1.0

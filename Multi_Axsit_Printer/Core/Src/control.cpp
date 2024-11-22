@@ -86,10 +86,11 @@ void reset_pushers_to_home(void) {
 }
 void update_pushers_PWM(const double diff_lengths[6]) {
    double max_ratio = 1.0;
+   const double Kp_array[7] = {0, KP_1, KP_2, KP_3, KP_4, KP_5, KP_6};
 
    // First pass to calculate pulses and find max ratio
    for (int i = 1; i <= 6; ++i) {
-       pusher[i].up = (double)Kp_univ * diff_lengths[i];
+       pusher[i].up = (double)Kp_array[i] * diff_lengths[i];
        pusher[i].u = pusher[i].up;
        pusher[i].pulse = fabs(pusher[i].u) * (double)PWM_ARR;
        if (pusher[i].u >= 0.0)	pusher[i].u = 1;
