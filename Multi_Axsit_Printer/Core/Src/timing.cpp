@@ -235,7 +235,41 @@ void fake_encoder_process(void) {
 		prev_diffNorm = diffNorm;
 }
 void determine_KP_process(void) {
+	//draw a rectangular on a plane that z axis is fixed.
 
+//step 1
+		update_pusher_encoders();
+		update_from_sensor();
+//step 2
+		goal = same_SPPose(&current, &target);
+		if (!goal) {
+			presume_next();
+		}
+//step 3
+		calculate_leg(&next, next_lengths);
+//step 4
+		calculate_diff_lengths(diff_lengths);
+//step 5
+		update_pushers_PWM(diff_lengths);
+		actuate_pushers();
+//step 6
+		assignSPPose(&current, &next);  //IMU
+//step 7
+		diffNorm = calculateNorm(diff_lengths);
+
+		// Detect if we're getting further away from the target
+		if (diffNorm > prev_diffNorm) {
+			increasing_count++;
+		} else {
+			increasing_count = 0;
+		}
+
+		if ((goal && diffNorm < TOLERANCE) ||
+			(goal && increasing_count >= TREND_THRESHOLD)) {
+			reached = true;
+		}
+
+		prev_diffNorm = diffNorm;
 }
 
 

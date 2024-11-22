@@ -15,9 +15,11 @@
 #include "control.h"
 #include "timing.h"
 #include "start.h"
+#include "determine_KP_mode.h"
 
 int line_of_Gcode = 0;
 bool reached = true;
+bool determine_KP_mode = false;
 
 void Timer_INIT(void) {
 	HAL_TIM_Base_Start_IT(&htim5);
@@ -36,6 +38,7 @@ void Timer_INIT(void) {
 }
 
 extern int _c;
+extern double mod_Kp[7];
 
 void main_function(void){
 	Start.init();
@@ -48,6 +51,10 @@ void main_function(void){
 	Arduino.init();
 
 	while(!started);
+
+
+	determine_KP_mode = true; //switch true or false
+	if (determine_KP_mode) determine_KP_loop(2); //1 for rectangular or 2 for elevator
 
 	while(1){
 		printf("Hello %d \n", line_of_Gcode);
@@ -62,7 +69,7 @@ void main_function(void){
 		reached = false;
 		while(!reached){}; //waiting the process in timing.cpp
 
-//		if() {
+//		if() { //when M2 end of file been delivered.
 //
 //		}
 

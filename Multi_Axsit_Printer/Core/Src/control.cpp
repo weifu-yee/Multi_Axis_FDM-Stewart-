@@ -25,6 +25,8 @@ extern double current_lengths[7];
 int leg_un_origin = 6;
 extern SPPose current;
 extern bool started;
+extern bool determine_KP_mode;
+extern double mod_Kp[7];
 
 void reset_pushers_to_home(void) {
 	double time_points[] = {140, 100};
@@ -86,7 +88,13 @@ void reset_pushers_to_home(void) {
 }
 void update_pushers_PWM(const double diff_lengths[6]) {
    double max_ratio = 1.0;
-   const double Kp_array[7] = {0, KP_1, KP_2, KP_3, KP_4, KP_5, KP_6};
+   double Kp_array[7] = {0, KP_1, KP_2, KP_3, KP_4, KP_5, KP_6};
+
+   if(determine_KP_mode) {
+		for(int i = 1; i <= 6; ++i) {
+			Kp_array[i] = mod_Kp[i];
+		}
+   }
 
    // First pass to calculate pulses and find max ratio
    for (int i = 1; i <= 6; ++i) {
