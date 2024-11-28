@@ -48,6 +48,7 @@ void calculate_leg(const SPPose* platform,
                    double lengths[7]);
 void angularNormalizer(double *ang);
 void update_parameters(const SPPose* target_pose, double F);
+void actuate_pushers_with_smooth(void);
 
 #ifdef __cplusplus
 }

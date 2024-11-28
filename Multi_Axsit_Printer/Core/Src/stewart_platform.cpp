@@ -5,6 +5,7 @@
 #include <string.h>
 #include "constants.h"
 #include "control.h"
+#include "timing.h"
 
 Vector3D p[7], b[7];
 SPPose current = create_default_stewart_platform();
@@ -17,7 +18,6 @@ Vector3D T;
 double deg_to_rad(double deg) {
     return deg * PI / 180.0;
 }
-
 void update_from_sensor(void) {
 	for (int i = 1; i <= 6; ++i) {
 		double delta = (double)pusher[i].enc
@@ -27,7 +27,6 @@ void update_from_sensor(void) {
 		pusher[i].insVel = delta * FREQUENCY;
 	}
 }
-
 void fake_update_from_sensor(void) {
 	for (int i = 1; i <= 6; ++i) {
 		double delta = pusher[i].pulse / 100.0;
@@ -38,7 +37,6 @@ void fake_update_from_sensor(void) {
 		pusher[i].insVel = delta * (double)FREQUENCY;
 	}
 }
-
 void presume_next(void) {
 	double dt = (double)1 / FREQUENCY;
 	next.x = (double)(current.x + (double)(dt * Velo.x));
@@ -48,13 +46,11 @@ void presume_next(void) {
 	next.theta = (double)current.theta + dt * Velo.theta;
 	next.psi = (double)current.psi + dt * Velo.psi;
 }
-
 void calculate_diff_lengths(double diff_lengths[7]) {
 	for (int i = 1; i <= 6; ++i) {
 		diff_lengths[i] = next_lengths[i] - current_lengths[i];
 	}
 }
-
 void assignSPPose(SPPose *dest, const SPPose *src) {
     dest->x = src->x;
     dest->y = src->y;
@@ -63,7 +59,6 @@ void assignSPPose(SPPose *dest, const SPPose *src) {
     dest->theta = src->theta;
     dest->psi = src->psi;
 }
-
 double calculateNorm(const double *vec) {
     double sum = 0.0;
     for (int i = 1; i <= 6; ++i) {
@@ -71,7 +66,6 @@ double calculateNorm(const double *vec) {
     }
     return sqrt(sum);
 }
-
 double calculate_disp_error(const SPPose* pose1, const SPPose* pose2) {
     double error = 0.0;
 
@@ -98,6 +92,36 @@ double calculate_disp_error(const SPPose* pose1, const SPPose* pose2) {
     return error;
 }
 
+// 定義最大允許的變化量
+#define MAX_DELTA 5.0 // 每次計時器中斷時，允許的最大變化量
+
+// 用來記錄上次輸出的狀態
+static double last_pulse[7] = {0.0};  // 假設有7個推進器
+
+// 緩啟動與緩煞車限制函數
+void limit_pusher_change(void) {
+    for (int i = 1; i <= 6; ++i) {
+        // 限制 pulse 的變化量
+        double delta_pulse = pusher[i].pulse - last_pulse[i];
+        if (delta_pulse > MAX_DELTA) {
+            pusher[i].pulse = last_pulse[i] + MAX_DELTA;  // 如果變化太大，限制變化量
+        } else if (delta_pulse < -MAX_DELTA) {
+            pusher[i].pulse = last_pulse[i] - MAX_DELTA;  // 如果變化太大，限制變化量
+        }
+
+        int sign_u = (pusher[i].u > 0) - (pusher[i].u < 0);
+        // 記錄當前狀態，以便下次比較
+        last_pulse[i] = pusher[i].pulse * (double)sign_u;
+    }
+}
+// 調用 limit_pusher_change 函數來限制變化量
+void actuate_pushers_with_smooth(void) {
+    limit_pusher_change();  // 限制變化量
+    actuate_pushers();      // 執行推進器控制
+}
+
+
+
 double SPerror;
 double prev_SPerror = 0;
 int SPerror_increasing_count = 0;
@@ -122,7 +146,6 @@ bool same_SPPose(const SPPose *pose1, const SPPose *pose2) {
 	}
 	return false;
 }
-
 SPPose create_default_stewart_platform() {
     SPPose platform;
     platform.x = 0;
@@ -133,7 +156,6 @@ SPPose create_default_stewart_platform() {
     platform.psi = 0;
     return platform;
 }
-
 SPVelocity create_default_stewart_velocity() {
     SPVelocity Velo;
     Velo.x = 0;
@@ -144,7 +166,6 @@ SPVelocity create_default_stewart_velocity() {
     Velo.psi = 0;
     return Velo;
 }
-
 void initialize_platform(void) {
 	const double p_angles[] = P_ANGLES;
 	const double b_angles[] = B_ANGLES;
@@ -162,7 +183,6 @@ void initialize_platform(void) {
         b[i].z = 0;
     }
 }
-
 void rotation_matrix(const SPPose* platform, double pRb[3][3]) {
 //    double phi = deg_to_rad(platform->phi);
 //    double theta = deg_to_rad(platform->theta);
@@ -183,7 +203,6 @@ void rotation_matrix(const SPPose* platform, double pRb[3][3]) {
     pRb[2][1] = cphi * stheta * spsi + sphi * cpsi;
     pRb[2][2] = cphi * ctheta;
 }
-
 double calculate_length(const Vector3D* T, const double pRb[3][3],
                          const Vector3D* p, const Vector3D* b) {
     double dx = T->x + pRb[0][0] * p->x + pRb[0][1] * p->y + pRb[0][2] * p->z - b->x;
@@ -191,7 +210,6 @@ double calculate_length(const Vector3D* T, const double pRb[3][3],
     double dz = T->z + pRb[2][0] * p->x + pRb[2][1] * p->y + pRb[2][2] * p->z - b->z;
     return (double)sqrt(dx*dx + dy*dy + dz*dz);
 }
-
 void calculate_leg(const SPPose* platform,
                    double lengths[7]) {
     double pRb[3][3];
@@ -201,11 +219,9 @@ void calculate_leg(const SPPose* platform,
         lengths[i] = calculate_length(&T, pRb, &p[i], &b[i]);
     }
 }
-
 void angularNormalizer(double *ang) {
 	*ang = (double) fmod(*ang + M_PI, 2*M_PI) - M_PI;
 }
-
 void update_parameters(const SPPose* target_pose, double F) {
     // 更新目標位置
     target.x = target_pose->x;

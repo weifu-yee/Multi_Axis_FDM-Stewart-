@@ -96,7 +96,7 @@
 //control
 #define So 181.786671
 #define Lo 603.886671
-#define reset_pulse 400.0
+#define reset_pulse 1000.0
 
 #define Ho 550
 #define NUM_PUSHERS 6

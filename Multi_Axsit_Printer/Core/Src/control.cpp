@@ -36,7 +36,8 @@ void reset_pushers_to_home(void) {
 		pusher[i].u = -1.0;
 	}
 	cnt_5 = 0; t_sec = 0;
-	actuate_pushers();
+//	actuate_pushers();
+	actuate_pushers_with_smooth();
 	while (cnt_5 < time_points[0]);
 
 	//2
@@ -71,7 +72,8 @@ void reset_pushers_to_home(void) {
 			leg_un_origin = 0;
 		}
 
-		actuate_pushers();
+//		actuate_pushers();
+		actuate_pushers_with_smooth();
 		HAL_Delay(50);
 	}
 
@@ -82,7 +84,8 @@ void reset_pushers_to_home(void) {
 		current_lengths[i] = Lo;
 	}
 	cnt_5 = 0; t_sec = 0;
-	actuate_pushers();
+//	actuate_pushers();
+	actuate_pushers_with_smooth();
 
 	current.z = Ho;
 }
