@@ -37,20 +37,20 @@ void rectangular_Gcode(void) {
 	int line = (int)line_of_Gcode % 4;
 	switch(line){
 	case 0:
-		X = 30.0;
-		Y = 30.0;
+		X = side_length_of_square;
+		Y = side_length_of_square;
 		break;
 	case 1:
-		X = -30.0;
-		Y = 30.0;
+		X = -side_length_of_square;
+		Y = side_length_of_square;
 		break;
 	case 2:
-		X = -30.0;
-		Y = -30.0;
+		X = -side_length_of_square;
+		Y = -side_length_of_square;
 		break;
 	case 3:
-		X = 30.0;
-		Y = -30.0;
+		X = side_length_of_square;
+		Y = -side_length_of_square;
 		break;
 	default:
 		break;
@@ -61,10 +61,10 @@ void elevator_Gcode(void) {
 	int line = (int)line_of_Gcode % 2;
 	switch(line){
 	case 0:
-		Z -= 30.0;
+		Z -= side_length_of_square;
 		break;
 	case 1:
-		Z += 30.0;
+		Z += side_length_of_square;
 		break;
 	default:
 		break;

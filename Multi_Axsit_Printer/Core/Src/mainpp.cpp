@@ -53,7 +53,7 @@ void main_function(void){
 	while(!started);
 
 
-	determine_KP_mode = true; //switch true or false
+	determine_KP_mode = false; //switch true or false
 	if (determine_KP_mode) determine_KP_loop(1); //1 for rectangular or 2 for elevator
 
 	while(1){

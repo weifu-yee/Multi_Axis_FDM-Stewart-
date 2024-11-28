@@ -94,6 +94,9 @@
 //Arduino
 #define F_init 50.0
 
+//determine_KP_mode
+#define side_length_of_square 50.0
+
 //control
 #define So 181.786671
 #define Lo 603.886671
@@ -107,7 +110,7 @@
 #define reduction_ratio 20.8
 #define max_ui 1.0
 #define PWM_ARR 1000.0
-#define PWM_MIN 0.0
+#define PWM_MIN 30.0
 #define Lead 20.0
 
 #define Kp_univ 0.05
