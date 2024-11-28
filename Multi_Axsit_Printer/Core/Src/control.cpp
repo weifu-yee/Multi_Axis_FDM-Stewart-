@@ -32,7 +32,7 @@ void reset_pushers_to_home(void) {
 	double time_points[] = {140, 100};
 	//1
 	for (int i = 1; i <= 6; ++i) {
-		pusher[i].pulse = 1000.0;
+		pusher[i].pulse = reset_pulse;
 		pusher[i].u = -1.0;
 	}
 	cnt_5 = 0; t_sec = 0;
@@ -53,7 +53,7 @@ void reset_pushers_to_home(void) {
 		update_pusher_encoders();
 		update_from_sensor();
 		for (int i = 1; i <= 6; ++i) {
-			pusher[i].pulse = 1000.0;
+			pusher[i].pulse = reset_pulse;
 			pusher[i].u = 1.0;
 			if (current_lengths[i] >= So) {
 				pusher[i].pulse = 0.0;

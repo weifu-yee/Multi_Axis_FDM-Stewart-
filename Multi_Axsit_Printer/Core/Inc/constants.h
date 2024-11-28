@@ -31,10 +31,10 @@
 #define MM_Enable_GPIO_PIN_2 GPIO_PIN_8
 
 // 定義每個定時器通道和 GPIO 配置
-#define ENCODER_HTIM_1 &htim1
-#define MOTOR_HTIM_1 &htim12
+#define ENCODER_HTIM_1 &htim1  //Encoder
+#define MOTOR_HTIM_1 &htim12  //PWM
 #define MOTOR_CHANNEL_1   TIM_CHANNEL_2
-#define MOTOR_GPIO_PORT_1 GPIOE
+#define MOTOR_GPIO_PORT_1 GPIOE  //DIR
 #define MOTOR_GPIO_PIN_1 GPIO_PIN_7
 
 #define ENCODER_HTIM_2 &htim3
@@ -96,7 +96,8 @@
 //control
 #define So 181.786671
 #define Lo 603.886671
-//#define Ho 600
+#define reset_pulse 400.0
+
 #define Ho 550
 #define NUM_PUSHERS 6
 #define FREQUENCY 20.0
@@ -104,7 +105,7 @@
 #define reduction_ratio 20.8
 #define max_ui 1.0
 #define PWM_ARR 1000.0
-#define PWM_MIN 50.0
+#define PWM_MIN 0.0
 #define Lead 20.0
 
 #define Kp_univ 0.05

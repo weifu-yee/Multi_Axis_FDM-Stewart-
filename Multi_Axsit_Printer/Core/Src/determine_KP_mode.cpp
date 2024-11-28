@@ -91,6 +91,11 @@ void update_WORD2NOZZLE_TRANSLATION(void) {
 		WORD2NOZZLE_ROTATION_Y_DEGREE,
 		WORD2NOZZLE_ROTATION_Z_DEGREE);
 }
+void heropose(void) {
+	pose_init();
+	A += 30;
+	Y += 30;
+}
 
 void determine_KP_loop(int kind) {
 	for(int i = 1; i <= 6; ++i) { //init the array
@@ -101,6 +106,8 @@ void determine_KP_loop(int kind) {
 
 		if(kind == 1) rectangular_Gcode();
 		else elevator_Gcode();
+//		else heropose();
+
 		transformer.setPartToNozzleTransform(X, Y, Z, A, B, C);
 		SPPose pose = transformer.getJointPlanePoseInWorldFrame();
 		update_parameters(&pose, F);
