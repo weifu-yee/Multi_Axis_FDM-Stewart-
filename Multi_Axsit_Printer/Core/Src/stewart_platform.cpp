@@ -30,7 +30,7 @@ void update_from_sensor(void) {
 void fake_update_from_sensor(void) {
 	for (int i = 1; i <= 6; ++i) {
 		double delta = pusher[i].pulse / 100.0;
-		if (pusher[i].u >= 0)
+		if (pusher[i].dir >= 0)
 			current_lengths[i] += delta;
 		else
 			current_lengths[i] -= delta;
@@ -94,22 +94,22 @@ double calculate_disp_error(const SPPose* pose1, const SPPose* pose2) {
 
 
 // 用來記錄上次輸出的狀態
-double last_pwm[7] = {0.0};  // 假設有7個推進器
-double pwm_[7], delta_pulse[7];
+int last_pulse[7] = {0};
 
 // 緩啟動與緩煞車限制函數
 void limit_pusher_change(void) {
     for (int i = 1; i <= 6; ++i) {
-    	pwm_[i] = pusher[i].pulse * pusher[i].u;
-        delta_pulse[i] = pwm_[i] - last_pwm[i];
-        if (delta_pulse[i] > MAX_DELTA) {
-        	pwm_[i] = last_pwm[i] + MAX_DELTA;  // 如果變化太大，限制變化量
-        } else if (delta_pulse[i] < -MAX_DELTA) {
-        	pwm_[i] = last_pwm[i] - MAX_DELTA;  // 如果變化太大，限制變化量
-        }
-        pusher[i].u = (double)((pwm_[i] > 0) - (pwm_[i] < 0));
-        last_pwm[i] = pwm_[i];
-        pusher[i].pulse = fabs(pwm_[i]);
+    	int pulse_w_sign = pusher[i].goal_pulse * pusher[i].dir;
+        int delta_pulse = pulse_w_sign - last_pulse[i];
+		if (delta_pulse > MAX_DELTA) {
+			pulse_w_sign = last_pulse[i] + MAX_DELTA;
+			pusher[i].pulse = (double)abs(pulse_w_sign);
+		} else if (delta_pulse < -MAX_DELTA) {
+			pulse_w_sign = last_pulse[i] - MAX_DELTA;
+			pusher[i].pulse = (double)abs(pulse_w_sign);
+		}
+		pusher[i].dir = (pulse_w_sign > 0) - (pulse_w_sign < 0);
+        last_pulse[i] = pulse_w_sign;
     }
 }
 // 調用 limit_pusher_change 函數來限制變化量

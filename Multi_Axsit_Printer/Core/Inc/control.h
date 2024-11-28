@@ -16,13 +16,13 @@ extern "C"
 #include <stdint.h>
 
 typedef struct { // In mm units
-    double Kp, Ki, Kd;
     int16_t enc;
-    double goalVel, insVel, error, last_error;
-    double u, up, ui, ud, pulse;
-} ActuatorPID;
+    double insVel;
+    double u, up, pulse, goal_pulse;
+    int dir;
+} Actuator;
 
-extern ActuatorPID pusher[7];
+extern Actuator pusher[7];
 
 void reset_pushers_to_home(void);
 void update_pushers_PWM(const double diff_lengths[6]);
