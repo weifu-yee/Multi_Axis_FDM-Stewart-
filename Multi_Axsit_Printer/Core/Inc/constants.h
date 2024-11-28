@@ -24,6 +24,7 @@
 #define ANG_NORM_WEIGHT 1
 #define pulse_per_mm 2.27
 #define SPerror_TREND_THRESHOLD 3
+#define MAX_DELTA 50.0 // 每次計時器中斷時，允許的最大變化量
 
 #define MM_Enable_GPIO_PORT_1 GPIOB
 #define MM_Enable_GPIO_PIN_1 GPIO_PIN_7
