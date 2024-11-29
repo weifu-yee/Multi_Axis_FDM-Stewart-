@@ -71,6 +71,7 @@ int _write(int file, char *ptr, int len) {
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
