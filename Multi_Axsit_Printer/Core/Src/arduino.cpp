@@ -159,6 +159,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 			}
 		}else if (receive_data_ptr[0] == 'M' && receive_data_ptr[1] == '2' && receive_data_ptr[2] == ' ') {
 			stop = true;
+			readAnotherLine = false;
 		}
 		
 		SPPose pose = transformer.getJointPlanePoseInWorldFrame();

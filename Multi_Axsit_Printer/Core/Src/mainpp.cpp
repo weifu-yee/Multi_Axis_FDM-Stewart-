@@ -39,6 +39,7 @@ void Timer_INIT(void) {
 
 extern int _c;
 extern double mod_Kp[7];
+extern bool stop;
 
 void main_function(void){
 	Start.init();
@@ -51,6 +52,8 @@ void main_function(void){
 	Arduino.init();
 
 	while(!started);
+	HAL_Delay(50);
+	started = false;
 
 
 	determine_KP_mode = false; //switch true or false
@@ -59,7 +62,9 @@ void main_function(void){
 	while(1){
 		printf("Hello %d \n", line_of_Gcode);
 		line_of_Gcode++;
-		Arduino.readGcode();
+		if (!stop) {
+			Arduino.readGcode();
+		}
 
 		prev_diffNorm = 0;
 		increasing_count = 0;
@@ -76,6 +81,9 @@ void main_function(void){
 		//this while is for debug, lock the process between each line of Gcode.
 //		while(_c != 0){}
 //		_c ++;
+
+		while(stop){}; //waiting press the ArduinoRest button, and press start
+		HAL_Delay(50);
 	}
 }
 

@@ -55,6 +55,9 @@ double diff_lengths[7];
 int _c = 1;
 int bbb = 0;
 double diffNorm = 0;
+extern int S;
+extern bool stop;
+extern bool started;
 
 double prev_diffNorm = 0;
 int increasing_count = 0;
@@ -276,9 +279,17 @@ void determine_KP_process(void) {
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
 		cnt_5++; t_sec = (int)cnt_5/FREQUENCY;
+
+		if (stop && started) {
+			//once press the ArduinoRest button, and press start
+			started = false;
+			stop = false;
+			line_of_Gcode = 0;
+		}
+
 		if (reached) {
 			if(line_of_Gcode) {
-				for (int i = 1; i <= 6; ++i) {
+				for (int i = 1; i <= 6; ++i) { //wait for start button be clicked
 					pusher[i].u = 0.0;
 					pusher[i].pulse = 0.0;
 				}
@@ -289,6 +300,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 			return;
 		}
 
+		if (S) {
+			for (int i = 1; i <= 6; ++i) { //wait for start button be clicked
+				pusher[i].u = 0.0;
+				pusher[i].pulse = 0.0;
+			}
+			actuate_pushers();
+			--S;
+			return;
+		}
 
 		//choose one process
 		int proc = 1;
