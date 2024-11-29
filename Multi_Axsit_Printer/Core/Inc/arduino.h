@@ -16,6 +16,7 @@
 
 /*VARIABLES*/
 extern bool readFinished;
+extern int S;
 
 /*CLASS*/
 class ARDUINO {
