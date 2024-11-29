@@ -100,8 +100,8 @@
 //control
 #define So 181.786671
 #define Lo 603.886671
-#define reset_pulse 1000.0
-#define length_to_slowdown 30.0
+#define reset_pulse 1250.0
+#define length_to_slowdown 40.0
 
 #define Ho 550
 #define NUM_PUSHERS 6
