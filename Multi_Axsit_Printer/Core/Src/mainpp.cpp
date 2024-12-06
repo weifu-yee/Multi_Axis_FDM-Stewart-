@@ -61,7 +61,7 @@ void main_function(void){
 
 
 	determine_KP_mode = false; //switch true or false
-	if (determine_KP_mode) determine_KP_loop(1); //1 for rectangular or 2 for elevator
+	if (determine_KP_mode) determine_KP_loop(2); //1 for rectangular or 2 for elevator
 
 	while(1){
 		printf("Hello %d \n", line_of_Gcode);

@@ -9,7 +9,7 @@
 #define INC_CONSTANTS_H_
 
 //timing
-#define TOLERANCE 10
+#define TOLERANCE 1
 #define TREND_THRESHOLD 3  // Number of consecutive increases to detect overshoot
 
 //stewart_platform
