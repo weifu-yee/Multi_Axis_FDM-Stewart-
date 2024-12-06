@@ -90,14 +90,21 @@ void true_process(void) {
 		diffNorm = calculateNorm(diff_lengths);
 
 		// Detect if we're getting further away from the target
-		if (diffNorm > prev_diffNorm) {
+//		if (diffNorm > prev_diffNorm) {
+//			increasing_count++;
+//		} else {
+//			increasing_count = 0;
+//		}
+//		if ((goal && diffNorm < TOLERANCE) ||
+//			(goal && increasing_count >= TREND_THRESHOLD)) {
+//			reached = true;
+//		}
+		if (goal) {
 			increasing_count++;
 		} else {
 			increasing_count = 0;
 		}
-
-		if ((goal && diffNorm < TOLERANCE) ||
-			(goal && increasing_count >= TREND_THRESHOLD)) {
+		if (increasing_count >= TREND_THRESHOLD) {
 			reached = true;
 		}
 

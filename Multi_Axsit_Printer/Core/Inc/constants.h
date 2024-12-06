@@ -10,7 +10,7 @@
 
 //timing
 #define TOLERANCE 1
-#define TREND_THRESHOLD 3  // Number of consecutive increases to detect overshoot
+#define TREND_THRESHOLD 5  // Number of consecutive increases to detect overshoot
 
 //stewart_platform
 #define PI 3.14159265358979323846
