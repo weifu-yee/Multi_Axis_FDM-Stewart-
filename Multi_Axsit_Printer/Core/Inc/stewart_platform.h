@@ -33,6 +33,7 @@ extern SPVelocity Velo;
 extern double current_lengths[7], next_lengths[7];
 
 extern double SPerror;
+extern double pRb[3][3];
 
 SPPose create_default_stewart_platform();
 SPVelocity create_default_stewart_velocity();

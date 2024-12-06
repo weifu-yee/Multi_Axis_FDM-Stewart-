@@ -126,9 +126,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 					if (command == 'X') w2p_X = num_double;
 					if (command == 'Y') w2p_Y = num_double;
 					if (command == 'Z') w2p_Z = num_double;
-					if (command == 'A') w2p_X = num_double;
-					if (command == 'B') w2p_Y = num_double;
-					if (command == 'C') w2p_Z = num_double;
+					if (command == 'A') w2p_A = num_double;
+					if (command == 'B') w2p_B = num_double;
+					if (command == 'C') w2p_C = num_double;
 				}
 			}
 			transformer.setWorkpieceOriginToPartTransform(w2p_X, w2p_Y, w2p_Z, w2p_A, w2p_B, w2p_C);

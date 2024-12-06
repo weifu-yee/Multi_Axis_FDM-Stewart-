@@ -169,8 +169,8 @@ void initialize_platform(void) {
 	const double b_angles[] = B_ANGLES;
 
     for (int i = 1; i <= 6; ++i) {
-        double p_rad = deg_to_rad(p_angles[i] * 100);
-        double b_rad = deg_to_rad(b_angles[i] * 100);
+        double p_rad = deg_to_rad(p_angles[i]);
+        double b_rad = deg_to_rad(b_angles[i]);
 
         p[i].x = (double)(P_L * cos(p_rad));
         p[i].y = (double)(P_L * sin(p_rad));
@@ -208,9 +208,12 @@ double calculate_length(const Vector3D* T, const double pRb[3][3],
     double dz = T->z + pRb[2][0] * p->x + pRb[2][1] * p->y + pRb[2][2] * p->z - b->z;
     return (double)sqrt(dx*dx + dy*dy + dz*dz);
 }
+
+double pRb[3][3];
+
 void calculate_leg(const SPPose* platform,
                    double lengths[7]) {
-    double pRb[3][3];
+//    double pRb[3][3];
     rotation_matrix(platform, pRb);
     T = {platform->x, platform->y, platform->z};
     for (int i = 1; i <= 6; ++i) {
