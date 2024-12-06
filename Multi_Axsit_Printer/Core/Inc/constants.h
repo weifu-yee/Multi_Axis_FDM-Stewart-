@@ -14,7 +14,6 @@
 
 //stewart_platform
 #define PI 3.14159265358979323846
-#define H0 495
 #define P_L 100
 #define B_L 100
 #define P_ANGLES {0, 345, 15, 105, 135, 225, 255}
@@ -104,11 +103,12 @@
 
 //control
 #define So 181.786671
-#define Lo 603.886671
+//#define Lo 603.886671
+#define Ho 550
+#define Lo 552.4305
 #define reset_pulse 1250.0
 #define length_to_slowdown 40.0
 
-#define Ho 550
 #define NUM_PUSHERS 6
 #define FREQUENCY 20.0
 #define resolution 512.0
