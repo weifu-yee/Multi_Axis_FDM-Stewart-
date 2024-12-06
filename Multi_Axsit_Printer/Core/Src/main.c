@@ -20,6 +20,7 @@
 #include "main.h"
 #include "dma.h"
 #include "eth.h"
+#include "memorymap.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_otg.h"

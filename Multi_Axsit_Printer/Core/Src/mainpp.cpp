@@ -43,10 +43,14 @@ extern bool stop;
 
 void main_function(void){
 	Start.init();
-	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_1, MM_Enable_GPIO_PIN_1, GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_1, MM_Enable_GPIO_PIN_1, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(MM_Enable_GPIO_PORT_2, MM_Enable_GPIO_PIN_2, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(BP_Enable_GPIO_PORT_1, BP_Enable_GPIO_PIN_1, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(BP_Enable_GPIO_PORT_2, BP_Enable_GPIO_PIN_2, GPIO_PIN_SET);
 	Timer_INIT();
 	initialize_platform();
+
+//	line_of_Gcode = -20;
 
 	reset_pushers_to_home();
 	Arduino.init();
